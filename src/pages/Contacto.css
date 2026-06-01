@@ -1,3 +1,8 @@
+.page-contacto .page-hero--sm {
+  padding: 8rem 0 3rem;
+  background: linear-gradient(160deg, var(--cream-dark) 0%, var(--cream) 100%);
+}
+
 .contacto-inner {
   display: grid;
   grid-template-columns: 1fr 2fr;

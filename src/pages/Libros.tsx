@@ -11,8 +11,14 @@ export default function Libros() {
         <div className="container libros-vista__container">
 
           <header className="libros-vista__header">
-            <span className="section-label">Obra publicada</span>
-            <h1 className="libros-vista__title">Libros</h1>
+            <div>
+              <span className="section-label">Obra publicada</span>
+              <h1 className="libros-vista__title">Libros</h1>
+            </div>
+            <div className="compra-links">
+              <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-primary btn--sm">Comprar</a>
+              <a href={selected.compra.fragmento} target="_blank" rel="noreferrer" className="btn btn-outline btn--sm">Leer fragmento</a>
+            </div>
           </header>
 
           <div className="libro-detalle" key={selected.id} aria-live="polite">
@@ -43,7 +49,6 @@ export default function Libros() {
                 <p className="libro-detalle__sinopsis">{selected.sinopsis}</p>
                 {selected.reseñas.length > 0 && (
                   <div className="libro-detalle__reseñas">
-                    <span className="section-label">Reseñas</span>
                     {selected.reseñas.map((r, i) => (
                       <blockquote key={i} className="reseña">
                         "{r.texto}"
@@ -52,12 +57,6 @@ export default function Libros() {
                     ))}
                   </div>
                 )}
-              </div>
-              <div className="libro-detalle__compra">
-                <div className="compra-links">
-                  <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-primary">Comprar</a>
-                  <a href={selected.compra.fragmento} target="_blank" rel="noreferrer" className="btn btn-outline">Leer fragmento</a>
-                </div>
               </div>
             </div>
           </div>
