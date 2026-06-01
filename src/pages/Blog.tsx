@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { posts } from '../data/contenido';
+import { posts } from '../data';
 import './Blog.css';
 
 const categorias = ['Todas', ...new Set(posts.map(p => p.categoria))];
@@ -15,6 +15,12 @@ export default function Blog() {
   return (
     <main className="page-blog">
       <div className="page-hero page-hero--blog">
+        <img
+          src="/ilustracion-partos.jpg"
+          alt=""
+          className="blog-hero-ilustracion"
+          aria-hidden="true"
+        />
         <div className="container">
           <span className="section-label">Bitácora de escritura</span>
           <h1>Partos<br /><em>bajo tierra</em></h1>

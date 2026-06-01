@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { libros, posts } from '../data/contenido';
+import { libros, posts } from '../data';
 import './Home.css';
 
 export default function Home() {
@@ -11,10 +11,9 @@ export default function Home() {
 
       {/* ── HERO ────────────────────────────────────── */}
       <section className="hero">
-        <div className="hero__bg-text" aria-hidden>ZAYAS</div>
-        <div className="container hero__inner">
+<div className="container hero__inner">
           <div className="hero__content">
-            <span className="section-label">escritor · géneros híbridos</span>
+            <span className="section-label">escritor</span>
             <h1 className="hero__title">
               Daniel<br />
               <em>Zayas</em>

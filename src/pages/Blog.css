@@ -1,5 +1,39 @@
 .page-hero--blog {
-  background: var(--earth-deep);
+  background: linear-gradient(110deg, #1a0800 0%, #2e1200 55%, #3d1a00 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tapa cualquier blanco del cielo de la ilustración que filtre por arriba */
+.page-hero--blog::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 54%;
+  height: 65%;
+  background: linear-gradient(to bottom, #2e1200 0%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.page-hero--blog .blog-hero-ilustracion {
+  position: absolute;
+  right: -2%;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  object-fit: cover;
+  object-position: center bottom;  /* ancla los cuerpos subterráneos, el cielo queda fuera */
+  opacity: 0.65;
+  mask-image: linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 85%);
+  pointer-events: none;
+}
+
+.page-hero--blog .container {
+  position: relative;
+  z-index: 2;
 }
 
 .page-hero--blog .section-label {

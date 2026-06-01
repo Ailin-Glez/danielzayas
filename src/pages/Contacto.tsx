@@ -5,9 +5,10 @@ export default function Contacto() {
   const [form, setForm] = useState({ nombre: '', correo: '', asunto: '', mensaje: '' });
   const [enviado, setEnviado] = useState(false);
 
-  const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Aquí conectarías con Formspree, Netlify Forms, etc.
     setEnviado(true);
@@ -29,7 +30,7 @@ export default function Contacto() {
           <div className="contacto-info">
             <div className="info-card">
               <span className="section-label">Correo</span>
-              <a href="mailto:hola@danielzayas.com">hola@danielzayas.com</a>
+              <a href="mailto:hola@danielzayas.com">partosbajotierra@gmail.com</a>
             </div>
             <div className="info-card">
               <span className="section-label">Redes</span>

@@ -34,19 +34,21 @@
 
 .navbar__brand-name {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: var(--earth-deep);
+  color: var(--ink);
   letter-spacing: -0.02em;
+  transition: color 0.3s ease;
 }
 
 .navbar__brand-sub {
   font-family: var(--font-accent);
-  font-size: 0.7rem;
-  letter-spacing: 0.25em;
+  font-size: 0.78rem;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--ochre);
-  margin-top: 1px;
+  color: var(--earth-deep);
+  margin-top: 2px;
+  transition: color 0.3s ease;
 }
 
 .navbar__nav {
@@ -57,8 +59,9 @@
 
 .navbar__link {
   font-family: var(--font-accent);
-  font-size: 1rem;
-  color: var(--ink-soft);
+  font-size: 1.15rem;
+  letter-spacing: 0.01em;
+  color: var(--ink);
   text-decoration: none;
   position: relative;
   transition: color var(--transition);
@@ -77,7 +80,7 @@
 
 .navbar__link:hover,
 .navbar__link--active {
-  color: var(--earth-deep);
+  color: var(--earth);
 }
 
 .navbar__link:hover::after,
@@ -88,6 +91,33 @@
 .navbar__cta {
   padding: 0.55rem 1.25rem;
   font-size: 0.85rem;
+}
+
+/* ── Navbar sobre fondo oscuro (ej. hero del blog) ── */
+.navbar--on-dark .navbar__brand-name {
+  color: #fff;
+}
+
+.navbar--on-dark .navbar__brand-sub {
+  color: var(--ochre);
+}
+
+.navbar--on-dark .navbar__link {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar--on-dark .navbar__link:hover,
+.navbar--on-dark .navbar__link--active {
+  color: #fff;
+}
+
+.navbar--on-dark .navbar__link--active::after,
+.navbar--on-dark .navbar__link:hover::after {
+  background: var(--ochre);
+}
+
+.navbar--on-dark .navbar__hamburger span {
+  background: var(--cream);
 }
 
 /* ── Hamburger ─────────────────────────────────── */
@@ -142,7 +172,7 @@
   }
 
   .navbar__link {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
 
   .navbar__cta {

@@ -14,6 +14,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const isDarkHero = location.pathname.startsWith('/blog');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -24,7 +25,7 @@ export default function Navbar() {
   useEffect(() => setOpen(false), [location]);
 
   return (
-    <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
+    <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''} ${isDarkHero && !scrolled ? 'navbar--on-dark' : ''}`}>
       <div className="navbar__inner">
         <Link to="/" className="navbar__brand">
           <span className="navbar__brand-name">Daniel Zayas</span>
