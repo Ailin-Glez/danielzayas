@@ -1,0 +1,116 @@
+.contacto-inner {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+.info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(200,135,58,0.15);
+  margin-bottom: 1.5rem;
+}
+
+.info-card a {
+  font-family: var(--font-accent);
+  font-size: 1rem;
+  color: var(--earth);
+}
+
+.info-card a:hover { color: var(--ochre-deep); }
+
+.info-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.info-card--nota {
+  background: rgba(200,135,58,0.06);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: none;
+  margin-bottom: 0;
+}
+
+.info-card--nota em { color: var(--ochre-deep); }
+
+/* ── FORM ──────────────────────────────────────────────── */
+.contacto-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.form-group label {
+  font-family: var(--font-accent);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.85rem 1rem;
+  border: 1.5px solid rgba(107,58,31,0.15);
+  border-radius: var(--radius-sm);
+  background: var(--cream-dark);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: border-color var(--transition);
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--ochre);
+  background: white;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(107,58,31,0.35);
+}
+
+.btn-full {
+  width: 100%;
+  justify-content: center;
+  padding: 0.9rem;
+}
+
+/* Éxito */
+.form-exito {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--cream-dark);
+  border-radius: var(--radius-lg);
+}
+
+.form-exito span { font-size: 3rem; display: block; margin-bottom: 1rem; }
+.form-exito h3 { margin-bottom: 0.5rem; }
+.form-exito p { color: var(--ink-soft); }
+
+@media (max-width: 860px) {
+  .contacto-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .form-row { grid-template-columns: 1fr; }
+}

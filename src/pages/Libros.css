@@ -1,0 +1,210 @@
+.page-hero {
+  padding: 8rem 0 4rem;
+  background: linear-gradient(160deg, var(--cream-dark) 0%, var(--cream) 100%);
+}
+
+.page-hero--sm {
+  padding: 7rem 0 3rem;
+}
+
+.page-hero h1 {
+  margin: 0.25rem 0;
+}
+
+.page-hero p {
+  max-width: 560px;
+  font-size: 1.1rem;
+  margin-top: 0.75rem;
+}
+
+/* ── GRID DE LIBROS ─────────────────────────────────────────── */
+.libros-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 5rem;
+}
+
+.libro-thumb {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: transform var(--transition);
+}
+
+.libro-thumb:hover {
+  transform: translateY(-4px);
+}
+
+.libro-thumb__cover {
+  aspect-ratio: 2/3;
+  background: var(--libro-color, var(--ochre));
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1rem;
+  box-shadow:
+    -4px 4px 0 rgba(58,21,0,0.1),
+    -8px 8px 0 rgba(58,21,0,0.05),
+    0 12px 30px rgba(58,21,0,0.15);
+  transition: box-shadow var(--transition), transform var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.libro-thumb__cover::before {
+  content: '📖';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  font-size: 2.5rem;
+  opacity: 0.2;
+}
+
+.libro-thumb--active .libro-thumb__cover {
+  box-shadow:
+    -6px 6px 0 rgba(58,21,0,0.18),
+    -12px 12px 0 rgba(58,21,0,0.08),
+    0 20px 50px rgba(58,21,0,0.25);
+  transform: rotate(-1.5deg);
+  outline: 3px solid var(--libro-color);
+  outline-offset: 3px;
+}
+
+.libro-thumb__cover span {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.libro-thumb__cover small {
+  font-family: var(--font-accent);
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.65);
+  position: relative;
+}
+
+.libro-thumb__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.libro-thumb__info strong {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--earth-deep);
+  font-weight: 500;
+}
+
+.libro-thumb__info span {
+  font-family: var(--font-accent);
+  font-size: 0.75rem;
+  color: var(--ochre);
+}
+
+/* ── DETALLE ──────────────────────────────────────────────── */
+.libro-detalle {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 5rem;
+  align-items: start;
+  padding: 3rem 0;
+  animation: fadeUp 0.4s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.book-placeholder--lg {
+  max-width: 100%;
+  width: 100%;
+}
+
+.libro-detalle__tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.tag {
+  font-family: var(--font-accent);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--ochre-deep);
+  background: rgba(200,135,58,0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+}
+
+.libro-detalle__sinopsis {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.libro-detalle__reseñas {
+  margin-bottom: 2.5rem;
+}
+
+.reseña {
+  border-left: 3px solid var(--ochre);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  background: rgba(200,135,58,0.06);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.reseña cite {
+  display: block;
+  font-style: normal;
+  font-family: var(--font-accent);
+  font-size: 0.85rem;
+  color: var(--ochre-deep);
+  margin-top: 0.5rem;
+}
+
+.libro-detalle__compra {
+  margin-top: 1rem;
+}
+
+.compra-links {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .libros-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .libro-detalle {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .libro-detalle__cover {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .libros-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}

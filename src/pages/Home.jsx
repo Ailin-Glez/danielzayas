@@ -1,0 +1,137 @@
+import { Link } from 'react-router-dom';
+import { libros, posts } from '../data/contenido';
+import './Home.css';
+
+export default function Home() {
+  const ultimoLibro = libros[0];
+  const recentPosts = posts.slice(0, 3);
+
+  return (
+    <main className="home">
+
+      {/* ── HERO ────────────────────────────────────── */}
+      <section className="hero">
+        <div className="hero__bg-text" aria-hidden>ZAYAS</div>
+        <div className="container hero__inner">
+          <div className="hero__content">
+            <span className="section-label">escritor · géneros híbridos</span>
+            <h1 className="hero__title">
+              Daniel<br />
+              <em>Zayas</em>
+            </h1>
+            <p className="hero__lead">
+              Escribo en los márgenes. Entre el ensayo y el poema,
+              entre la crónica y el cuerpo. Cuatro libros publicados,
+              incontables palabras todavía bajo tierra.
+            </p>
+            <div className="hero__actions">
+              <Link to="/libros" className="btn btn-primary">Ver mis libros</Link>
+              <Link to="/blog" className="btn btn-outline">Partos bajo tierra →</Link>
+            </div>
+          </div>
+          <div className="hero__illustration">
+            <div className="hero__sprout" aria-hidden>🌱</div>
+            <div className="hero__quote">
+              <blockquote>
+                "Escribir es un acto de desobediencia."
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div className="hero__scroll-hint" aria-hidden>
+          <span>↓</span>
+        </div>
+      </section>
+
+      {/* ── ÚLTIMO LIBRO ────────────────────────────── */}
+      <section className="section featured-book">
+        <div className="container featured-book__inner">
+          <div className="featured-book__cover">
+            <div className="book-placeholder" style={{ '--book-color': ultimoLibro.color }}>
+              <span>{ultimoLibro.titulo}</span>
+              <small>{ultimoLibro.anio}</small>
+            </div>
+          </div>
+          <div className="featured-book__info">
+            <span className="section-label">Último libro</span>
+            <h2>{ultimoLibro.titulo}</h2>
+            <div className="divider" />
+            <p className="featured-book__meta">
+              {ultimoLibro.genero} · {ultimoLibro.editorial} · {ultimoLibro.anio}
+            </p>
+            <p>{ultimoLibro.sinopsis}</p>
+            {ultimoLibro.reseñas[0] && (
+              <blockquote className="featured-book__quote">
+                "{ultimoLibro.reseñas[0].texto}"
+                <cite>— {ultimoLibro.reseñas[0].fuente}</cite>
+              </blockquote>
+            )}
+            <div className="featured-book__actions">
+              <Link to="/libros" className="btn btn-primary">Todos los libros</Link>
+              <a href={ultimoLibro.compra.amazon} className="btn btn-outline" target="_blank" rel="noreferrer">
+                Comprar
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── BLOG PREVIEW ────────────────────────────── */}
+      <section className="section blog-preview">
+        <div className="container">
+          <div className="blog-preview__header">
+            <div>
+              <span className="section-label">Bitácora de escritura</span>
+              <h2>Partos bajo tierra</h2>
+            </div>
+            <Link to="/blog" className="btn btn-outline">Ver todas las entradas →</Link>
+          </div>
+          <div className="blog-preview__grid">
+            {recentPosts.map(post => (
+              <article key={post.id} className="post-card">
+                <div className="post-card__meta">
+                  <span className="post-card__cat">{post.categoria}</span>
+                  <span className="post-card__time">{post.tiempoLectura}</span>
+                </div>
+                <h3 className="post-card__title">{post.titulo}</h3>
+                <p className="post-card__excerpt">{post.extracto}</p>
+                <Link to={`/blog/${post.slug}`} className="post-card__link">
+                  Leer entrada →
+                </Link>
+                <time className="post-card__date">
+                  {new Date(post.fecha).toLocaleDateString('es-MX', {
+                    year: 'numeric', month: 'long', day: 'numeric'
+                  })}
+                </time>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── NEWSLETTER CTA ──────────────────────────── */}
+      <section className="section newsletter-cta">
+        <div className="container newsletter-cta__inner">
+          <div className="newsletter-cta__sprout" aria-hidden>🌱</div>
+          <span className="section-label">Newsletter</span>
+          <h2>Recibe palabras en tu correo</h2>
+          <p>
+            Noticias sobre libros, textos inéditos, recomendaciones de lectura
+            y reflexiones sobre el proceso de escribir. Sin spam. Solo escritura.
+          </p>
+          <form className="newsletter-cta__form" onSubmit={e => e.preventDefault()}>
+            <input
+              type="email"
+              placeholder="tu@correo.com"
+              className="newsletter-cta__input"
+              required
+            />
+            <button type="submit" className="btn btn-primary">Suscribirme</button>
+          </form>
+          <small>Próximamente. Por ahora puedes escribirme directamente.</small>
+        </div>
+      </section>
+
+    </main>
+  );
+}

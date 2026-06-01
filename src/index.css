@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,900;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+
+/* ── PALETA desde "Partos bajo tierra" ───────────────────── */
+:root {
+  --cream:        #FAF4E8;
+  --cream-dark:   #F0E6CC;
+  --ochre:        #C8873A;
+  --ochre-deep:   #A05C1A;
+  --terra:        #E1694C;
+  --terra-dark:   #B74300;
+  --earth:        #6B3A1F;
+  --earth-deep:   #3A1500;
+  --green-sprout: #5A8A3C;
+  --green-light:  #8AB55A;
+  --yellow-warm:  #F5D060;
+  --skin:         #F2B47A;
+  --ink:          #1A0E07;
+  --ink-soft:     #3D2010;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Lora', Georgia, serif;
+  --font-accent:  'Cormorant Garamond', Georgia, serif;
+
+  --radius-sm:  4px;
+  --radius-md:  12px;
+  --radius-lg:  24px;
+  --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Texture de papel */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ── TIPOGRAFÍA BASE ──────────────────────────────────────── */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  color: var(--earth-deep);
+}
+
+h1 { font-size: clamp(2.4rem, 6vw, 5rem); font-weight: 900; }
+h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 600; }
+h3 { font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 400; }
+
+p { margin-bottom: 1rem; color: var(--ink-soft); }
+
+a {
+  color: var(--ochre-deep);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover { color: var(--terra-dark); }
+
+img { max-width: 100%; display: block; }
+
+/* ── UTILIDADES ───────────────────────────────────────────── */
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+}
+
+.section {
+  padding: clamp(4rem, 8vw, 8rem) 0;
+}
+
+.section-label {
+  font-family: var(--font-accent);
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.divider {
+  width: 60px;
+  height: 2px;
+  background: var(--ochre);
+  margin: 1.5rem 0;
+}
+
+.divider-center {
+  margin: 1.5rem auto;
+}
+
+/* ── BOTONES ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-accent);
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+}
+
+.btn-primary {
+  background: var(--earth-deep);
+  color: var(--cream);
+}
+.btn-primary:hover {
+  background: var(--terra-dark);
+  color: var(--cream);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(58,21,0,0.25);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--earth-deep);
+  border: 1.5px solid var(--earth-deep);
+}
+.btn-outline:hover {
+  background: var(--earth-deep);
+  color: var(--cream);
+  transform: translateY(-2px);
+}
+
+.btn-ochre {
+  background: var(--ochre);
+  color: var(--cream);
+}
+.btn-ochre:hover {
+  background: var(--ochre-deep);
+  color: var(--cream);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(200,135,58,0.35);
+}
+
+/* ── SCROLLBAR ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream-dark); }
+::-webkit-scrollbar-thumb { background: var(--ochre); border-radius: 3px; }

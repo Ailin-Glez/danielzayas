@@ -1,0 +1,118 @@
+.sobre-inner {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 6rem;
+  align-items: start;
+}
+
+.foto-placeholder {
+  aspect-ratio: 3/4;
+  background: linear-gradient(160deg, var(--ochre) 0%, var(--terra-dark) 100%);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 24px 60px rgba(107,58,31,0.2);
+}
+
+.foto-placeholder span {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 900;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: -0.04em;
+}
+
+.sobre-datos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.dato {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.2rem;
+  background: var(--cream-dark);
+  padding: 1rem 0.5rem;
+  border-radius: var(--radius-md);
+}
+
+.dato strong {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--earth-deep);
+}
+
+.dato span {
+  font-family: var(--font-accent);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ochre);
+}
+
+.sobre-intro {
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--earth);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.sobre-cita {
+  border-left: 3px solid var(--ochre);
+  padding: 1.25rem 1.5rem;
+  background: rgba(200,135,58,0.06);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--earth);
+  margin: 2rem 0;
+}
+
+.sobre-acciones {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.sobre-apariciones {
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(200,135,58,0.2);
+}
+
+.apariciones-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.aparicion {
+  font-family: var(--font-accent);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  background: var(--cream-dark);
+  border: 1px solid rgba(200,135,58,0.2);
+  padding: 0.35rem 0.85rem;
+  border-radius: 2rem;
+}
+
+@media (max-width: 860px) {
+  .sobre-inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .foto-placeholder {
+    aspect-ratio: 1/1;
+    max-width: 280px;
+  }
+}
