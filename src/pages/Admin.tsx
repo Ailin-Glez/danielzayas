@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { posts as initialPosts } from '../data';
 import type { Post } from '../types';
 import './Admin.css';
@@ -51,6 +51,22 @@ export default function Admin() {
   const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+
+  const wrapSelection = (before: string, after: string) => {
+    const ta = contentRef.current;
+    if (!ta) return;
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const text = form.contenido;
+    const newText = text.slice(0, start) + before + text.slice(start, end) + after + text.slice(end);
+    setForm(f => ({ ...f, contenido: newText }));
+    requestAnimationFrame(() => {
+      ta.focus();
+      ta.setSelectionRange(start + before.length, end + before.length);
+    });
+  };
 
   const storedPassword = () => sessionStorage.getItem('admin_password') || '';
 
@@ -299,9 +315,18 @@ export default function Admin() {
 
             <div className="admin-form__field">
               <label htmlFor="admin-contenido">Contenido</label>
-              <p className="admin-form__hint">Separa los párrafos con una línea en blanco</p>
+              <p className="admin-form__hint">Separa los párrafos con una línea en blanco. Selecciona texto para aplicar formato.</p>
+              <div className="admin-toolbar">
+                <button type="button" onClick={() => wrapSelection('**', '**')} title="Negrita">
+                  <strong>N</strong>
+                </button>
+                <button type="button" onClick={() => wrapSelection('*', '*')} title="Cursiva">
+                  <em>C</em>
+                </button>
+              </div>
               <textarea
                 id="admin-contenido"
+                ref={contentRef}
                 value={form.contenido}
                 onChange={e => setForm(f => ({ ...f, contenido: e.target.value }))}
                 rows={22}

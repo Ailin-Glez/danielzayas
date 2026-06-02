@@ -105,7 +105,7 @@ export default function Home() {
                 <h3 className="post-card__title">{post.titulo}</h3>
                 <p className="post-card__excerpt">{post.extracto}</p>
                 <time className="post-card__date">
-                  {new Date(post.fecha).toLocaleDateString('es-MX', {
+                  {new Date(post.fecha + 'T12:00:00').toLocaleDateString('es-MX', {
                     year: 'numeric', month: 'long', day: 'numeric'
                   })}
                 </time>
