@@ -50,34 +50,37 @@ export default function Libros() {
               )}
             </div>
 
-            <div className="libro-detalle__compra">
-              {selected.compra.amazon !== '#' && (
-                <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-primary btn--sm">Comprar</a>
-              )}
-              <a href={selected.compra.fragmento !== '#' ? selected.compra.fragmento : undefined} target="_blank" rel="noreferrer" className="btn btn-outline btn--sm">Leer fragmento</a>
-            </div>
-
             <div className="libro-detalle__body">
-              <div className="libro-detalle__badges">
-                <span className="tag" data-genero={selected.genero}>{selected.genero}</span>
-                {selected.editorial && <span className="libro-editorial">{selected.editorial}</span>}
-                {selected.anio && <span className="libro-anio">{selected.anio}</span>}
-              </div>
               <h2>{selected.titulo}</h2>
-              <div className="divider" />
-              <div className="libro-detalle__scroll">
-                <p className="libro-detalle__sinopsis">{selected.sinopsis}</p>
-                {selected.reseñas.length > 0 && (
-                  <div className="libro-detalle__reseñas">
-                    {selected.reseñas.map((r, i) => (
-                      <blockquote key={i} className="reseña">
-                        "{r.texto}"
-                        <cite>— {r.fuente}</cite>
-                      </blockquote>
-                    ))}
-                  </div>
-                )}
+              <div className="libro-detalle__top-row">
+                <div className="libro-detalle__badges">
+                  <span className="tag" data-genero={selected.genero}>{selected.genero}</span>
+                  {selected.editorial && <span className="libro-editorial">{selected.editorial}</span>}
+                  {selected.anio && <span className="libro-anio">{selected.anio}</span>}
+                </div>
+                <div className="compra-links">
+                  <a
+                    href={selected.compra.fragmento !== '#' ? selected.compra.fragmento : undefined}
+                    target="_blank" rel="noreferrer"
+                    className="btn btn-outline btn--sm"
+                  >Leer fragmento</a>
+                  {selected.compra.amazon !== '#' && (
+                    <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-primary btn--sm">Comprar</a>
+                  )}
+                </div>
               </div>
+              <div className="divider" />
+              <p className="libro-detalle__sinopsis">{selected.sinopsis}</p>
+              {selected.reseñas.length > 0 && (
+                <div className="libro-detalle__reseñas">
+                  {selected.reseñas.map((r, i) => (
+                    <blockquote key={i} className="reseña">
+                      "{r.texto}"
+                      <cite>— {r.fuente}</cite>
+                    </blockquote>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
