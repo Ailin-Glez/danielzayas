@@ -2,6 +2,7 @@ import type { Libro } from '../../types';
 
 const libro: Libro = {
   id: 1,
+  autorPalabras: '',
   titulo: 'Gaviotas en las aceras',
   anio: 2020,
   genero: 'Narrativa juvenil',

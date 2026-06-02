@@ -2,6 +2,7 @@ import type { Libro } from '../../types';
 
 const libro: Libro = {
   id: 5,
+  autorPalabras: 'José Raúl Fraguela, editor y escritor',
   titulo: 'Partos bajo tierra',
   anio: 2017,
   genero: 'Poesía',

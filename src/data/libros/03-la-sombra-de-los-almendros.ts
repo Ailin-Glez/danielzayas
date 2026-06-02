@@ -2,6 +2,7 @@ import type { Libro } from '../../types';
 
 const libro: Libro = {
   id: 3,
+  autorPalabras: 'Irene E. Hernández Álvarez, editora',
   titulo: 'La sombra de los almendros',
   anio: 2016,
   genero: 'Narrativa juvenil',

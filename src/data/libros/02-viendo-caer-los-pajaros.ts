@@ -2,6 +2,7 @@ import type { Libro } from '../../types';
 
 const libro: Libro = {
   id: 2,
+  autorPalabras: 'Maikel García Pérez, editor y poeta',
   titulo: 'Viendo caer los pájaros',
   anio: 2015,
   genero: 'Poesía',

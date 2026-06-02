@@ -2,6 +2,7 @@ import type { Libro } from '../../types';
 
 const libro: Libro = {
   id: 7,
+  autorPalabras: 'Nicolás Alberte, escritor',
   titulo: 'El arte de construir un bonsái',
   anio: 2023,
   genero: 'Cuentos',

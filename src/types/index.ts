@@ -11,6 +11,7 @@ export interface CompraLinks {
 export interface Libro {
   id: number;
   titulo: string;
+  autorPalabras: string;
   anio: number | '';
   genero: string;
   editorial: string;
