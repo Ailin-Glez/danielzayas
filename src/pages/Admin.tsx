@@ -45,6 +45,7 @@ export default function Admin() {
   const [loginLoading, setLoginLoading] = useState(false);
 
   const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [search, setSearch] = useState('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [form, setForm] = useState<FormData>(emptyForm());
   const [slugEdited, setSlugEdited] = useState(false);
@@ -220,6 +221,12 @@ export default function Admin() {
     );
   }
 
+  const normalize = (s: string) =>
+    s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const filteredPosts = search.trim()
+    ? posts.filter(p => normalize(p.titulo).includes(normalize(search)) || normalize(p.categoria).includes(normalize(search)))
+    : posts;
+
   return (
     <main className="admin-panel">
       <header className="admin-header">
@@ -232,8 +239,18 @@ export default function Admin() {
           <button className="admin-new-btn" onClick={handleNewPost}>
             + Nuevo artículo
           </button>
+          <input
+            className="admin-search"
+            type="search"
+            placeholder="Buscar artículo..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
           <div className="admin-posts-list">
-            {posts.map(post => (
+            {filteredPosts.length === 0 && (
+              <p className="admin-no-results">Sin resultados</p>
+            )}
+            {filteredPosts.map(post => (
               <button
                 key={post.id}
                 className={`admin-post-item ${selectedId === post.id ? 'admin-post-item--active' : ''}`}
