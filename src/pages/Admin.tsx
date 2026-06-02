@@ -382,18 +382,20 @@ export default function Admin() {
                     type="checkbox"
                     className="admin-post-checkbox"
                     checked={checkedIds.has(post.id)}
-                    onChange={() => {}}
+                    onChange={() => toggleCheck(post.id)}
                     onClick={e => e.stopPropagation()}
                     tabIndex={-1}
                   />
                 )}
-                <span className="admin-post-cat">{post.categoria}</span>
-                <strong>{post.titulo}</strong>
-                <time>
-                  {new Date(post.fecha + 'T12:00:00').toLocaleDateString('es-MX', {
-                    year: 'numeric', month: 'short',
-                  })}
-                </time>
+                <div className="admin-post-item__info">
+                  <span className="admin-post-cat">{post.categoria}</span>
+                  <strong>{post.titulo}</strong>
+                  <time>
+                    {new Date(post.fecha + 'T12:00:00').toLocaleDateString('es-MX', {
+                      year: 'numeric', month: 'short',
+                    })}
+                  </time>
+                </div>
               </button>
             ))}
           </div>

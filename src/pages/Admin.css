@@ -299,8 +299,17 @@
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.admin-post-item__info {
+  display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
 }
 
 .admin-post-item:hover {
