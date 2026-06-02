@@ -286,10 +286,15 @@
 
 .page-hero--blog h1 {
   color: var(--earth-deep);
-  font-size: clamp(3rem, 8vw, 6rem);
+  font-size: clamp(2rem, 8vw, 6rem);
   line-height: 0.95;
   margin: 0.5rem 0 0.75rem;
-  white-space: nowrap;
+}
+
+@media (min-width: 861px) {
+  .page-hero--blog h1 {
+    white-space: nowrap;
+  }
 }
 
 .page-hero--blog h1 em {
