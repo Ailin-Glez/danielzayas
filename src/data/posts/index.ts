@@ -9,13 +9,13 @@ import temidaPolisemia from './08-temida-polisemia';
 import otraCancion    from './09-otra-cancion-para-magda';
 
 export const posts = [
-  paisesNoche,
   josue1994,
+  cartaNadia,
+  floresHierro,
   homeland,
   vilesManiobras,
+  paisesNoche,
   nacidoMuerto,
-  floresHierro,
-  cartaNadia,
-  temidaPolisemia,
   otraCancion,
+  temidaPolisemia,
 ];
