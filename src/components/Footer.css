@@ -60,13 +60,16 @@
 }
 
 @media (max-width: 600px) {
-  .footer__inner {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-  }
-
   .footer__copy {
-    grid-column: 1 / -1;
-    order: 3;
+    font-size: 0.72rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .footer__name {
+    font-size: 0.95rem;
+  }
+  .footer__sub {
+    display: none;
   }
 }

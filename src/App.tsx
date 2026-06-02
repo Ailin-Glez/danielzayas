@@ -9,6 +9,7 @@ import BlogPost from './pages/BlogPost';
 import SobreMi from './pages/SobreMi';
 import Contacto from './pages/Contacto';
 import Newsletter from './pages/Newsletter';
+import Admin from './pages/Admin';
 import './index.css';
 
 function ScrollToTop() {
@@ -17,21 +18,33 @@ function ScrollToTop() {
   return null;
 }
 
+function AppContent() {
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith('/admin');
+
+  return (
+    <>
+      <ScrollToTop />
+      {!isAdmin && <Navbar />}
+      <Routes>
+        <Route path="/"           element={<Home />} />
+        <Route path="/libros"     element={<Libros />} />
+        <Route path="/blog"       element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/sobre-mi"   element={<SobreMi />} />
+        <Route path="/contacto"   element={<Contacto />} />
+        <Route path="/newsletter" element={<Newsletter />} />
+        <Route path="/admin"      element={<Admin />} />
+      </Routes>
+      {!isAdmin && <Footer />}
+    </>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
-      <Navbar />
-      <Routes>
-        <Route path="/"          element={<Home />} />
-        <Route path="/libros"    element={<Libros />} />
-        <Route path="/blog"      element={<Blog />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/sobre-mi"  element={<SobreMi />} />
-        <Route path="/contacto"  element={<Contacto />} />
-        <Route path="/newsletter" element={<Newsletter />} />
-      </Routes>
-      <Footer />
+      <AppContent />
     </BrowserRouter>
   );
 }
