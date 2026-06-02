@@ -78,6 +78,11 @@ exports.handler = async (event) => {
     const target = currentPosts.find(p => p.id === post.id);
     updatedPosts = currentPosts.filter(p => p.id !== post.id);
     commitMessage = `Eliminar artículo: ${target ? target.titulo : post.id}`;
+  } else if (action === 'bulk-delete') {
+    const ids = new Set(post.ids);
+    const targets = currentPosts.filter(p => ids.has(p.id));
+    updatedPosts = currentPosts.filter(p => !ids.has(p.id));
+    commitMessage = `Eliminar ${targets.length} artículo${targets.length !== 1 ? 's' : ''}`;
   } else {
     return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Acción desconocida' }) };
   }

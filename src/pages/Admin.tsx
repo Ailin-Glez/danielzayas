@@ -72,6 +72,12 @@ export default function Admin() {
   const [errorMsg, setErrorMsg] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
+  const [selectMode, setSelectMode] = useState(false);
+  const [checkedIds, setCheckedIds] = useState<Set<number>>(new Set());
+  const [showBulkConfirm, setShowBulkConfirm] = useState(false);
+  const [bulkStatus, setBulkStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+  const [bulkError, setBulkError] = useState('');
+
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
   const wrapSelection = (before: string, after: string) => {
@@ -141,6 +147,52 @@ export default function Admin() {
     setSlugEdited(false);
     setStatus('idle');
     setShowDeleteConfirm(false);
+  };
+
+  const toggleSelectMode = () => {
+    setSelectMode(m => !m);
+    setCheckedIds(new Set());
+    setShowBulkConfirm(false);
+    setBulkStatus('idle');
+  };
+
+  const toggleCheck = (id: number) => {
+    setCheckedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const handleBulkDelete = async () => {
+    setBulkStatus('saving');
+    setBulkError('');
+    try {
+      const res = await fetch('/.netlify/functions/save-post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'bulk-delete', password: storedPassword(), post: { ids: Array.from(checkedIds) } }),
+      });
+      if (res.ok) {
+        const deleted = new Set(checkedIds);
+        setPosts(prev => prev.filter(p => !deleted.has(p.id)));
+        if (selectedId !== null && deleted.has(selectedId)) handleNewPost();
+        setCheckedIds(new Set());
+        setShowBulkConfirm(false);
+        setSelectMode(false);
+        setBulkStatus('success');
+        setTimeout(() => setBulkStatus('idle'), 3000);
+      } else {
+        const data = await res.json();
+        setBulkStatus('error');
+        setBulkError(data.error || 'Error al eliminar');
+        setShowBulkConfirm(false);
+      }
+    } catch {
+      setBulkStatus('error');
+      setBulkError('Error de conexión');
+      setShowBulkConfirm(false);
+    }
   };
 
   const handleTitleChange = (titulo: string) => {
@@ -255,9 +307,21 @@ export default function Admin() {
 
       <div className="admin-layout">
         <aside className="admin-sidebar">
-          <button className="admin-new-btn" onClick={handleNewPost}>
-            + Nuevo artículo
-          </button>
+          {selectMode ? (
+            <button className="admin-cancel-select-btn" onClick={toggleSelectMode}>
+              ✕ Cancelar selección
+            </button>
+          ) : (
+            <>
+              <button className="admin-new-btn" onClick={handleNewPost}>
+                + Nuevo artículo
+              </button>
+              <button className="admin-select-btn" onClick={toggleSelectMode}>
+                Seleccionar múltiples
+              </button>
+            </>
+          )}
+
           <input
             className="admin-search"
             type="search"
@@ -265,6 +329,44 @@ export default function Admin() {
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
+
+          {selectMode && filteredPosts.length > 0 && (
+            <div className="admin-select-bar">
+              <label className="admin-select-all">
+                <input
+                  type="checkbox"
+                  checked={checkedIds.size > 0 && checkedIds.size === filteredPosts.length}
+                  ref={el => { if (el) el.indeterminate = checkedIds.size > 0 && checkedIds.size < filteredPosts.length; }}
+                  onChange={() => setCheckedIds(
+                    checkedIds.size === filteredPosts.length
+                      ? new Set()
+                      : new Set(filteredPosts.map(p => p.id))
+                  )}
+                />
+                <span>Todos ({checkedIds.size}/{filteredPosts.length})</span>
+              </label>
+              {checkedIds.size > 0 && (
+                showBulkConfirm ? (
+                  <div className="admin-bulk-confirm">
+                    <span>¿Eliminar {checkedIds.size} artículo{checkedIds.size > 1 ? 's' : ''}?</span>
+                    <button type="button" className="btn-delete-confirm" onClick={handleBulkDelete} disabled={bulkStatus === 'saving'}>
+                      {bulkStatus === 'saving' ? '...' : 'Sí, eliminar'}
+                    </button>
+                    <button type="button" className="btn-cancel" onClick={() => setShowBulkConfirm(false)}>
+                      Cancelar
+                    </button>
+                  </div>
+                ) : (
+                  <button type="button" className="admin-bulk-delete-btn" onClick={() => setShowBulkConfirm(true)}>
+                    Eliminar {checkedIds.size}
+                  </button>
+                )
+              )}
+              {bulkStatus === 'error' && <p className="admin-status admin-status--error">{bulkError}</p>}
+              {bulkStatus === 'success' && <p className="admin-status admin-status--success">Eliminados correctamente.</p>}
+            </div>
+          )}
+
           <div className="admin-posts-list">
             {filteredPosts.length === 0 && (
               <p className="admin-no-results">Sin resultados</p>
@@ -272,9 +374,19 @@ export default function Admin() {
             {filteredPosts.map(post => (
               <button
                 key={post.id}
-                className={`admin-post-item ${selectedId === post.id ? 'admin-post-item--active' : ''}`}
-                onClick={() => handleSelectPost(post)}
+                className={`admin-post-item ${!selectMode && selectedId === post.id ? 'admin-post-item--active' : ''} ${selectMode && checkedIds.has(post.id) ? 'admin-post-item--checked' : ''}`}
+                onClick={() => selectMode ? toggleCheck(post.id) : handleSelectPost(post)}
               >
+                {selectMode && (
+                  <input
+                    type="checkbox"
+                    className="admin-post-checkbox"
+                    checked={checkedIds.has(post.id)}
+                    onChange={() => {}}
+                    onClick={e => e.stopPropagation()}
+                    tabIndex={-1}
+                  />
+                )}
                 <span className="admin-post-cat">{post.categoria}</span>
                 <strong>{post.titulo}</strong>
                 <time>

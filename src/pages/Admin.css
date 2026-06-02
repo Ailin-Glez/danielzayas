@@ -167,6 +167,122 @@
   background: #4a7a30;
 }
 
+.admin-select-btn {
+  width: 100%;
+  padding: 0.55rem 1rem;
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-bottom: 1rem;
+}
+
+.admin-select-btn:hover {
+  border-color: var(--ochre);
+  color: var(--ochre-deep);
+}
+
+.admin-cancel-select-btn {
+  width: 100%;
+  padding: 0.55rem 1rem;
+  background: transparent;
+  color: var(--terra-dark);
+  border: 1px solid var(--terra-dark);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-bottom: 1.25rem;
+}
+
+.admin-cancel-select-btn:hover {
+  background: var(--terra-dark);
+  color: white;
+}
+
+.admin-select-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  background: var(--cream);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.75rem;
+}
+
+.admin-select-all {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-select-all input[type="checkbox"] {
+  accent-color: var(--earth);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.admin-bulk-delete-btn {
+  padding: 0.45rem 0.9rem;
+  background: var(--terra-dark);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background var(--transition);
+  align-self: flex-start;
+}
+
+.admin-bulk-delete-btn:hover {
+  background: #8b1a00;
+}
+
+.admin-bulk-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.admin-bulk-confirm > span {
+  font-size: 0.8rem;
+  color: var(--terra-dark);
+  font-weight: 500;
+}
+
+.admin-bulk-confirm .btn-delete-confirm,
+.admin-bulk-confirm .btn-cancel {
+  width: 100%;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.82rem;
+}
+
+.admin-post-checkbox {
+  accent-color: var(--earth);
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  cursor: pointer;
+  align-self: center;
+}
+
+.admin-post-item--checked {
+  background: rgba(183,67,0,0.06) !important;
+  border-color: var(--terra) !important;
+}
+
 .admin-posts-list {
   display: flex;
   flex-direction: column;
