@@ -3,6 +3,25 @@ import { posts as initialPosts } from '../data';
 import type { Post } from '../types';
 import './Admin.css';
 
+function renderInline(text: string): React.ReactNode {
+  const regex = /(\*\*[^*]+\*\*|\*[^*]+\*)/g;
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
+    const m = match[0];
+    parts.push(
+      m.startsWith('**')
+        ? <strong key={match.index}>{m.slice(2, -2)}</strong>
+        : <em key={match.index}>{m.slice(1, -1)}</em>
+    );
+    lastIndex = match.index + m.length;
+  }
+  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+  return <>{parts}</>;
+}
+
 function generateSlug(titulo: string): string {
   return titulo
     .toLowerCase()
@@ -272,7 +291,7 @@ export default function Admin() {
           <form onSubmit={handleSave} className="admin-form">
             <div className="admin-form__row">
               <div className="admin-form__field admin-form__field--grow">
-                <label htmlFor="admin-titulo">Título</label>
+                <label htmlFor="admin-titulo">Título <span className="admin-required" aria-hidden="true">*</span></label>
                 <input
                   id="admin-titulo"
                   type="text"
@@ -283,7 +302,7 @@ export default function Admin() {
                 />
               </div>
               <div className="admin-form__field">
-                <label htmlFor="admin-fecha">Fecha</label>
+                <label htmlFor="admin-fecha">Fecha <span className="admin-required" aria-hidden="true">*</span></label>
                 <input
                   id="admin-fecha"
                   type="date"
@@ -296,7 +315,7 @@ export default function Admin() {
 
             <div className="admin-form__row">
               <div className="admin-form__field admin-form__field--grow">
-                <label htmlFor="admin-slug">Slug (URL)</label>
+                <label htmlFor="admin-slug">Slug (URL) <span className="admin-required" aria-hidden="true">*</span></label>
                 <input
                   id="admin-slug"
                   type="text"
@@ -319,7 +338,7 @@ export default function Admin() {
             </div>
 
             <div className="admin-form__field">
-              <label htmlFor="admin-extracto">Extracto</label>
+              <label htmlFor="admin-extracto">Extracto <span className="admin-required" aria-hidden="true">*</span></label>
               <textarea
                 id="admin-extracto"
                 value={form.extracto}
@@ -331,7 +350,7 @@ export default function Admin() {
             </div>
 
             <div className="admin-form__field">
-              <label htmlFor="admin-contenido">Contenido</label>
+              <label htmlFor="admin-contenido">Contenido <span className="admin-required" aria-hidden="true">*</span></label>
               <p className="admin-form__hint">Separa los párrafos con una línea en blanco. Selecciona texto para aplicar formato.</p>
               <div className="admin-toolbar">
                 <button type="button" onClick={() => wrapSelection('**', '**')} title="Negrita">
@@ -350,6 +369,16 @@ export default function Admin() {
                 placeholder="Escribe el contenido del artículo aquí..."
                 required
               />
+              {form.contenido && (
+                <div className="admin-preview">
+                  <span className="admin-preview__label">Previsualización</span>
+                  <div className="admin-preview__content">
+                    {form.contenido.split('\n\n').map((parrafo, i) => (
+                      <p key={i}>{renderInline(parrafo)}</p>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="admin-form__actions">
