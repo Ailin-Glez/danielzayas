@@ -127,6 +127,15 @@
   line-height: 1.85;
 }
 
+.reseña.libro-sinopsis {
+  font-style: normal;
+}
+
+.reseña.libro-sinopsis cite {
+  font-size: 1.05rem;
+  text-align: right;
+}
+
 
 .libro-editorial {
   font-family: var(--font-accent);
