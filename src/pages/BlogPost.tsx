@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { posts } from '../data';
+import { calcularLectura } from '../utils/lectura';
 import './BlogPost.css';
 
 export default function BlogPost() {
@@ -26,7 +27,7 @@ export default function BlogPost() {
           <Link to="/blog" className="blogpost-back">← Partos bajo tierra</Link>
           <div className="blogpost-meta">
             <span className="post-card__cat">{post.categoria}</span>
-            <span className="post-card__time">{post.tiempoLectura}</span>
+            <span className="post-card__time">{calcularLectura(post.contenido)}</span>
           </div>
           <h1>{post.titulo}</h1>
           <time>

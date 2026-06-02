@@ -2,24 +2,28 @@
   min-height: 100vh;
 }
 
+.page-blogpost .section {
+  padding-top: 1.5rem;
+}
+
 .blogpost-hero {
-  padding: 10rem 0 4rem;
-  background: var(--earth-deep);
+  padding: 7rem 0 4rem;
+  background: #1e4010;
 }
 
 .blogpost-back {
   display: inline-block;
   font-family: var(--font-accent);
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
-  color: rgba(250,244,232,0.5);
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  color: rgba(250,244,232,0.75);
   text-decoration: none;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   transition: color var(--transition);
 }
 
 .blogpost-back:hover {
-  color: var(--ochre);
+  color: #7AB24E;
 }
 
 .blogpost-meta {
@@ -27,6 +31,18 @@
   gap: 0.75rem;
   align-items: center;
   margin-bottom: 1rem;
+}
+
+.blogpost-meta .post-card__cat {
+  background: rgba(122,178,78,0.25);
+  color: #b8e89a;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+}
+
+.blogpost-meta .post-card__time {
+  color: rgba(250,244,232,0.6);
+  font-size: 0.85rem;
 }
 
 .blogpost-hero h1 {
@@ -39,8 +55,8 @@
 
 .blogpost-hero time {
   font-family: var(--font-accent);
-  font-size: 0.85rem;
-  color: rgba(250,244,232,0.45);
+  font-size: 1rem;
+  color: rgba(250,244,232,0.7);
 }
 
 /* ── LAYOUT ──────────────────────────────────────────────── */
@@ -49,7 +65,7 @@
   grid-template-columns: 1fr 280px;
   gap: 5rem;
   align-items: start;
-  padding-top: 4rem;
+  padding-top: 1.5rem;
   padding-bottom: 5rem;
 }
 
@@ -68,7 +84,7 @@
   line-height: 0.85;
   float: left;
   margin-right: 0.1em;
-  color: var(--ochre);
+  color: #3a6620;
 }
 
 /* ── SIDEBAR ─────────────────────────────────────────────── */
@@ -90,14 +106,14 @@
   gap: 0.3rem;
   text-decoration: none;
   padding: 1rem 1.25rem;
-  background: var(--cream-dark);
+  background: #eef7e8;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(200,135,58,0.12);
+  border: 1px solid rgba(90,138,60,0.18);
   transition: all var(--transition);
 }
 
 .sidebar-post:hover {
-  border-color: var(--ochre);
+  border-color: var(--green-sprout);
   transform: translateX(4px);
 }
 
@@ -106,7 +122,7 @@
   font-size: 0.7rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--ochre);
+  color: #3a6620;
 }
 
 .sidebar-post strong {

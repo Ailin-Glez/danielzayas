@@ -6,7 +6,6 @@ const post: Post = {
   titulo: 'Los países de la noche, de Leymen Pérez',
   fecha: '2023-11-20',
   categoria: 'Reseña',
-  tiempoLectura: '4 min',
   extracto:
     'En este libro de Leymen, hay moscas que no respetan los párpados de los muertos, y saltan de un poema a otro. Un hombre que agoniza coloca su cabeza dentro del poema. La muerte es la gran metáfora, nos dice Leymen, pero esta sentencia es una bomba.',
   contenido: `Reseña del libro: Los países de la noche, de Leymen Pérez.

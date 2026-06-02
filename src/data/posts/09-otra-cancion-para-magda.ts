@@ -3,10 +3,9 @@ import type { Post } from '../../types';
 const post: Post = {
   id: 9,
   slug: 'otra-cancion-para-magda',
-  titulo: 'Otra canción para Magda, de Ailín Dosne',
+  titulo: 'Otra canción para Magda, de Ailín González',
   fecha: '2021-05-20',
   categoria: 'Presentación',
-  tiempoLectura: '5 min',
   extracto:
     '—Son cuentos cachondos, mi hermano, solo eso. —No jodas Daniel, tiene que haber algo más. —Te digo que no. Son solo eso. Mira la cubierta. La muchacha desnuda con un tatuaje en la nalga.',
   contenido: `Diálogo de Randy y Daniel en una librería, mientras Randy sostiene un ejemplar de Otra canción para Magda entre las manos.

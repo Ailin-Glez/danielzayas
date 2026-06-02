@@ -6,7 +6,6 @@ const post: Post = {
   titulo: 'Temida Polisemia, de Delfín Prats',
   fecha: '2021-11-03',
   categoria: 'Presentación',
-  tiempoLectura: '3 min',
   extracto:
     'Fue por el año 2011, cuando cursaba el Centro Onelio Jorge Cardoso. A uno de esos amigos que parecen polillas le comenté sobre Delfín Prats. Al siguiente encuentro tuve en mis manos los volúmenes Aguas y El esplendor y el caos. Para festejar el ascenso de Ícaro lo robé después.',
   contenido: `PRESENTACIÓN DE TEMIDA POLISEMIA

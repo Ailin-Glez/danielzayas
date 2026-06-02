@@ -6,7 +6,6 @@ const post: Post = {
   titulo: 'Las viles maniobras, de Nelson Simón',
   fecha: '2023-03-22',
   categoria: 'Presentación',
-  tiempoLectura: '4 min',
   extracto:
     'Yo solo soy una sombra, un cuerpo hinchado que ayer bajó la calle escupiendo por no matar. No sé por qué fue justo esa la línea que eligieron mis ojos, pero bastó para quedar prendado con la poesía de Nelson Simón.',
   contenido: `LAS VILES MANIOBRAS

@@ -33,6 +33,7 @@
   display: grid;
   grid-template-columns: 190px 1fr;
   gap: 2rem;
+  margin-top: 1.5rem;
 }
 
 .libro-detalle__cover {

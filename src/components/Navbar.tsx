@@ -21,6 +21,8 @@ export default function Navbar() {
     ? 'libros'
     : 'home';
 
+  const forceScrolled = location.pathname.startsWith('/blog/');
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll);
@@ -30,7 +32,7 @@ export default function Navbar() {
   useEffect(() => setOpen(false), [location]);
 
   return (
-    <header className={`navbar navbar--${pageTheme} ${scrolled ? 'navbar--scrolled' : ''}`}>
+    <header className={`navbar navbar--${pageTheme} ${scrolled || forceScrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner">
         <Link to="/" className="navbar__brand">
           <span className="navbar__brand-name">Daniel Zayas</span>

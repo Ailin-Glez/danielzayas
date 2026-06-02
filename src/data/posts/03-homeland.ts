@@ -6,7 +6,6 @@ const post: Post = {
   titulo: 'Homeland, de Ariel',
   fecha: '2023-06-14',
   categoria: 'Presentación',
-  tiempoLectura: '4 min',
   extracto:
     'Homeland es un original recuento de nuestra historia con el cual Ariel alcanza la madurez. Si bien Homeland funciona como un caleidoscopio con el cual se puede asistir a momentos fundacionales y decisivos dentro de nuestra Historia, es un retrato interior, tuyo, mío, de Ariel, de todos.',
   contenido: `Homeland es un original recuento de nuestra historia con el cual Ariel alcanza la madurez. Como en Harverster, su anterior libro, Homeland se divide en progresiones, 4 progresiones que muestran, cual huracán, cómo se debilitan o aumentan las ráfagas, cómo se debilitan o aumentan las relaciones entre los habitantes de esa gran casa que es el país. En las primeras progresiones: Huracán y Manigua, el sujeto lírico parece un cronista, un cronista tremendamente irónico, empeñado en reflejar algo más allá de la frase manida y el heroísmo.

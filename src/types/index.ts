@@ -28,6 +28,5 @@ export interface Post {
   fecha: string;
   extracto: string;
   categoria: string;
-  tiempoLectura: string;
   contenido: string;
 }

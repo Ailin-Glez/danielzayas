@@ -1,86 +1,72 @@
 .footer {
-  background: var(--earth-deep);
-  color: var(--cream-dark);
-  padding-top: 5rem;
+  background: #1e3d0e;
+  padding: 1.25rem 0;
 }
 
 .footer__inner {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 3rem;
-  padding-bottom: 4rem;
-  border-bottom: 1px solid rgba(250,244,232,0.1);
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  gap: 3px;
 }
 
 .footer__name {
   font-family: var(--font-display);
-  font-size: 1.8rem;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--cream);
-  display: block;
-  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
 }
 
-.footer__tagline {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: rgba(250,244,232,0.6);
-  line-height: 1.7;
-}
-
-.footer__tagline em {
-  color: var(--yellow-warm);
-}
-
-.footer__nav,
-.footer__contact {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.footer__nav .section-label,
-.footer__contact .section-label {
-  color: var(--ochre);
-  margin-bottom: 0.25rem;
-}
-
-.footer__nav a,
-.footer__contact a {
+.footer__sub {
   font-family: var(--font-accent);
-  font-size: 1rem;
-  color: rgba(250,244,232,0.7);
-  text-decoration: none;
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(250,244,232,0.45);
+}
+
+.footer__copy {
+  font-family: var(--font-accent);
+  font-size: 0.92rem;
+  color: rgba(250,244,232,0.5);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.footer__links {
+  display: flex;
+  gap: 1.1rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.footer__links a {
+  color: rgba(250,244,232,0.5);
+  display: flex;
+  align-items: center;
   transition: color var(--transition);
 }
 
-.footer__nav a:hover,
-.footer__contact a:hover {
-  color: var(--yellow-warm);
+.footer__links a:hover {
+  color: var(--cream);
 }
 
-.footer__bottom {
-  padding: 1.25rem 0;
-}
-
-.footer__bottom .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.footer__bottom span {
-  font-family: var(--font-accent);
-  font-size: 0.8rem;
-  color: rgba(250,244,232,0.4);
-}
-
-.footer__seed {
-  font-size: 1rem;
-}
-
-@media (max-width: 720px) {
+@media (max-width: 600px) {
   .footer__inner {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .footer__copy {
+    grid-column: 1 / -1;
+    order: 3;
   }
 }

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { libros, posts } from '../data';
+import { calcularLectura } from '../utils/lectura';
 import './Home.css';
 
 export default function Home() {
@@ -29,7 +30,7 @@ export default function Home() {
             </div>
           </div>
           <div className="hero__illustration">
-            <div className="hero__sprout" aria-hidden>🌱</div>
+            <img src="/brote.png" alt="" className="hero__sprout" aria-hidden />
             <div className="hero__quote">
               <blockquote>
                 "Escribir es un acto de desobediencia."
@@ -95,49 +96,25 @@ export default function Home() {
           </div>
           <div className="blog-preview__grid">
             {recentPosts.map(post => (
-              <article key={post.id} className="post-card">
+              <Link key={post.id} to={`/blog/${post.slug}`} className="post-card"
+                data-cat={post.categoria === 'Reseña' ? 'resena' : post.categoria === 'Presentación' ? 'presentacion' : 'textos'}>
                 <div className="post-card__meta">
                   <span className="post-card__cat">{post.categoria}</span>
-                  <span className="post-card__time">{post.tiempoLectura}</span>
+                  <span className="post-card__time">{calcularLectura(post.contenido)}</span>
                 </div>
                 <h3 className="post-card__title">{post.titulo}</h3>
                 <p className="post-card__excerpt">{post.extracto}</p>
-                <Link to={`/blog/${post.slug}`} className="post-card__link">
-                  Leer entrada →
-                </Link>
                 <time className="post-card__date">
                   {new Date(post.fecha).toLocaleDateString('es-MX', {
                     year: 'numeric', month: 'long', day: 'numeric'
                   })}
                 </time>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── NEWSLETTER CTA ──────────────────────────── */}
-      <section className="section newsletter-cta">
-        <div className="container newsletter-cta__inner">
-          <div className="newsletter-cta__sprout" aria-hidden>🌱</div>
-          <span className="section-label">Newsletter</span>
-          <h2>Recibe palabras en tu correo</h2>
-          <p>
-            Noticias sobre libros, textos inéditos, recomendaciones de lectura
-            y reflexiones sobre el proceso de escribir. Sin spam. Solo escritura.
-          </p>
-          <form className="newsletter-cta__form" onSubmit={e => e.preventDefault()}>
-            <input
-              type="email"
-              placeholder="tu@correo.com"
-              className="newsletter-cta__input"
-              required
-            />
-            <button type="submit" className="btn btn-primary">Suscribirme</button>
-          </form>
-          <small>Próximamente. Por ahora puedes escribirme directamente.</small>
-        </div>
-      </section>
 
     </main>
   );

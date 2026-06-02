@@ -6,7 +6,6 @@ const post: Post = {
   titulo: 'Flores de hierro sobre el pecho de un hombre, de Luis Yuseff',
   fecha: '2022-08-30',
   categoria: 'Presentación',
-  tiempoLectura: '5 min',
   extracto:
     'La poeta Carmen Hernández Peña escribió que la poesía es como cabalgar un tigre, uno no puede apearse, a menos que muera la cabalgadura, o el que cabalga. Todavía Luis cabalga un tigre. Estoy seguro.',
   contenido: `PRESENTACIÓN DEL LIBRO:
