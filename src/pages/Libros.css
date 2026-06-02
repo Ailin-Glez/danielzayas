@@ -1,14 +1,20 @@
 /* ── LAYOUT PRINCIPAL ───────────────────────────────────── */
 .libros-vista {
   padding-top: 7rem;
-  padding-bottom: 4rem;
+  padding-bottom: 1.5rem;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   background: linear-gradient(150deg, var(--cream) 55%, rgba(90,138,60,0.09) 100%);
 }
 
 .libros-vista__container {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  min-height: 0;
 }
 
 .libros-vista__header {
@@ -33,7 +39,8 @@
   display: grid;
   grid-template-columns: 190px 1fr;
   gap: 2rem;
-  margin-top: 1.5rem;
+  flex: 1;
+  min-height: 0;
 }
 
 .libro-detalle__cover {
@@ -66,6 +73,7 @@
 .libro-detalle__body {
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .libro-detalle__body > * {
@@ -120,11 +128,18 @@
 }
 
 .libro-detalle__scroll {
+  flex: 1;
+  overflow-y: auto;
   margin: 0.75rem 0 0;
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 2rem;
-  align-items: start;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(90,138,60,0.3) transparent;
+}
+
+.libro-detalle__scroll::-webkit-scrollbar { width: 3px; }
+.libro-detalle__scroll::-webkit-scrollbar-thumb {
+  background: rgba(90,138,60,0.35);
+  border-radius: 2px;
 }
 
 .libro-detalle__sinopsis {
@@ -376,6 +391,7 @@
   }
 
   .libros-vista__container {
+    flex: none;
     gap: 1.5rem;
   }
 
@@ -389,8 +405,19 @@
   }
 
   .libro-detalle__scroll {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+    overflow-y: visible;
+    max-height: none;
+  }
+
+  .libro-detalle__tags {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .libro-detalle__tags .compra-links {
+    order: -1;
+    width: 100%;
   }
 }
 

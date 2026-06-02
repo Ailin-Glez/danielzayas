@@ -58,8 +58,10 @@ export default function Libros() {
                   {selected.anio && <span className="libro-anio">{selected.anio}</span>}
                 </div>
                 <div className="compra-links">
-                  <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-primary">Comprar</a>
-                  <a href={selected.compra.fragmento} target="_blank" rel="noreferrer" className="btn btn-outline">Leer fragmento</a>
+                  {selected.compra.amazon !== '#' && (
+                    <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-primary">Comprar</a>
+                  )}
+                  <a href={selected.compra.fragmento !== '#' ? selected.compra.fragmento : undefined} target="_blank" rel="noreferrer" className="btn btn-outline">Leer fragmento</a>
                 </div>
               </div>
               <h2>{selected.titulo}</h2>
