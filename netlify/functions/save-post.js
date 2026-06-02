@@ -63,10 +63,11 @@ exports.handler = async (event) => {
   const sha = fileData.sha;
   let updatedPosts;
   let commitMessage;
+  let newId;
 
   if (action === 'create') {
     const maxId = currentPosts.length > 0 ? Math.max(...currentPosts.map(p => p.id)) : 0;
-    const newId = maxId + 1;
+    newId = maxId + 1;
     const newPost = { ...post, id: newId };
     updatedPosts = [newPost, ...currentPosts];
     commitMessage = `Nuevo artículo: ${post.titulo}`;
