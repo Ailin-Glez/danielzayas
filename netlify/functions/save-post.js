@@ -66,7 +66,8 @@ exports.handler = async (event) => {
 
   if (action === 'create') {
     const maxId = currentPosts.length > 0 ? Math.max(...currentPosts.map(p => p.id)) : 0;
-    const newPost = { ...post, id: maxId + 1 };
+    const newId = maxId + 1;
+    const newPost = { ...post, id: newId };
     updatedPosts = [newPost, ...currentPosts];
     commitMessage = `Nuevo artículo: ${post.titulo}`;
   } else if (action === 'update') {
@@ -98,5 +99,6 @@ exports.handler = async (event) => {
     return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: err.message || 'Error al guardar en GitHub' }) };
   }
 
-  return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ success: true }) };
+  const responseBody = action === 'create' ? { success: true, id: newId } : { success: true };
+  return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify(responseBody) };
 };

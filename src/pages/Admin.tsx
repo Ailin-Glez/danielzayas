@@ -171,9 +171,9 @@ export default function Admin() {
       if (res.ok) {
         setStatus('success');
         if (action === 'create') {
-          const tempPost: Post = { ...form, id: Date.now() };
-          setPosts(prev => [tempPost, ...prev]);
-          setSelectedId(null);
+          const newPost: Post = { ...form, id: data.id ?? Date.now() };
+          setPosts(prev => [newPost, ...prev]);
+          setSelectedId(data.id ?? null);
           setForm(emptyForm());
           setSlugEdited(false);
         } else {
