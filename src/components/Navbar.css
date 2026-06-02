@@ -91,6 +91,16 @@
 .navbar__cta {
   padding: 0.55rem 1.25rem;
   font-size: 0.85rem;
+  background: var(--green-sprout);
+  color: var(--cream);
+  box-shadow: 0 2px 12px rgba(90,138,60,0.35);
+}
+
+.navbar__cta:hover {
+  background: #3d6e28;
+  color: var(--cream);
+  box-shadow: 0 4px 18px rgba(90,138,60,0.45);
+  transform: translateY(-1px);
 }
 
 /* ── Navbar sobre fondo oscuro (ej. hero del blog) ── */

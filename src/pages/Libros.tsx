@@ -11,55 +11,8 @@ export default function Libros() {
         <div className="container libros-vista__container">
 
           <header className="libros-vista__header">
-            <div>
-              <span className="section-label">Obra publicada</span>
-              <h1 className="libros-vista__title">Libros</h1>
-            </div>
-            <div className="compra-links">
-              <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-primary btn--sm">Comprar</a>
-              <a href={selected.compra.fragmento} target="_blank" rel="noreferrer" className="btn btn-outline btn--sm">Leer fragmento</a>
-            </div>
+            <h1 className="libros-vista__title">Libros</h1>
           </header>
-
-          <div className="libro-detalle" key={selected.id} aria-live="polite">
-            <div className="libro-detalle__cover">
-              {selected.portada ? (
-                <img
-                  src={selected.portada}
-                  alt={`Portada de ${selected.titulo}`}
-                  className="libro-portada-img"
-                />
-              ) : (
-                <div className="book-placeholder book-placeholder--lg" style={{ '--book-color': selected.color }}>
-                  <span>{selected.titulo}</span>
-                  <small>{selected.anio}</small>
-                </div>
-              )}
-            </div>
-
-            <div className="libro-detalle__body">
-              <div className="libro-detalle__tags">
-                <span className="tag">{selected.genero}</span>
-                {selected.editorial && <span className="tag">{selected.editorial}</span>}
-                {selected.anio && <span className="tag">{selected.anio}</span>}
-              </div>
-              <h2>{selected.titulo}</h2>
-              <div className="divider" />
-              <div className="libro-detalle__scroll">
-                <p className="libro-detalle__sinopsis">{selected.sinopsis}</p>
-                {selected.reseñas.length > 0 && (
-                  <div className="libro-detalle__reseñas">
-                    {selected.reseñas.map((r, i) => (
-                      <blockquote key={i} className="reseña">
-                        "{r.texto}"
-                        <cite>— {r.fuente}</cite>
-                      </blockquote>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
 
           <div className="libros-carousel">
             {libros.map(libro => (
@@ -79,6 +32,52 @@ export default function Libros() {
                 <span className="carousel-thumb__title">{libro.titulo}</span>
               </button>
             ))}
+          </div>
+
+          <div className="libro-detalle" key={selected.id} aria-live="polite">
+            <div className="libro-detalle__cover">
+              {selected.portada ? (
+                <img
+                  src={selected.portada}
+                  alt={`Portada de ${selected.titulo}`}
+                  className="libro-portada-img"
+                />
+              ) : (
+                <div className="book-placeholder book-placeholder--lg" style={{ '--book-color': selected.color }}>
+                  <span>{selected.titulo}</span>
+                  <small>{selected.anio}</small>
+                </div>
+              )}
+            </div>
+
+            <div className="libro-detalle__body">
+              <div className="libro-detalle__tags">
+                <div className="libro-detalle__badges">
+                  <span className="tag" data-genero={selected.genero}>{selected.genero}</span>
+                  {selected.editorial && <span className="libro-editorial">{selected.editorial}</span>}
+                  {selected.anio && <span className="libro-anio">{selected.anio}</span>}
+                </div>
+                <div className="compra-links">
+                  <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-primary">Comprar</a>
+                  <a href={selected.compra.fragmento} target="_blank" rel="noreferrer" className="btn btn-outline">Leer fragmento</a>
+                </div>
+              </div>
+              <h2>{selected.titulo}</h2>
+              <div className="divider" />
+              <div className="libro-detalle__scroll">
+                <p className="libro-detalle__sinopsis">{selected.sinopsis}</p>
+                {selected.reseñas.length > 0 && (
+                  <div className="libro-detalle__reseñas">
+                    {selected.reseñas.map((r, i) => (
+                      <blockquote key={i} className="reseña">
+                        "{r.texto}"
+                        <cite>— {r.fuente}</cite>
+                      </blockquote>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
         </div>

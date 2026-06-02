@@ -42,7 +42,7 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
-          <Link to="/newsletter" className="btn btn-ochre navbar__cta">
+          <Link to="/newsletter" className="btn navbar__cta">
             Newsletter
           </Link>
         </nav>

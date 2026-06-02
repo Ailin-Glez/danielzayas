@@ -46,10 +46,18 @@ export default function Home() {
       <section className="section featured-book">
         <div className="container featured-book__inner">
           <div className="featured-book__cover">
-            <div className="book-placeholder" style={{ '--book-color': ultimoLibro.color }}>
-              <span>{ultimoLibro.titulo}</span>
-              <small>{ultimoLibro.anio}</small>
-            </div>
+            {ultimoLibro.portada ? (
+              <img
+                src={ultimoLibro.portada}
+                alt={`Portada de ${ultimoLibro.titulo}`}
+                className="featured-book__img"
+              />
+            ) : (
+              <div className="book-placeholder" style={{ '--book-color': ultimoLibro.color }}>
+                <span>{ultimoLibro.titulo}</span>
+                <small>{ultimoLibro.anio}</small>
+              </div>
+            )}
           </div>
           <div className="featured-book__info">
             <span className="section-label">Último libro</span>

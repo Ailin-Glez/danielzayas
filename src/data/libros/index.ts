@@ -7,11 +7,11 @@ import edadInsolencia  from './06-la-edad-de-la-insolencia';
 import arteBonsai      from './07-el-arte-de-construir-un-bonsai';
 
 export const libros = [
+  arteBonsai,
   gaviotas,
-  viendoCaer,
-  sombraAlmendros,
+  edadInsolencia,
   amorGatos,
   partosTierra,
-  edadInsolencia,
-  arteBonsai,
+  sombraAlmendros,
+  viendoCaer,
 ];
