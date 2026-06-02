@@ -9,10 +9,26 @@
 }
 
 .navbar--scrolled {
-  background: rgba(250, 244, 232, 0.96);
   backdrop-filter: blur(12px);
   padding: 0.85rem 0;
-  box-shadow: 0 1px 0 rgba(107,58,31,0.12);
+}
+
+/* Home — beige cálido */
+.navbar--home.navbar--scrolled {
+  background: rgba(248, 238, 218, 0.97);
+  box-shadow: 0 1px 0 rgba(107,58,31,0.1);
+}
+
+/* Libros — marrón tierra suave */
+.navbar--libros.navbar--scrolled {
+  background: rgba(232, 210, 182, 0.97);
+  box-shadow: 0 1px 0 rgba(107,58,31,0.15);
+}
+
+/* Blog — verde claro */
+.navbar--blog.navbar--scrolled {
+  background: rgba(210, 232, 195, 0.97);
+  box-shadow: 0 1px 0 rgba(58,102,32,0.12);
 }
 
 .navbar__inner {

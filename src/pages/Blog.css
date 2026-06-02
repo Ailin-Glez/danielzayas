@@ -1,35 +1,8 @@
 .page-hero--blog {
   padding: 9rem 0 4rem;
-  background: linear-gradient(110deg, #1a0800 0%, #2e1200 55%, #3d1a00 100%);
+  background: linear-gradient(110deg, #ffffff 0%, #f0f9ea 45%, var(--cream) 100%);
   position: relative;
   overflow: hidden;
-}
-
-/* Tapa cualquier blanco del cielo de la ilustración que filtre por arriba */
-.page-hero--blog::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 54%;
-  height: 65%;
-  background: linear-gradient(to bottom, #2e1200 0%, transparent 100%);
-  z-index: 1;
-  pointer-events: none;
-}
-
-.page-hero--blog .blog-hero-ilustracion {
-  position: absolute;
-  right: -2%;
-  top: 0;
-  height: 100%;
-  width: 50%;
-  object-fit: cover;
-  object-position: center bottom;  /* ancla los cuerpos subterráneos, el cielo queda fuera */
-  opacity: 0.65;
-  mask-image: linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 85%);
-  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 85%);
-  pointer-events: none;
 }
 
 .page-hero--blog .container {
@@ -37,12 +10,60 @@
   z-index: 2;
 }
 
+/* ── SECCIÓN CON ILUSTRACIÓN ────────────────────────────── */
+.blog-section__inner {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.blog-seccion-ilustracion {
+  width: 100%;
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 32px rgba(58,21,0,0.12);
+  display: block;
+  position: sticky;
+  top: 7rem;
+  align-self: start;
+}
+
+.blog-section__content {
+  min-width: 0;
+  align-self: start;
+}
+
+.blog-filtros {
+  position: sticky;
+  top: 7rem;
+  z-index: 10;
+  background: var(--cream);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+  .blog-section__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-seccion-ilustracion {
+    position: static;
+    max-width: 320px;
+    margin: 0 auto 2rem;
+  }
+
+  .blog-filtros {
+    position: static;
+  }
+}
+
 .page-hero--blog .section-label {
-  color: var(--yellow-warm);
+  color: var(--green-sprout);
 }
 
 .page-hero--blog h1 {
-  color: var(--cream);
+  color: var(--earth-deep);
   font-size: clamp(3rem, 8vw, 6rem);
   line-height: 0.95;
   margin: 0.5rem 0 1rem;
@@ -50,11 +71,11 @@
 
 .page-hero--blog h1 em {
   font-style: italic;
-  color: var(--ochre);
+  color: var(--green-sprout);
 }
 
 .page-hero--blog p {
-  color: rgba(250,244,232,0.7);
+  color: var(--ink-soft);
   max-width: 520px;
   font-size: 1.05rem;
 }
@@ -119,21 +140,22 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  background: linear-gradient(135deg, var(--earth-deep) 0%, var(--earth) 100%);
+  background: linear-gradient(135deg, #e8f5e0 0%, #f2f9ee 100%);
+  border: 1px solid rgba(90,138,60,0.2);
 }
 
 .blog-card--featured .blog-card__meta { grid-column: 1 / -1; }
 .blog-card--featured .blog-card__title {
-  color: var(--cream);
+  color: var(--earth-deep);
   font-size: clamp(1.5rem, 3vw, 2rem);
 }
 .blog-card--featured .blog-card__excerpt {
-  color: rgba(250,244,232,0.7);
+  color: var(--ink-soft);
 }
 .blog-card--featured .blog-card__footer { align-self: end; }
 .blog-card--featured .post-card__cat {
-  background: rgba(255,219,151,0.2);
-  color: var(--yellow-warm);
+  background: rgba(90,138,60,0.15);
+  color: var(--green-sprout);
 }
 
 .blog-card__meta {
