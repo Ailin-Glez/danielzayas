@@ -67,6 +67,7 @@ export default function Admin() {
   const [bulkError, setBulkError] = useState('');
   const [mostrarArchivados, setMostrarArchivados] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const [rawImageSrc, setRawImageSrc] = useState<string | null>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
@@ -135,9 +136,11 @@ export default function Admin() {
     setSlugEdited(true);
     setStatus('idle');
     setShowDeleteConfirm(false);
+    setIsEditing(true);
+    setShowPreview(false);
   };
 
-  const handleNewPost = () => {
+  const resetEditor = (showForm = false) => {
     setSelectedId(null);
     setForm(emptyForm());
     editor?.commands.setContent('<p></p>', { emitUpdate: false });
@@ -147,7 +150,11 @@ export default function Admin() {
     setSlugEdited(false);
     setStatus('idle');
     setShowDeleteConfirm(false);
+    setIsEditing(showForm);
+    setShowPreview(false);
   };
+
+  const handleNewPost = () => resetEditor(true);
 
   const toggleSelectMode = () => {
     setSelectMode(m => !m);
@@ -176,7 +183,7 @@ export default function Admin() {
       if (res.ok) {
         const deleted = new Set(checkedIds);
         setPosts(prev => prev.filter(p => !deleted.has(p.id)));
-        if (selectedId !== null && deleted.has(selectedId)) handleNewPost();
+        if (selectedId !== null && deleted.has(selectedId)) resetEditor();
         setCheckedIds(new Set());
         setShowBulkConfirm(false);
         setSelectMode(false);
@@ -261,7 +268,7 @@ export default function Admin() {
 
       if (res.ok) {
         setPosts(prev => prev.filter(p => p.id !== selectedId));
-        handleNewPost();
+        resetEditor();
         setStatus('success');
       } else {
         const data = await res.json();
@@ -466,7 +473,7 @@ export default function Admin() {
 
         {/* ── Editor / empty state ── */}
         <section className="admin-form-section">
-          {selectedId === null && !form.titulo ? (
+          {!isEditing ? (
             <div className="admin-empty-state">
               <div className="admin-empty-state__icon">✦</div>
               <p className="admin-empty-state__title">Selecciona un artículo para editarlo</p>
