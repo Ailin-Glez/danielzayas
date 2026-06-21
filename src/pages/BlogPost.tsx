@@ -6,7 +6,7 @@ import './BlogPost.css';
 
 export default function BlogPost() {
   const { slug } = useParams();
-  const post = posts.find(p => p.slug === slug);
+  const post = posts.find(p => p.slug === slug && !p.archivado);
 
   if (!post) {
     return (
@@ -19,7 +19,7 @@ export default function BlogPost() {
     );
   }
 
-  const otrosPosts = posts.filter(p => p.slug !== slug).slice(0, 3);
+  const otrosPosts = posts.filter(p => p.slug !== slug && !p.archivado).slice(0, 3);
 
   return (
     <main className="page-blogpost">

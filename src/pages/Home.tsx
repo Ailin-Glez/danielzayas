@@ -5,7 +5,7 @@ import './Home.css';
 
 export default function Home() {
   const ultimoLibro = libros[0];
-  const recentPosts = posts.slice(0, 3);
+  const recentPosts = posts.filter(p => !p.archivado).slice(0, 3);
 
   return (
     <main className="home">
