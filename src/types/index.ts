@@ -31,5 +31,6 @@ export interface Post {
   extracto: string;
   categoria: string;
   contenido: string;
+  imagen?: string;
   archivado?: boolean;
 }

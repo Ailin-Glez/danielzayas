@@ -4,6 +4,8 @@ import { calcularLectura } from '../utils/lectura';
 import { renderInline } from '../utils/renderInline';
 import './BlogPost.css';
 
+const isHtml = (s: string) => /<\/?[a-z][\s\S]*>/i.test(s);
+
 export default function BlogPost() {
   const { slug } = useParams();
   const post = posts.find(p => p.slug === slug && !p.archivado);
@@ -42,9 +44,17 @@ export default function BlogPost() {
       <section className="section">
         <div className="container blogpost-layout">
           <article className="blogpost-contenido">
-            {post.contenido.split('\n\n').map((parrafo, i) => (
-              <p key={i}>{renderInline(parrafo)}</p>
-            ))}
+            {post.imagen && (
+              <figure className="blogpost-figura">
+                <img src={post.imagen} alt={post.titulo} />
+              </figure>
+            )}
+            {isHtml(post.contenido)
+              ? <div dangerouslySetInnerHTML={{ __html: post.contenido }} />
+              : post.contenido.split('\n\n').map((parrafo, i) => (
+                  <p key={i}>{renderInline(parrafo)}</p>
+                ))
+            }
           </article>
 
           {otrosPosts.length > 0 && (

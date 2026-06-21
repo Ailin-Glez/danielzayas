@@ -69,8 +69,26 @@
   padding-bottom: 5rem;
 }
 
+/* ── IMAGEN DESTACADA ────────────────────────────────────── */
+.blogpost-figura {
+  margin: 0 0 2.5rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  max-width: 68ch;
+  border: 1px solid rgba(107,58,31,0.1);
+  box-shadow: 0 4px 20px rgba(58,21,0,0.08);
+}
+
+.blogpost-figura img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
 /* ── CONTENIDO ───────────────────────────────────────────── */
-.blogpost-contenido p {
+.blogpost-contenido p,
+.blogpost-contenido div > p {
   font-size: 1.1rem;
   line-height: 1.85;
   color: var(--ink);
@@ -78,13 +96,51 @@
   max-width: 68ch;
 }
 
-.blogpost-contenido p:first-child::first-letter {
+.blogpost-contenido p:first-child::first-letter,
+.blogpost-contenido div > p:first-child::first-letter {
   font-family: var(--font-display);
   font-size: 3.5rem;
   line-height: 0.85;
   float: left;
   margin-right: 0.1em;
   color: #3a6620;
+}
+
+.blogpost-contenido h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--earth-deep);
+  margin: 2rem 0 0.75rem;
+}
+
+.blogpost-contenido h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--earth-deep);
+  margin: 1.5rem 0 0.5rem;
+}
+
+.blogpost-contenido ul,
+.blogpost-contenido ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  max-width: 68ch;
+}
+
+.blogpost-contenido li {
+  font-size: 1.1rem;
+  line-height: 1.85;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+}
+
+.blogpost-contenido blockquote {
+  border-left: 3px solid var(--ochre);
+  padding: 0.5rem 1.25rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--ink-soft);
+  max-width: 68ch;
 }
 
 /* ── SIDEBAR ─────────────────────────────────────────────── */

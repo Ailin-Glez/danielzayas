@@ -1,26 +1,13 @@
-import React, { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import TextAlign from '@tiptap/extension-text-align';
+import Underline from '@tiptap/extension-underline';
+import ImageCropper from '../components/ImageCropper';
 import { posts as initialPosts } from '../data';
 import type { Post } from '../types';
 import './Admin.css';
 
-function renderInline(text: string): React.ReactNode {
-  const regex = /(\*\*[^*]+\*\*|\*[^*]+\*)/g;
-  const parts: React.ReactNode[] = [];
-  let lastIndex = 0;
-  let match: RegExpExecArray | null;
-  while ((match = regex.exec(text)) !== null) {
-    if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
-    const m = match[0];
-    parts.push(
-      m.startsWith('**')
-        ? <strong key={match.index}>{m.slice(2, -2)}</strong>
-        : <em key={match.index}>{m.slice(1, -1)}</em>
-    );
-    lastIndex = match.index + m.length;
-  }
-  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
-  return <>{parts}</>;
-}
 
 function generateSlug(titulo: string): string {
   return titulo
@@ -80,22 +67,32 @@ export default function Admin() {
   const [bulkStatus, setBulkStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [bulkError, setBulkError] = useState('');
   const [mostrarArchivados, setMostrarArchivados] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
-  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const [rawImageSrc, setRawImageSrc] = useState<string | null>(null);
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
+  const [existingImage, setExistingImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const wrapSelection = (before: string, after: string) => {
-    const ta = contentRef.current;
-    if (!ta) return;
-    const start = ta.selectionStart;
-    const end = ta.selectionEnd;
-    const text = form.contenido;
-    const newText = text.slice(0, start) + before + text.slice(start, end) + after + text.slice(end);
-    setForm(f => ({ ...f, contenido: newText }));
-    requestAnimationFrame(() => {
-      ta.focus();
-      ta.setSelectionRange(start + before.length, end + before.length);
-    });
-  };
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+    ],
+    content: form.contenido || '<p></p>',
+    onUpdate: ({ editor }) => {
+      setForm(f => ({ ...f, contenido: editor.getHTML() }));
+    },
+  });
+
+  useEffect(() => {
+    if (!editor) return;
+    const current = editor.getHTML();
+    if (current !== form.contenido) {
+      editor.commands.setContent(form.contenido || '<p></p>', { emitUpdate: false });
+    }
+  }, [selectedId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const storedPassword = () => sessionStorage.getItem('admin_password') || '';
 
@@ -140,6 +137,9 @@ export default function Admin() {
       contenido: post.contenido,
       archivado: post.archivado ?? false,
     });
+    setCroppedImage(null);
+    setRawImageSrc(null);
+    setExistingImage(post.imagen ?? null);
     setSlugEdited(true);
     setStatus('idle');
     setShowDeleteConfirm(false);
@@ -148,6 +148,9 @@ export default function Admin() {
   const handleNewPost = () => {
     setSelectedId(null);
     setForm(emptyForm());
+    setCroppedImage(null);
+    setRawImageSrc(null);
+    setExistingImage(null);
     setSlugEdited(false);
     setStatus('idle');
     setShowDeleteConfirm(false);
@@ -213,7 +216,10 @@ export default function Admin() {
     setErrorMsg('');
 
     const action = selectedId === null ? 'create' : 'update';
-    const postPayload = selectedId !== null ? { ...form, id: selectedId } : form;
+    const basePayload = selectedId !== null ? { ...form, id: selectedId } : form;
+    const postPayload = croppedImage
+      ? { ...basePayload, imagenData: croppedImage }
+      : basePayload;
 
     try {
       const res = await fetch('/.netlify/functions/save-post', {
@@ -227,13 +233,16 @@ export default function Admin() {
       if (res.ok) {
         setStatus('success');
         if (action === 'create') {
-          const newPost: Post = { ...form, id: data.id ?? Date.now() };
+          const newPost: Post = { ...form, id: data.id ?? Date.now(), ...(data.imagen ? { imagen: data.imagen } : {}) };
           setPosts(prev => [newPost, ...prev]);
           setSelectedId(data.id ?? null);
+          setCroppedImage(null);
           setForm(emptyForm());
           setSlugEdited(false);
         } else {
           setPosts(prev => prev.map(p => p.id === selectedId ? { ...form, id: selectedId! } : p));
+          if (data.imagen) setExistingImage(data.imagen);
+          setCroppedImage(null);
         }
       } else {
         setStatus('error');
@@ -329,46 +338,63 @@ export default function Admin() {
     ? visiblePosts.filter(p => normalize(p.titulo).includes(normalize(search)) || normalize(p.categoria).includes(normalize(search)))
     : visiblePosts;
 
+  const archivedCount = posts.filter(p => p.archivado).length;
+  const hasContent = form.contenido && form.contenido !== '<p></p>';
+
   return (
     <main className="admin-panel">
       <header className="admin-header">
-        <h1>Partos bajo tierra — Panel de administración</h1>
+        <div className="admin-header__brand">
+          <span className="admin-header__site">Partos bajo tierra</span>
+          <span className="admin-header__sep">·</span>
+          <span className="admin-header__label">Admin</span>
+        </div>
         <button className="admin-logout" onClick={handleLogout}>Cerrar sesión</button>
       </header>
 
       <div className="admin-layout">
+        {/* ── Sidebar ── */}
         <aside className="admin-sidebar">
-          {selectMode ? (
-            <button className="admin-cancel-select-btn" onClick={toggleSelectMode}>
-              ✕ Cancelar selección
-            </button>
-          ) : (
-            <>
+          <div className="admin-sidebar__top">
+            {selectMode ? (
+              <button className="admin-cancel-select-btn" onClick={toggleSelectMode}>
+                ✕ Cancelar selección
+              </button>
+            ) : (
               <button className="admin-new-btn" onClick={handleNewPost}>
                 + Nuevo artículo
               </button>
-              <button className="admin-select-btn" onClick={toggleSelectMode}>
-                Seleccionar múltiples
-              </button>
-            </>
-          )}
+            )}
+          </div>
 
           <input
             className="admin-search"
             type="search"
-            placeholder="Buscar artículo..."
+            placeholder="Buscar..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
 
-          <label className="admin-toggle-archivados">
-            <input
-              type="checkbox"
-              checked={mostrarArchivados}
-              onChange={e => setMostrarArchivados(e.target.checked)}
-            />
-            Mostrar archivados ({posts.filter(p => p.archivado).length})
-          </label>
+          <div className="admin-sidebar__meta">
+            <span className="admin-sidebar__count">
+              {filteredPosts.length} artículo{filteredPosts.length !== 1 ? 's' : ''}
+            </span>
+            <div className="admin-sidebar__actions-row">
+              {!selectMode && (
+                <button className="admin-select-btn" onClick={toggleSelectMode}>Seleccionar</button>
+              )}
+              {archivedCount > 0 && (
+                <label className="admin-toggle-archivados">
+                  <input
+                    type="checkbox"
+                    checked={mostrarArchivados}
+                    onChange={e => setMostrarArchivados(e.target.checked)}
+                  />
+                  Archivados ({archivedCount})
+                </label>
+              )}
+            </div>
+          </div>
 
           {selectMode && filteredPosts.length > 0 && (
             <div className="admin-select-bar">
@@ -403,7 +429,7 @@ export default function Admin() {
                 )
               )}
               {bulkStatus === 'error' && <p className="admin-status admin-status--error">{bulkError}</p>}
-              {bulkStatus === 'success' && <p className="admin-status admin-status--success">Eliminados correctamente.</p>}
+              {bulkStatus === 'success' && <p className="admin-status admin-status--success">Eliminados.</p>}
             </div>
           )}
 
@@ -414,7 +440,7 @@ export default function Admin() {
             {filteredPosts.map(post => (
               <button
                 key={post.id}
-                className={`admin-post-item ${!selectMode && selectedId === post.id ? 'admin-post-item--active' : ''} ${selectMode && checkedIds.has(post.id) ? 'admin-post-item--checked' : ''}`}
+                className={`admin-post-item${!selectMode && selectedId === post.id ? ' admin-post-item--active' : ''}${selectMode && checkedIds.has(post.id) ? ' admin-post-item--checked' : ''}${post.archivado ? ' admin-post-item--archived' : ''}`}
                 onClick={() => selectMode ? toggleCheck(post.id) : handleSelectPost(post)}
               >
                 {selectMode && (
@@ -435,7 +461,7 @@ export default function Admin() {
                   <strong>{post.titulo}</strong>
                   <time>
                     {new Date(post.fecha + 'T12:00:00').toLocaleDateString('es-MX', {
-                      year: 'numeric', month: 'short',
+                      year: 'numeric', month: 'short', day: 'numeric',
                     })}
                   </time>
                 </div>
@@ -444,152 +470,237 @@ export default function Admin() {
           </div>
         </aside>
 
+        {/* ── Editor / empty state ── */}
         <section className="admin-form-section">
-          {selectedId !== null && form.archivado && (
-            <div className="admin-archivado-banner">
-              Este artículo está archivado y no se muestra en el blog público.
+          {selectedId === null && !form.titulo ? (
+            <div className="admin-empty-state">
+              <div className="admin-empty-state__icon">✦</div>
+              <p className="admin-empty-state__title">Selecciona un artículo para editarlo</p>
+              <p className="admin-empty-state__sub">o crea uno nuevo desde el panel lateral</p>
             </div>
-          )}
-          <form onSubmit={handleSave} className="admin-form">
-            <div className="admin-form__row">
-              <div className="admin-form__field admin-form__field--grow">
-                <label htmlFor="admin-titulo">Título <span className="admin-required" aria-hidden="true">*</span></label>
-                <input
-                  id="admin-titulo"
-                  type="text"
-                  value={form.titulo}
-                  onChange={e => handleTitleChange(e.target.value)}
-                  placeholder="Título del artículo"
-                  required
-                />
-              </div>
-              <div className="admin-form__field">
-                <label htmlFor="admin-fecha">Fecha <span className="admin-required" aria-hidden="true">*</span></label>
-                <input
-                  id="admin-fecha"
-                  type="date"
-                  value={form.fecha}
-                  onChange={e => setForm(f => ({ ...f, fecha: e.target.value }))}
-                  required
-                />
-              </div>
-            </div>
+          ) : (
+            <>
+              {selectedId !== null && form.archivado && (
+                <div className="admin-archivado-banner">
+                  Este artículo está archivado y no se muestra en el blog público.
+                </div>
+              )}
 
-            <div className="admin-form__row">
-              <div className="admin-form__field admin-form__field--grow">
-                <label htmlFor="admin-slug">Slug (URL) <span className="admin-required" aria-hidden="true">*</span></label>
-                <input
-                  id="admin-slug"
-                  type="text"
-                  value={form.slug}
-                  onChange={e => { setSlugEdited(true); setForm(f => ({ ...f, slug: e.target.value })); }}
-                  placeholder="url-del-articulo"
-                  required
-                />
-              </div>
-              <div className="admin-form__field">
-                <label htmlFor="admin-cat">Categoría</label>
-                <select
-                  id="admin-cat"
-                  value={form.categoria}
-                  onChange={e => setForm(f => ({ ...f, categoria: e.target.value }))}
-                >
-                  {CATEGORIAS.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </div>
-            </div>
-
-            <div className="admin-form__field">
-              <label htmlFor="admin-extracto">Extracto <span className="admin-required" aria-hidden="true">*</span></label>
-              <textarea
-                id="admin-extracto"
-                value={form.extracto}
-                onChange={e => setForm(f => ({ ...f, extracto: e.target.value }))}
-                rows={3}
-                placeholder="Breve resumen del artículo..."
-                required
-              />
-            </div>
-
-            <div className="admin-form__field">
-              <label htmlFor="admin-contenido">Contenido <span className="admin-required" aria-hidden="true">*</span></label>
-              <p className="admin-form__hint">Separa los párrafos con una línea en blanco. Selecciona texto para aplicar formato.</p>
-              <div className="admin-toolbar">
-                <button type="button" onClick={() => wrapSelection('**', '**')} title="Negrita">
-                  <strong>N</strong>
-                </button>
-                <button type="button" onClick={() => wrapSelection('*', '*')} title="Cursiva">
-                  <em>C</em>
-                </button>
-              </div>
-              <textarea
-                id="admin-contenido"
-                ref={contentRef}
-                value={form.contenido}
-                onChange={e => setForm(f => ({ ...f, contenido: e.target.value }))}
-                rows={22}
-                placeholder="Escribe el contenido del artículo aquí..."
-                required
-              />
-              {form.contenido && (
-                <div className="admin-preview">
-                  <span className="admin-preview__label">Previsualización</span>
-                  <div className="admin-preview__content">
-                    {form.contenido.split('\n\n').map((parrafo, i) => (
-                      <p key={i}>{renderInline(parrafo)}</p>
-                    ))}
+              <form onSubmit={handleSave} className="admin-form">
+                {/* Fila 1: título + fecha */}
+                <div className="admin-form__row">
+                  <div className="admin-form__field admin-form__field--grow">
+                    <label htmlFor="admin-titulo">Título <span className="admin-required" aria-hidden="true">*</span></label>
+                    <input
+                      id="admin-titulo"
+                      type="text"
+                      value={form.titulo}
+                      onChange={e => handleTitleChange(e.target.value)}
+                      placeholder="Título del artículo"
+                      required
+                    />
+                  </div>
+                  <div className="admin-form__field">
+                    <label htmlFor="admin-fecha">Fecha <span className="admin-required" aria-hidden="true">*</span></label>
+                    <input
+                      id="admin-fecha"
+                      type="date"
+                      value={form.fecha}
+                      onChange={e => setForm(f => ({ ...f, fecha: e.target.value }))}
+                      required
+                    />
                   </div>
                 </div>
-              )}
-            </div>
 
-            <div className="admin-form__actions">
-              {showDeleteConfirm ? (
-                <div className="admin-delete-confirm">
-                  <span>¿Seguro que quieres eliminar este artículo?</span>
-                  <button type="button" className="btn-delete-confirm" onClick={handleDelete}>
-                    Sí, eliminar
-                  </button>
-                  <button type="button" className="btn-cancel" onClick={() => setShowDeleteConfirm(false)}>
-                    Cancelar
-                  </button>
+                {/* Fila 2: slug + categoría */}
+                <div className="admin-form__row">
+                  <div className="admin-form__field admin-form__field--grow">
+                    <label htmlFor="admin-slug">Slug (URL) <span className="admin-required" aria-hidden="true">*</span></label>
+                    <input
+                      id="admin-slug"
+                      type="text"
+                      value={form.slug}
+                      onChange={e => { setSlugEdited(true); setForm(f => ({ ...f, slug: e.target.value })); }}
+                      placeholder="url-del-articulo"
+                      required
+                    />
+                  </div>
+                  <div className="admin-form__field">
+                    <label htmlFor="admin-cat">Categoría</label>
+                    <select
+                      id="admin-cat"
+                      value={form.categoria}
+                      onChange={e => setForm(f => ({ ...f, categoria: e.target.value }))}
+                    >
+                      {CATEGORIAS.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                  </div>
                 </div>
-              ) : (
-                <>
-                  <button type="submit" className="btn-save" disabled={status === 'saving'}>
-                    {status === 'saving' ? 'Guardando...' : selectedId !== null ? 'Actualizar' : 'Publicar'}
-                  </button>
-                  {selectedId !== null && (
-                    form.archivado ? (
-                      <button type="button" className="btn-unarchive" disabled={status === 'saving'} onClick={() => handleArchive(false)}>
-                        Publicar de nuevo
+
+                {/* Imagen destacada */}
+                <div className="admin-form__field">
+                  <label>Imagen destacada <span className="admin-hint-inline">(opcional)</span></label>
+                  <div className="admin-imagen-wrap">
+                    {(croppedImage || existingImage) && (
+                      <div className="admin-imagen-preview">
+                        <img src={croppedImage ?? existingImage!} alt="Vista previa" />
+                        <button
+                          type="button"
+                          className="admin-imagen-remove"
+                          onClick={() => { setCroppedImage(null); setExistingImage(null); }}
+                          title="Quitar imagen"
+                        >✕</button>
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      className="admin-imagen-btn"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      {croppedImage || existingImage ? 'Cambiar imagen' : '+ Añadir imagen'}
+                    </button>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      onChange={e => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const reader = new FileReader();
+                        reader.onload = ev => setRawImageSrc(ev.target?.result as string);
+                        reader.readAsDataURL(file);
+                        e.target.value = '';
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Extracto */}
+                <div className="admin-form__field">
+                  <label htmlFor="admin-extracto">Extracto <span className="admin-required" aria-hidden="true">*</span></label>
+                  <textarea
+                    id="admin-extracto"
+                    value={form.extracto}
+                    onChange={e => setForm(f => ({ ...f, extracto: e.target.value }))}
+                    rows={3}
+                    placeholder="Breve resumen del artículo..."
+                    required
+                  />
+                </div>
+
+                {/* Contenido con TipTap y preview toggle */}
+                <div className="admin-form__field">
+                  <div className="admin-content-header">
+                    <label>Contenido <span className="admin-required" aria-hidden="true">*</span></label>
+                    {hasContent && (
+                      <button
+                        type="button"
+                        className={`admin-preview-toggle${showPreview ? ' admin-preview-toggle--active' : ''}`}
+                        onClick={() => setShowPreview(v => !v)}
+                      >
+                        {showPreview ? '✎ Editar' : '◉ Vista previa'}
                       </button>
-                    ) : (
-                      <button type="button" className="btn-archive" disabled={status === 'saving'} onClick={() => handleArchive(true)}>
-                        Archivar
-                      </button>
+                    )}
+                  </div>
+
+                  {showPreview && hasContent ? (
+                    <div className="admin-preview-panel">
+                      <div
+                        className="admin-preview-panel__content"
+                        dangerouslySetInnerHTML={{ __html: form.contenido }}
+                      />
+                    </div>
+                  ) : (
+                    editor && (
+                      <>
+                        <div className="admin-toolbar">
+                          <button type="button" title="Negrita" className={editor.isActive('bold') ? 'active' : ''} onClick={() => editor.chain().focus().toggleBold().run()}><strong>N</strong></button>
+                          <button type="button" title="Cursiva" className={editor.isActive('italic') ? 'active' : ''} onClick={() => editor.chain().focus().toggleItalic().run()}><em>I</em></button>
+                          <button type="button" title="Subrayado" className={editor.isActive('underline') ? 'active' : ''} onClick={() => editor.chain().focus().toggleUnderline().run()}><u>S</u></button>
+                          <div className="admin-toolbar__sep" />
+                          <button type="button" title="Título H2" className={editor.isActive('heading', { level: 2 }) ? 'active' : ''} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>H2</button>
+                          <button type="button" title="Título H3" className={editor.isActive('heading', { level: 3 }) ? 'active' : ''} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>H3</button>
+                          <div className="admin-toolbar__sep" />
+                          <button type="button" title="Lista con viñetas" className={editor.isActive('bulletList') ? 'active' : ''} onClick={() => editor.chain().focus().toggleBulletList().run()}>• —</button>
+                          <button type="button" title="Lista numerada" className={editor.isActive('orderedList') ? 'active' : ''} onClick={() => editor.chain().focus().toggleOrderedList().run()}>1.</button>
+                          <button type="button" title="Cita" className={editor.isActive('blockquote') ? 'active' : ''} onClick={() => editor.chain().focus().toggleBlockquote().run()}>" "</button>
+                          <div className="admin-toolbar__sep" />
+                          <button type="button" title="Alinear izquierda" className={editor.isActive({ textAlign: 'left' }) ? 'active' : ''} onClick={() => editor.chain().focus().setTextAlign('left').run()}>⬅</button>
+                          <button type="button" title="Centrar" className={editor.isActive({ textAlign: 'center' }) ? 'active' : ''} onClick={() => editor.chain().focus().setTextAlign('center').run()}>⬛</button>
+                          <button type="button" title="Alinear derecha" className={editor.isActive({ textAlign: 'right' }) ? 'active' : ''} onClick={() => editor.chain().focus().setTextAlign('right').run()}>➡</button>
+                          <div className="admin-toolbar__sep" />
+                          <button type="button" title="Deshacer" onClick={() => editor.chain().focus().undo().run()}>↩</button>
+                          <button type="button" title="Rehacer" onClick={() => editor.chain().focus().redo().run()}>↪</button>
+                        </div>
+                        <div className="admin-tiptap">
+                          <EditorContent editor={editor} />
+                        </div>
+                      </>
                     )
                   )}
-                  {selectedId !== null && (
-                    <button type="button" className="btn-delete" onClick={() => setShowDeleteConfirm(true)}>
-                      Eliminar
-                    </button>
-                  )}
-                </>
-              )}
+                </div>
 
-              {status === 'success' && (
-                <p className="admin-status admin-status--success">
-                  Guardado. El sitio se actualizará en 1-2 minutos.
-                </p>
-              )}
-              {status === 'error' && (
-                <p className="admin-status admin-status--error">Error: {errorMsg}</p>
-              )}
-            </div>
-          </form>
+                {/* Acciones */}
+                <div className="admin-form__actions">
+                  {showDeleteConfirm ? (
+                    <div className="admin-delete-confirm">
+                      <span>¿Seguro que quieres eliminar este artículo?</span>
+                      <button type="button" className="btn-delete-confirm" onClick={handleDelete}>
+                        Sí, eliminar
+                      </button>
+                      <button type="button" className="btn-cancel" onClick={() => setShowDeleteConfirm(false)}>
+                        Cancelar
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="admin-form__actions-inner">
+                      <div className="admin-form__actions-primary">
+                        <button type="submit" className="btn-save" disabled={status === 'saving'}>
+                          {status === 'saving' ? 'Guardando...' : selectedId !== null ? 'Actualizar' : 'Publicar'}
+                        </button>
+                        {selectedId !== null && (
+                          form.archivado ? (
+                            <button type="button" className="btn-unarchive" disabled={status === 'saving'} onClick={() => handleArchive(false)}>
+                              Publicar de nuevo
+                            </button>
+                          ) : (
+                            <button type="button" className="btn-archive" disabled={status === 'saving'} onClick={() => handleArchive(true)}>
+                              Archivar
+                            </button>
+                          )
+                        )}
+                      </div>
+                      {selectedId !== null && (
+                        <button type="button" className="btn-delete" onClick={() => setShowDeleteConfirm(true)}>
+                          Eliminar
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                  {status === 'success' && (
+                    <p className="admin-status admin-status--success">
+                      Guardado. El sitio se actualizará en 1–2 min.
+                    </p>
+                  )}
+                  {status === 'error' && (
+                    <p className="admin-status admin-status--error">Error: {errorMsg}</p>
+                  )}
+                </div>
+              </form>
+            </>
+          )}
         </section>
       </div>
+
+      {rawImageSrc && (
+        <ImageCropper
+          src={rawImageSrc}
+          onDone={base64 => { setCroppedImage(base64); setRawImageSrc(null); }}
+          onCancel={() => setRawImageSrc(null)}
+        />
+      )}
     </main>
   );
 }

@@ -8,6 +8,32 @@ const REPO = 'Ailin-Glez/danielzayas';
 const FILE_PATH = 'src/data/posts/posts.json';
 const API_URL = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
 
+async function uploadImage(githubHeaders, slug, base64Data) {
+  const ext = base64Data.startsWith('data:image/png') ? 'png' : 'jpg';
+  const imagePath = `public/blog/${slug}.${ext}`;
+  const imageUrl = `https://api.github.com/repos/${REPO}/contents/${imagePath}`;
+  const rawBase64 = base64Data.replace(/^data:image\/\w+;base64,/, '');
+
+  const existing = await fetch(imageUrl, { headers: githubHeaders });
+  const sha = existing.ok ? (await existing.json()).sha : undefined;
+
+  const body = {
+    message: `Imagen para: ${slug}`,
+    content: rawBase64,
+    author: { name: 'Panel Admin', email: 'admin@danielzayas.com' },
+  };
+  if (sha) body.sha = sha;
+
+  const res = await fetch(imageUrl, {
+    method: 'PUT',
+    headers: githubHeaders,
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) throw new Error('No se pudo subir la imagen');
+  return `/blog/${slug}.${ext}`;
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers: CORS_HEADERS, body: '' };
@@ -68,11 +94,22 @@ exports.handler = async (event) => {
   if (action === 'create') {
     const maxId = currentPosts.length > 0 ? Math.max(...currentPosts.map(p => p.id)) : 0;
     newId = maxId + 1;
-    const newPost = { ...post, id: newId };
+    let imageUrl;
+    if (post.imagenData) {
+      try { imageUrl = await uploadImage(githubHeaders, post.slug, post.imagenData); } catch {}
+    }
+    const { imagenData: _, ...postClean } = post;
+    const newPost = { ...postClean, id: newId, ...(imageUrl ? { imagen: imageUrl } : {}) };
     updatedPosts = [newPost, ...currentPosts];
     commitMessage = `Nuevo artículo: ${post.titulo}`;
   } else if (action === 'update') {
-    updatedPosts = currentPosts.map(p => p.id === post.id ? { ...post } : p);
+    let imageUrl;
+    if (post.imagenData) {
+      try { imageUrl = await uploadImage(githubHeaders, post.slug, post.imagenData); } catch {}
+    }
+    const { imagenData: _, ...postClean } = post;
+    const updatedPost = { ...postClean, ...(imageUrl ? { imagen: imageUrl } : {}) };
+    updatedPosts = currentPosts.map(p => p.id === post.id ? updatedPost : p);
     commitMessage = `Actualizar: ${post.titulo}`;
   } else if (action === 'delete') {
     const target = currentPosts.find(p => p.id === post.id);
