@@ -7,17 +7,17 @@ import './Libros.css';
 function FragmentoPanel({ libro, onClose }: { libro: Libro; onClose: () => void }) {
   const [visible, setVisible] = useState(false);
 
+  const handleClose = useCallback(() => {
+    setVisible(false);
+    setTimeout(onClose, 320);
+  }, [onClose]);
+
   useEffect(() => {
     requestAnimationFrame(() => setVisible(true));
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') handleClose(); };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, []);
-
-  const handleClose = () => {
-    setVisible(false);
-    setTimeout(onClose, 320);
-  };
+  }, [handleClose]);
 
   const bloques = (libro.fragmento ?? '').split(/\n{2,}/);
 
@@ -25,7 +25,6 @@ function FragmentoPanel({ libro, onClose }: { libro: Libro; onClose: () => void 
     <>
       <aside
         className={`fragmento-panel${visible ? ' fragmento-panel--visible' : ''}`}
-        role="complementary"
         aria-label={`Fragmento de ${libro.titulo}`}
       >
         <div className="fragmento-panel__header">
