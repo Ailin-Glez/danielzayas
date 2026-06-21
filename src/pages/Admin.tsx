@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
-import Underline from '@tiptap/extension-underline';
 import ImageCropper from '../components/ImageCropper';
 import { posts as initialPosts } from '../data';
 import type { Post } from '../types';
@@ -77,7 +76,6 @@ export default function Admin() {
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Underline,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
     content: form.contenido || '<p></p>',
@@ -86,13 +84,6 @@ export default function Admin() {
     },
   });
 
-  useEffect(() => {
-    if (!editor) return;
-    const current = editor.getHTML();
-    if (current !== form.contenido) {
-      editor.commands.setContent(form.contenido || '<p></p>', { emitUpdate: false });
-    }
-  }, [selectedId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const storedPassword = () => sessionStorage.getItem('admin_password') || '';
 
@@ -137,6 +128,7 @@ export default function Admin() {
       contenido: post.contenido,
       archivado: post.archivado ?? false,
     });
+    editor?.commands.setContent(post.contenido || '<p></p>', { emitUpdate: false });
     setCroppedImage(null);
     setRawImageSrc(null);
     setExistingImage(post.imagen ?? null);
@@ -148,6 +140,7 @@ export default function Admin() {
   const handleNewPost = () => {
     setSelectedId(null);
     setForm(emptyForm());
+    editor?.commands.setContent('<p></p>', { emitUpdate: false });
     setCroppedImage(null);
     setRawImageSrc(null);
     setExistingImage(null);
@@ -237,6 +230,7 @@ export default function Admin() {
           setPosts(prev => [newPost, ...prev]);
           setSelectedId(data.id ?? null);
           setCroppedImage(null);
+          editor?.commands.setContent('<p></p>', { emitUpdate: false });
           setForm(emptyForm());
           setSlugEdited(false);
         } else {
