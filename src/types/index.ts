@@ -17,6 +17,7 @@ export interface Libro {
   editorial: string;
   portada: string;
   sinopsis: string;
+  fragmento?: string;
   reseñas: Reseña[];
   compra: CompraLinks;
   color: string;

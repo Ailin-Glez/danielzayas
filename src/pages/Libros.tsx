@@ -1,7 +1,104 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { libros } from '../data';
 import type { Libro } from '../types';
+import { renderInline } from '../utils/renderInline';
 import './Libros.css';
+
+function FragmentoPanel({ libro, onClose }: { libro: Libro; onClose: () => void }) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    requestAnimationFrame(() => setVisible(true));
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') handleClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
+
+  const handleClose = () => {
+    setVisible(false);
+    setTimeout(onClose, 320);
+  };
+
+  const bloques = (libro.fragmento ?? '').split(/\n{2,}/);
+
+  return (
+    <>
+      <aside
+        className={`fragmento-panel${visible ? ' fragmento-panel--visible' : ''}`}
+        role="complementary"
+        aria-label={`Fragmento de ${libro.titulo}`}
+      >
+        <div className="fragmento-panel__header">
+          <div className="fragmento-panel__meta">
+            <span className="fragmento-panel__label">Fragmento</span>
+            <h2 className="fragmento-panel__titulo">{libro.titulo}</h2>
+          </div>
+          <button className="fragmento-panel__close" onClick={handleClose} aria-label="Cerrar panel">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <line x1="3" y1="3" x2="15" y2="15" />
+              <line x1="15" y1="3" x2="3" y2="15" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="fragmento-panel__body">
+          {bloques.map((bloque, i) => {
+            const trimmed = bloque.trim();
+            if (!trimmed) return null;
+            const esTitulo =
+              trimmed === trimmed.toUpperCase() &&
+              trimmed.length < 80 &&
+              trimmed.split(' ').length <= 14 &&
+              trimmed.split(' ').every(w => /^[A-ZÁÉÍÓÚÜÑ\d]+$/.test(w));
+            if (esTitulo) return <h3 key={i} className="fragmento-seccion">{trimmed}</h3>;
+            const esBloqueCursiva = trimmed.startsWith('*') && trimmed.endsWith('*') && !trimmed.startsWith('**');
+            const contenido = esBloqueCursiva ? trimmed.slice(1, -1).trim() : trimmed;
+            const lineas = contenido.split('\n');
+            const esPoesia = lineas.length > 1 && lineas.filter(l => l.trim().length < 70).length > lineas.length * 0.6;
+            if (esPoesia) {
+              const esTituloLinea = (l: string) => {
+                const t = l.trim();
+                return t === t.toUpperCase() && t.length < 80 && t.split(' ').length <= 14 && t.split(' ').every(w => /^[A-ZÁÉÍÓÚÜÑ\d]+$/.test(w));
+              };
+              const primeraEsTitulo = esTituloLinea(lineas[0]);
+              const versos = primeraEsTitulo ? lineas.slice(1) : lineas;
+              return (
+                <span key={i}>
+                  {primeraEsTitulo && <h3 className="fragmento-seccion">{lineas[0].trim()}</h3>}
+                  {versos.length > 0 && (
+                    <p className="fragmento-parrafo fragmento-parrafo--verso">
+                      {versos.map((linea, j) => (
+                        <span key={j}>{renderInline(linea)}<br /></span>
+                      ))}
+                    </p>
+                  )}
+                </span>
+              );
+            }
+            return (
+              <p key={i} className={`fragmento-parrafo${esBloqueCursiva ? ' fragmento-parrafo--carta' : ''}`}>
+                {lineas.map((linea, j) => (
+                  <span key={j} className="fragmento-linea">{renderInline(linea)}</span>
+                ))}
+              </p>
+            );
+          })}
+
+          {libro.compra.amazon !== '#' && (
+            <div className="fragmento-panel__compra">
+              <a
+                href={libro.compra.amazon}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-primary"
+              >Comprar libro</a>
+            </div>
+          )}
+        </div>
+      </aside>
+    </>
+  );
+}
 
 export default function Libros() {
   const [selectedId, setSelectedId] = useState<number | null>(() => {
@@ -10,6 +107,7 @@ export default function Libros() {
       return saved ? parseInt(saved) : null;
     } catch { return null; }
   });
+  const [panelFragmento, setPanelFragmento] = useState<Libro | null>(null);
 
   const selected: Libro | null = selectedId !== null
     ? (libros.find(l => l.id === selectedId) ?? null)
@@ -22,9 +120,22 @@ export default function Libros() {
     setSelectedId(libro.id);
   };
 
+  const handleFragmento = useCallback((libro: Libro) => {
+    if (libro.fragmento) {
+      setPanelFragmento(libro);
+    } else if (libro.compra.fragmento !== '#') {
+      window.open(libro.compra.fragmento, '_blank', 'noreferrer');
+    }
+  }, []);
+
   useEffect(() => {
     if (isFirstRender.current) { isFirstRender.current = false; }
   }, [selectedId]);
+
+  useEffect(() => {
+    document.body.style.overflow = panelFragmento ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [panelFragmento]);
 
   return (
     <main className="page-libros">
@@ -81,11 +192,12 @@ export default function Libros() {
                     {selected.anio && <span className="libro-anio">{selected.anio}</span>}
                   </div>
                   <div className="compra-links">
-                    <a
-                      href={selected.compra.fragmento !== '#' ? selected.compra.fragmento : undefined}
-                      target="_blank" rel="noreferrer"
-                      className="btn btn-outline btn--sm"
-                    >Leer fragmento</a>
+                    {(selected.fragmento || selected.compra.fragmento !== '#') && (
+                      <button
+                        className="btn btn-outline btn--sm"
+                        onClick={() => handleFragmento(selected)}
+                      >Leer fragmento</button>
+                    )}
                     {selected.compra.amazon !== '#' && (
                       <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-primary btn--sm">Comprar</a>
                     )}
@@ -101,6 +213,10 @@ export default function Libros() {
 
         </div>
       </section>
+
+      {panelFragmento && (
+        <FragmentoPanel libro={panelFragmento} onClose={() => setPanelFragmento(null)} />
+      )}
     </main>
   );
 }

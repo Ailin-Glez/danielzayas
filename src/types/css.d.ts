@@ -1,3 +1,5 @@
+declare module '*.css';
+
 import 'react';
 
 declare module 'react' {

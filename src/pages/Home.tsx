@@ -33,7 +33,7 @@ export default function Home() {
             <img src="/brote.png" alt="" className="hero__sprout" aria-hidden />
             <div className="hero__quote">
               <blockquote>
-                "Escribir es un acto de desobediencia."
+                "Una mujer sentada sobre una piedra puede ser una isla."
               </blockquote>
             </div>
           </div>
