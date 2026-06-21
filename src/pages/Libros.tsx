@@ -3,6 +3,7 @@ import { libros } from '../data';
 import type { Libro } from '../types';
 import { renderInline } from '../utils/renderInline';
 import './Libros.css';
+import './fragmento-preview.css';
 
 function FragmentoPanel({ libro, onClose }: { libro: Libro; onClose: () => void }) {
   const [visible, setVisible] = useState(false);
@@ -104,7 +105,7 @@ function FragmentoPanel({ libro, onClose }: { libro: Libro; onClose: () => void 
             );
           })}
 
-          {libro.compra.amazon !== '#' && (
+          {libro.compra.amazon && (
             <div className="fragmento-panel__compra">
               <a
                 href={libro.compra.amazon}
@@ -143,7 +144,7 @@ export default function Libros() {
   const handleFragmento = useCallback((libro: Libro) => {
     if (libro.fragmento) {
       setPanelFragmento(libro);
-    } else if (libro.compra.fragmento !== '#') {
+    } else if (libro.compra.fragmento) {
       window.open(libro.compra.fragmento, '_blank', 'noreferrer');
     }
   }, []);
@@ -212,13 +213,13 @@ export default function Libros() {
                     {selected.anio && <span className="libro-anio">{selected.anio}</span>}
                   </div>
                   <div className="compra-links">
-                    {(selected.fragmento || selected.compra.fragmento !== '#') && (
+                    {(selected.fragmento || selected.compra.fragmento) && (
                       <button
                         className="btn btn-outline btn--sm"
                         onClick={() => handleFragmento(selected)}
                       >Leer fragmento</button>
                     )}
-                    {selected.compra.amazon !== '#' && (
+                    {selected.compra.amazon && (
                       <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-primary btn--sm">Comprar</a>
                     )}
                   </div>

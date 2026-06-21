@@ -165,7 +165,7 @@ Por suerte solo fue uno. Luego, me marché al cuarto a recoger lo que llevaría 
       texto: 'El amor a la madre, el sorpresivo regreso del padre, las peleas con Pepín, la belleza de Rebeca, y hasta dos presos escapados del Presidio Modelo, cobijarán al lector bajo La sombra de los almendros.',
     },
   ],
-  compra: { amazon: '#', fragmento: '#' },
+  compra: { amazon: '', fragmento: '' },
 };
 
 export default libro;

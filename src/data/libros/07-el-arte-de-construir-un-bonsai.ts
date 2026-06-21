@@ -59,7 +59,7 @@ Cuatro árboles enanos. Cuatro tumores. Cuatro gritos para ahuyentar la muerte. 
       texto: 'No otra es la manera de reconocer un buen libro, uno como el que usted tiene ahora en la mano.',
     },
   ],
-  compra: { amazon: '#', fragmento: '#' },
+  compra: { amazon: '', fragmento: '' },
 };
 
 export default libro;

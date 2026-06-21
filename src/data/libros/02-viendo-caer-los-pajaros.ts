@@ -93,7 +93,7 @@ que ha puesto un astro al alcance de tus manos.
       texto: 'La firmeza de estas páginas no delata pesimismo, sino una fe serena en el sentido de la muerte que tampoco peca de optimista.',
     },
   ],
-  compra: { amazon: '#', fragmento: '#' },
+  compra: { amazon: '', fragmento: '' },
 };
 
 export default libro;

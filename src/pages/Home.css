@@ -242,6 +242,39 @@
   font-weight: 600;
 }
 
+.featured-book__fragmento {
+  margin: 1.25rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.featured-book__fragmento-label {
+  font-family: var(--font-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ochre-deep);
+}
+
+.featured-book__fragmento-cuerpo {
+  border-left: 3px solid rgba(200,135,58,0.3);
+  padding-left: 1.1rem;
+}
+
+.featured-book__fragmento-link {
+  font-family: var(--font-accent);
+  font-size: 0.82rem;
+  color: var(--green-sprout);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.featured-book__fragmento-link:hover {
+  color: var(--earth-deep);
+}
+
 .featured-book__quote {
   border-left: 3px solid var(--ochre);
   padding: 1rem 1.25rem;

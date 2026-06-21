@@ -412,10 +412,23 @@
   text-overflow: ellipsis;
 }
 
+.admin-post-item__bottom {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .admin-post-item time {
   font-size: 0.7rem;
   color: var(--ink-soft);
   opacity: 0.65;
+}
+
+.admin-post-img-dot {
+  font-size: 0.65rem;
+  color: var(--ochre);
+  opacity: 0.7;
+  line-height: 1;
 }
 
 /* ── Empty state ── */
@@ -755,39 +768,56 @@
   font-weight: 400;
 }
 
-.admin-imagen-wrap {
+.admin-imagen-row {
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 1rem;
 }
 
-.admin-imagen-preview {
+.admin-imagen-thumb-wrap {
   position: relative;
-  width: 100%;
-  max-width: 420px;
+  flex-shrink: 0;
+  width: 140px;
+  height: 79px;
   border-radius: var(--radius-sm);
   overflow: hidden;
-  border: 1px solid var(--cream-dark);
+  border: 1px solid #e2d9c8;
+  background: #f6f2eb;
 }
 
-.admin-imagen-preview img {
+.admin-imagen-thumb {
   width: 100%;
-  display: block;
-  aspect-ratio: 16/9;
+  height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+.admin-imagen-empty {
+  flex-shrink: 0;
+  width: 140px;
+  height: 79px;
+  border-radius: var(--radius-sm);
+  border: 1.5px dashed #d8cebb;
+  background: #faf7f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  opacity: 0.6;
 }
 
 .admin-imagen-remove {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  background: rgba(0,0,0,0.55);
+  top: 4px;
+  right: 4px;
+  background: rgba(0,0,0,0.5);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  font-size: 0.75rem;
+  width: 20px;
+  height: 20px;
+  font-size: 0.65rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -799,22 +829,43 @@
   background: rgba(180,30,10,0.85);
 }
 
+.admin-imagen-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
 .admin-imagen-btn {
-  align-self: flex-start;
-  padding: 0.45rem 1rem;
+  padding: 0.4rem 0.9rem;
   background: white;
   border: 1.5px dashed var(--ochre);
   color: var(--ochre-deep);
   border-radius: var(--radius-sm);
   font-family: var(--font-body);
-  font-size: 0.86rem;
+  font-size: 0.83rem;
   cursor: pointer;
   transition: all 0.15s;
+  white-space: nowrap;
 }
 
 .admin-imagen-btn:hover {
   background: rgba(200,135,58,0.08);
   border-style: solid;
+}
+
+.admin-imagen-btn--remove {
+  border-color: transparent;
+  color: var(--terra-dark);
+  opacity: 0.6;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.admin-imagen-btn--remove:hover {
+  background: #fff2f0;
+  border-color: var(--terra-dark);
+  border-style: solid;
+  opacity: 1;
 }
 
 /* ── Image cropper overlay ── */

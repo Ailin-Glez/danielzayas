@@ -213,7 +213,7 @@ Verónica
       texto: 'Así es esa compañera de viaje que tanto se me parece a la isla que nos reinventa Daniel Zayas, desde un tejado de Nueva Gerona, gritándonos su amor como los gatos.',
     },
   ],
-  compra: { amazon: '#', fragmento: '#' },
+  compra: { amazon: '', fragmento: '' },
 };
 
 export default libro;

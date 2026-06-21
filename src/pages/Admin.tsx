@@ -466,11 +466,16 @@ export default function Admin() {
                     {post.archivado && <span className="admin-post-badge-archivado">archivado</span>}
                   </div>
                   <strong>{post.titulo}</strong>
-                  <time>
-                    {new Date(post.fecha + 'T12:00:00').toLocaleDateString('es-MX', {
-                      year: 'numeric', month: 'short', day: 'numeric',
-                    })}
-                  </time>
+                  <div className="admin-post-item__bottom">
+                    <time>
+                      {new Date(post.fecha + 'T12:00:00').toLocaleDateString('es-MX', {
+                        year: 'numeric', month: 'short', day: 'numeric',
+                      })}
+                    </time>
+                    {post.imagen && (
+                      <span className="admin-post-img-dot" title="Tiene imagen destacada">▣</span>
+                    )}
+                  </div>
                 </div>
               </button>
             ))}
@@ -547,10 +552,14 @@ export default function Admin() {
                 {/* Imagen destacada */}
                 <div className="admin-form__field">
                   <label>Imagen destacada <span className="admin-hint-inline">(opcional)</span></label>
-                  <div className="admin-imagen-wrap">
-                    {(croppedImage || existingImage) && (
-                      <div className="admin-imagen-preview">
-                        <img src={croppedImage ?? existingImage!} alt="Vista previa" />
+                  <div className="admin-imagen-row">
+                    {(croppedImage || existingImage) ? (
+                      <div className="admin-imagen-thumb-wrap">
+                        <img
+                          className="admin-imagen-thumb"
+                          src={croppedImage ?? existingImage!}
+                          alt="Imagen destacada"
+                        />
                         <button
                           type="button"
                           className="admin-imagen-remove"
@@ -558,14 +567,29 @@ export default function Admin() {
                           title="Quitar imagen"
                         >✕</button>
                       </div>
+                    ) : (
+                      <div className="admin-imagen-empty">
+                        <span>Sin imagen</span>
+                      </div>
                     )}
-                    <button
-                      type="button"
-                      className="admin-imagen-btn"
-                      onClick={() => fileInputRef.current?.click()}
-                    >
-                      {croppedImage || existingImage ? 'Cambiar imagen' : '+ Añadir imagen'}
-                    </button>
+                    <div className="admin-imagen-controls">
+                      <button
+                        type="button"
+                        className="admin-imagen-btn"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        {croppedImage || existingImage ? 'Cambiar imagen' : '+ Añadir imagen'}
+                      </button>
+                      {(croppedImage || existingImage) && (
+                        <button
+                          type="button"
+                          className="admin-imagen-btn admin-imagen-btn--remove"
+                          onClick={() => { setCroppedImage(null); setExistingImage(null); }}
+                        >
+                          Quitar
+                        </button>
+                      )}
+                    </div>
                     <input
                       ref={fileInputRef}
                       type="file"

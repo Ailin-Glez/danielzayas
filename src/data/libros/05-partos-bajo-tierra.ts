@@ -148,7 +148,7 @@ una ubre de la que, un día, pretendimos beber todos.
       texto: 'Un apocalipsis al que siempre se regresa como un perro de caza detrás de las palabras, a la espera que una voz, otras voces, salgan a escucharte y te salven.',
     },
   ],
-  compra: { amazon: '#', fragmento: '#' },
+  compra: { amazon: '', fragmento: '' },
 };
 
 export default libro;

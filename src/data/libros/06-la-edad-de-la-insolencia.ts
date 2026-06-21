@@ -123,7 +123,7 @@ Iván se apoya en el descanso de la ventana. Mira hacia abajo. Hace frío. Cuent
       texto: 'Este es un libro jíbaro, rotundo, como una bala, incluso como una bala perdida.',
     },
   ],
-  compra: { amazon: '#', fragmento: '#' },
+  compra: { amazon: '', fragmento: '' },
 };
 
 export default libro;
