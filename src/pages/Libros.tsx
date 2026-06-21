@@ -111,7 +111,7 @@ function FragmentoPanel({ libro, onClose }: { libro: Libro; onClose: () => void 
                 href={libro.compra.amazon}
                 target="_blank"
                 rel="noreferrer"
-                className="btn btn-primary"
+                className="btn btn-compra"
               >Comprar libro</a>
             </div>
           )}
@@ -220,7 +220,7 @@ export default function Libros() {
                       >Leer fragmento</button>
                     )}
                     {selected.compra.amazon && (
-                      <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-primary btn--sm">Comprar</a>
+                      <a href={selected.compra.amazon} target="_blank" rel="noreferrer" className="btn btn-compra btn--sm">Comprar</a>
                     )}
                   </div>
                 </div>

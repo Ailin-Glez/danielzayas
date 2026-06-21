@@ -166,6 +166,19 @@ img { max-width: 100%; display: block; }
   background: var(--ochre);
   color: var(--cream);
 }
+
+.btn-compra {
+  background: linear-gradient(135deg, var(--green-sprout) 0%, #3d6e28 100%);
+  color: var(--cream);
+  border: none;
+  box-shadow: 0 4px 14px rgba(90,138,60,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.btn-compra:hover {
+  background: linear-gradient(135deg, #3d6e28 0%, #2e5018 100%);
+  box-shadow: 0 7px 22px rgba(90,138,60,0.45);
+  transform: translateY(-2px);
+  color: var(--cream);
+}
 .btn-ochre:hover {
   background: var(--ochre-deep);
   color: var(--cream);

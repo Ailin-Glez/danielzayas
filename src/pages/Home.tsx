@@ -169,7 +169,7 @@ export default function Home() {
             <div className="featured-book__actions">
               <Link to="/libros" className="btn btn-primary">Todos los libros</Link>
               {ultimoLibro.compra.amazon && (
-                <a href={ultimoLibro.compra.amazon} className="btn btn-outline" target="_blank" rel="noreferrer">
+                <a href={ultimoLibro.compra.amazon} className="btn btn-compra" target="_blank" rel="noreferrer">
                   Comprar
                 </a>
               )}

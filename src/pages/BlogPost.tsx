@@ -57,7 +57,7 @@ export default function BlogPost() {
             }
             {post.linkCompra && (
               <div className="blogpost-compra">
-                <a href={post.linkCompra} className="btn btn-primary blogpost-compra__btn" target="_blank" rel="noreferrer">
+                <a href={post.linkCompra} className="btn btn-compra blogpost-compra__btn" target="_blank" rel="noreferrer">
                   Comprar libro
                 </a>
               </div>
