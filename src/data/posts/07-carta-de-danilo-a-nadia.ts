@@ -5,7 +5,7 @@ const post: Post = {
   slug: 'carta-de-danilo-a-nadia',
   titulo: 'Carta de Danilo a Nadia',
   fecha: '2022-04-15',
-  categoria: 'Textos',
+  categoria: 'Reseñas',
   extracto:
     'Nadia, quien no haya leído en tus ojos no puede saber que eres flaca, ni puede saber de ese hueco tan profundo que tienes justo ahí, donde acaban las costillas y empieza el hambre. Yo te empecé a querer desde la primera línea.',
   contenido: `Carta de Danilo a Nadia

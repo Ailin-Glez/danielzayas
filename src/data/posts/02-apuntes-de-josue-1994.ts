@@ -5,7 +5,7 @@ const post: Post = {
   slug: 'apuntes-de-josue-1994',
   titulo: 'Apuntes de Josué 1994, de Nelton Pérez',
   fecha: '2023-09-05',
-  categoria: 'Presentación',
+  categoria: 'Reseñas',
   extracto:
     'En 1994 yo tenía 7 años. Ese año, en Cuba, es hundido el Remolcador 13 de Marzo en el que intentaban huir del país 72 personas, 41 de ellas perecieron y 10 eran niños. Nelton decide que fuera precisamente en 1994 cuando Manuel descubriera, en una playa cubana, una bolsa de nylon transparente.',
   contenido: `APUNTES DE JOSUE 1994

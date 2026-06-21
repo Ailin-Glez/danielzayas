@@ -366,32 +366,32 @@
   transform-origin: left;
 }
 
-.post-card[data-cat="resena"] {
+.post-card[data-cat="resenas"] {
   background: linear-gradient(160deg, rgba(200,135,58,0.08) 0%, rgba(255,255,255,0.7) 100%);
   border-color: rgba(200,135,58,0.2);
 }
-.post-card[data-cat="resena"]::before        { background: var(--ochre); }
-.post-card[data-cat="resena"] .post-card__cat {
+.post-card[data-cat="resenas"]::before        { background: var(--ochre); }
+.post-card[data-cat="resenas"] .post-card__cat {
   background: rgba(200,135,58,0.15);
   color: var(--ochre-deep);
 }
 
-.post-card[data-cat="presentacion"] {
+.post-card[data-cat="dossier"] {
   background: linear-gradient(160deg, rgba(90,138,60,0.08) 0%, rgba(255,255,255,0.7) 100%);
   border-color: rgba(90,138,60,0.2);
 }
-.post-card[data-cat="presentacion"]::before  { background: var(--green-sprout); }
-.post-card[data-cat="presentacion"] .post-card__cat {
+.post-card[data-cat="dossier"]::before  { background: var(--green-sprout); }
+.post-card[data-cat="dossier"] .post-card__cat {
   background: rgba(90,138,60,0.12);
   color: var(--green-sprout);
 }
 
-.post-card[data-cat="textos"] {
+.post-card[data-cat="cronicas"] {
   background: linear-gradient(160deg, rgba(92,78,138,0.08) 0%, rgba(255,255,255,0.7) 100%);
   border-color: rgba(92,78,138,0.2);
 }
-.post-card[data-cat="textos"]::before        { background: #5C4E8A; }
-.post-card[data-cat="textos"] .post-card__cat {
+.post-card[data-cat="cronicas"]::before        { background: #5C4E8A; }
+.post-card[data-cat="cronicas"] .post-card__cat {
   background: rgba(92,78,138,0.12);
   color: #5C4E8A;
 }

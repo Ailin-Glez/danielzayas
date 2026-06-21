@@ -5,7 +5,7 @@ const post: Post = {
   slug: 'nacido-muerto-heriberto',
   titulo: 'Nacido Muerto, de Heriberto Hernández',
   fecha: '2022-12-10',
-  categoria: 'Presentación',
+  categoria: 'Reseñas',
   extracto:
     'Una flor que nace rodeada de cruces, de nombres, de períodos de vida, es una flor que nace muerta. Tal y como sucede con el hombre, es el entorno el que determina si tras el pujo y las contracciones maternas sobrevendrá un brote de luz y vida o un negro aborto que nombrar.',
   contenido: `NACIDO MUERTO

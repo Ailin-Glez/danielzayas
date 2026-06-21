@@ -33,7 +33,7 @@ function generateSlug(titulo: string): string {
     .replace(/-+/g, '-');
 }
 
-const CATEGORIAS = ['Reseña', 'Presentación', 'Textos'];
+const CATEGORIAS = ['Reseñas', 'Dossier', 'Crónicas'];
 
 type FormData = {
   titulo: string;
@@ -42,6 +42,7 @@ type FormData = {
   categoria: string;
   extracto: string;
   contenido: string;
+  archivado: boolean;
 };
 
 function emptyForm(): FormData {
@@ -49,9 +50,10 @@ function emptyForm(): FormData {
     titulo: '',
     slug: '',
     fecha: new Date().toISOString().split('T')[0],
-    categoria: 'Reseña',
+    categoria: 'Reseñas',
     extracto: '',
     contenido: '',
+    archivado: false,
   };
 }
 
@@ -77,6 +79,7 @@ export default function Admin() {
   const [showBulkConfirm, setShowBulkConfirm] = useState(false);
   const [bulkStatus, setBulkStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [bulkError, setBulkError] = useState('');
+  const [mostrarArchivados, setMostrarArchivados] = useState(false);
 
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
@@ -135,6 +138,7 @@ export default function Admin() {
       categoria: post.categoria,
       extracto: post.extracto,
       contenido: post.contenido,
+      archivado: post.archivado ?? false,
     });
     setSlugEdited(true);
     setStatus('idle');
@@ -269,6 +273,32 @@ export default function Admin() {
     }
   };
 
+  const handleArchive = async (archivar: boolean) => {
+    if (selectedId === null) return;
+    setStatus('saving');
+    setErrorMsg('');
+    const updatedForm = { ...form, archivado: archivar };
+    try {
+      const res = await fetch('/.netlify/functions/save-post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'update', password: storedPassword(), post: { ...updatedForm, id: selectedId } }),
+      });
+      if (res.ok) {
+        setForm(updatedForm);
+        setPosts(prev => prev.map(p => p.id === selectedId ? { ...p, archivado: archivar } : p));
+        setStatus('success');
+      } else {
+        const data = await res.json();
+        setStatus('error');
+        setErrorMsg(data.error || 'Error al archivar');
+      }
+    } catch {
+      setStatus('error');
+      setErrorMsg('Error de conexión');
+    }
+  };
+
   if (!authenticated) {
     return (
       <main className="admin-login">
@@ -294,9 +324,10 @@ export default function Admin() {
 
   const normalize = (s: string) =>
     s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const visiblePosts = mostrarArchivados ? posts : posts.filter(p => !p.archivado);
   const filteredPosts = search.trim()
-    ? posts.filter(p => normalize(p.titulo).includes(normalize(search)) || normalize(p.categoria).includes(normalize(search)))
-    : posts;
+    ? visiblePosts.filter(p => normalize(p.titulo).includes(normalize(search)) || normalize(p.categoria).includes(normalize(search)))
+    : visiblePosts;
 
   return (
     <main className="admin-panel">
@@ -329,6 +360,15 @@ export default function Admin() {
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
+
+          <label className="admin-toggle-archivados">
+            <input
+              type="checkbox"
+              checked={mostrarArchivados}
+              onChange={e => setMostrarArchivados(e.target.checked)}
+            />
+            Mostrar archivados ({posts.filter(p => p.archivado).length})
+          </label>
 
           {selectMode && filteredPosts.length > 0 && (
             <div className="admin-select-bar">
@@ -388,7 +428,10 @@ export default function Admin() {
                   />
                 )}
                 <div className="admin-post-item__info">
-                  <span className="admin-post-cat">{post.categoria}</span>
+                  <div className="admin-post-item__cats">
+                    <span className="admin-post-cat">{post.categoria}</span>
+                    {post.archivado && <span className="admin-post-badge-archivado">archivado</span>}
+                  </div>
                   <strong>{post.titulo}</strong>
                   <time>
                     {new Date(post.fecha + 'T12:00:00').toLocaleDateString('es-MX', {
@@ -402,6 +445,11 @@ export default function Admin() {
         </aside>
 
         <section className="admin-form-section">
+          {selectedId !== null && form.archivado && (
+            <div className="admin-archivado-banner">
+              Este artículo está archivado y no se muestra en el blog público.
+            </div>
+          )}
           <form onSubmit={handleSave} className="admin-form">
             <div className="admin-form__row">
               <div className="admin-form__field admin-form__field--grow">
@@ -511,6 +559,17 @@ export default function Admin() {
                   <button type="submit" className="btn-save" disabled={status === 'saving'}>
                     {status === 'saving' ? 'Guardando...' : selectedId !== null ? 'Actualizar' : 'Publicar'}
                   </button>
+                  {selectedId !== null && (
+                    form.archivado ? (
+                      <button type="button" className="btn-unarchive" disabled={status === 'saving'} onClick={() => handleArchive(false)}>
+                        Publicar de nuevo
+                      </button>
+                    ) : (
+                      <button type="button" className="btn-archive" disabled={status === 'saving'} onClick={() => handleArchive(true)}>
+                        Archivar
+                      </button>
+                    )
+                  )}
                   {selectedId !== null && (
                     <button type="button" className="btn-delete" onClick={() => setShowDeleteConfirm(true)}>
                       Eliminar

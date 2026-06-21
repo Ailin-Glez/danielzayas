@@ -31,4 +31,5 @@ export interface Post {
   extracto: string;
   categoria: string;
   contenido: string;
+  archivado?: boolean;
 }

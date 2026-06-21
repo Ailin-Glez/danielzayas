@@ -4,16 +4,17 @@ import { posts } from '../data';
 import { calcularLectura } from '../utils/lectura';
 import './Blog.css';
 
-const categorias = ['Todas', ...new Set(posts.map(p => p.categoria))];
+const categorias = ['Todas', 'Reseñas', 'Dossier', 'Crónicas'];
 const POR_PAGINA = 6;
 
 export default function Blog() {
   const [categoria, setCategoria] = useState('Todas');
   const [pagina, setPagina] = useState(0);
 
+  const activos = posts.filter(p => !p.archivado);
   const filtrados = categoria === 'Todas'
-    ? posts
-    : posts.filter(p => p.categoria === categoria);
+    ? activos
+    : activos.filter(p => p.categoria === categoria);
 
   const totalPaginas = Math.ceil(filtrados.length / POR_PAGINA);
   const visibles = filtrados.slice(pagina * POR_PAGINA, (pagina + 1) * POR_PAGINA);
@@ -58,6 +59,12 @@ export default function Blog() {
                 </button>
               ))}
             </div>
+
+            {filtrados.length === 0 && (
+              <p className="blog-sin-resultados">
+                Aún no hay artículos en esta categoría.
+              </p>
+            )}
 
             <div className="blog-grid">
               {visibles.map(post => (

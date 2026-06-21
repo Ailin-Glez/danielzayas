@@ -142,23 +142,23 @@
   transition: background var(--transition);
 }
 
-.filtro-btn[data-cat="Todas"]::before        { background: var(--earth-deep); }
-.filtro-btn[data-cat="Reseña"]::before       { background: var(--ochre); }
-.filtro-btn[data-cat="Presentación"]::before { background: var(--green-sprout); }
-.filtro-btn[data-cat="Textos"]::before       { background: #5C4E8A; }
+.filtro-btn[data-cat="Todas"]::before     { background: var(--earth-deep); }
+.filtro-btn[data-cat="Reseñas"]::before   { background: var(--ochre); }
+.filtro-btn[data-cat="Dossier"]::before   { background: var(--green-sprout); }
+.filtro-btn[data-cat="Crónicas"]::before  { background: #5C4E8A; }
 
 /* Hover */
-.filtro-btn[data-cat="Todas"]:not(.filtro-btn--active):hover        { background: var(--earth-deep);   border-color: var(--earth-deep);   color: white; }
-.filtro-btn[data-cat="Reseña"]:not(.filtro-btn--active):hover       { background: var(--ochre);        border-color: var(--ochre);        color: white; }
-.filtro-btn[data-cat="Presentación"]:not(.filtro-btn--active):hover { background: var(--green-sprout);  border-color: var(--green-sprout);  color: white; }
-.filtro-btn[data-cat="Textos"]:not(.filtro-btn--active):hover       { background: #5C4E8A;              border-color: #5C4E8A;              color: white; }
+.filtro-btn[data-cat="Todas"]:not(.filtro-btn--active):hover    { background: var(--earth-deep);  border-color: var(--earth-deep);  color: white; }
+.filtro-btn[data-cat="Reseñas"]:not(.filtro-btn--active):hover  { background: var(--ochre);       border-color: var(--ochre);       color: white; }
+.filtro-btn[data-cat="Dossier"]:not(.filtro-btn--active):hover  { background: var(--green-sprout); border-color: var(--green-sprout); color: white; }
+.filtro-btn[data-cat="Crónicas"]:not(.filtro-btn--active):hover { background: #5C4E8A;             border-color: #5C4E8A;             color: white; }
 .filtro-btn:not(.filtro-btn--active):hover::before { background: white; }
 
 /* Activo */
-.filtro-btn[data-cat="Todas"].filtro-btn--active        { background: var(--earth-deep);   border-color: var(--earth-deep);   color: white; box-shadow: 0 3px 10px rgba(58,21,0,0.25); }
-.filtro-btn[data-cat="Reseña"].filtro-btn--active       { background: var(--ochre);        border-color: var(--ochre);        color: white; box-shadow: 0 3px 10px rgba(200,135,58,0.3); }
-.filtro-btn[data-cat="Presentación"].filtro-btn--active { background: var(--green-sprout);  border-color: var(--green-sprout);  color: white; box-shadow: 0 3px 10px rgba(90,138,60,0.3); }
-.filtro-btn[data-cat="Textos"].filtro-btn--active       { background: #5C4E8A;              border-color: #5C4E8A;              color: white; box-shadow: 0 3px 10px rgba(92,78,138,0.3); }
+.filtro-btn[data-cat="Todas"].filtro-btn--active    { background: var(--earth-deep);  border-color: var(--earth-deep);  color: white; box-shadow: 0 3px 10px rgba(58,21,0,0.25); }
+.filtro-btn[data-cat="Reseñas"].filtro-btn--active  { background: var(--ochre);       border-color: var(--ochre);       color: white; box-shadow: 0 3px 10px rgba(200,135,58,0.3); }
+.filtro-btn[data-cat="Dossier"].filtro-btn--active  { background: var(--green-sprout); border-color: var(--green-sprout); color: white; box-shadow: 0 3px 10px rgba(90,138,60,0.3); }
+.filtro-btn[data-cat="Crónicas"].filtro-btn--active { background: #5C4E8A;             border-color: #5C4E8A;             color: white; box-shadow: 0 3px 10px rgba(92,78,138,0.3); }
 .filtro-btn.filtro-btn--active::before { background: rgba(255,255,255,0.6); }
 
 /* ── CÍRCULO CENTRAL ────────────────────────────────────── */
@@ -200,29 +200,29 @@
 
 
 /* ── COLORES POR CATEGORÍA ──────────────────────────────── */
-.blog-card[data-cat="Reseña"] {
+.blog-card[data-cat="Reseñas"] {
   border-top: 3px solid var(--ochre);
   background: linear-gradient(160deg, rgba(200,135,58,0.07) 0%, var(--cream-dark) 100%);
 }
-.blog-card[data-cat="Reseña"] .post-card__cat {
+.blog-card[data-cat="Reseñas"] .post-card__cat {
   background: rgba(200,135,58,0.15);
   color: var(--ochre-deep);
 }
 
-.blog-card[data-cat="Presentación"] {
+.blog-card[data-cat="Dossier"] {
   border-top: 3px solid var(--green-sprout);
   background: linear-gradient(160deg, rgba(90,138,60,0.07) 0%, var(--cream-dark) 100%);
 }
-.blog-card[data-cat="Presentación"] .post-card__cat {
+.blog-card[data-cat="Dossier"] .post-card__cat {
   background: rgba(90,138,60,0.12);
   color: var(--green-sprout);
 }
 
-.blog-card[data-cat="Textos"] {
+.blog-card[data-cat="Crónicas"] {
   border-top: 3px solid #5C4E8A;
   background: linear-gradient(160deg, rgba(92,78,138,0.07) 0%, var(--cream-dark) 100%);
 }
-.blog-card[data-cat="Textos"] .post-card__cat {
+.blog-card[data-cat="Crónicas"] .post-card__cat {
   background: rgba(92,78,138,0.12);
   color: #5C4E8A;
 }
@@ -432,4 +432,12 @@
 
 @media (max-width: 860px) {
   .post-card__time { display: none; }
+}
+
+.blog-sin-resultados {
+  font-family: var(--font-accent);
+  font-size: 1rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  padding: 2rem 0 1rem;
 }

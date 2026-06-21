@@ -97,7 +97,7 @@ export default function Home() {
           <div className="blog-preview__grid">
             {recentPosts.map(post => (
               <Link key={post.id} to={`/blog/${post.slug}`} className="post-card"
-                data-cat={post.categoria === 'Reseña' ? 'resena' : post.categoria === 'Presentación' ? 'presentacion' : 'textos'}>
+                data-cat={post.categoria === 'Reseñas' ? 'resenas' : post.categoria === 'Dossier' ? 'dossier' : 'cronicas'}>
                 <div className="post-card__meta">
                   <span className="post-card__cat">{post.categoria}</span>
                   <span className="post-card__time">{calcularLectura(post.contenido)}</span>
