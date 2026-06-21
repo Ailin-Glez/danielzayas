@@ -55,6 +55,13 @@ export default function BlogPost() {
                   <p key={i}>{renderInline(parrafo)}</p>
                 ))
             }
+            {post.linkCompra && (
+              <div className="blogpost-compra">
+                <a href={post.linkCompra} className="btn btn-primary blogpost-compra__btn" target="_blank" rel="noreferrer">
+                  Comprar libro
+                </a>
+              </div>
+            )}
           </article>
 
           {otrosPosts.length > 0 && (

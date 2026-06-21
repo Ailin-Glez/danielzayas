@@ -28,6 +28,7 @@ type FormData = {
   categoria: string;
   extracto: string;
   contenido: string;
+  linkCompra: string;
   archivado: boolean;
 };
 
@@ -39,6 +40,7 @@ function emptyForm(): FormData {
     categoria: 'Reseñas',
     extracto: '',
     contenido: '',
+    linkCompra: '',
     archivado: false,
   };
 }
@@ -127,6 +129,7 @@ export default function Admin() {
       categoria: post.categoria,
       extracto: post.extracto,
       contenido: post.contenido,
+      linkCompra: post.linkCompra ?? '',
       archivado: post.archivado ?? false,
     });
     editor?.commands.setContent(post.contenido || '<p></p>', { emitUpdate: false });
@@ -590,6 +593,18 @@ export default function Admin() {
                     rows={3}
                     placeholder="Breve resumen del artículo..."
                     required
+                  />
+                </div>
+
+                {/* Link de compra */}
+                <div className="admin-form__field">
+                  <label htmlFor="admin-link-compra">Link de compra <span className="admin-hint-inline">(opcional)</span></label>
+                  <input
+                    id="admin-link-compra"
+                    type="url"
+                    value={form.linkCompra}
+                    onChange={e => setForm(f => ({ ...f, linkCompra: e.target.value }))}
+                    placeholder="https://..."
                   />
                 </div>
 

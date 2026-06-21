@@ -32,5 +32,6 @@ export interface Post {
   categoria: string;
   contenido: string;
   imagen?: string;
+  linkCompra?: string;
   archivado?: boolean;
 }
