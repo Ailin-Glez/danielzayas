@@ -19,7 +19,9 @@ function FragmentoPanel({ libro, onClose }: { libro: Libro; onClose: () => void 
     return () => document.removeEventListener('keydown', onKey);
   }, [handleClose]);
 
-  const bloques = (libro.fragmento ?? '').split(/\n{2,}/);
+  const bloques = (libro.fragmento ?? '')
+    .replace(/\n[ \t]+\n/g, '\n\n')
+    .split(/\n{2,}/);
 
   return (
     <>
@@ -44,31 +46,44 @@ function FragmentoPanel({ libro, onClose }: { libro: Libro; onClose: () => void 
           {bloques.map((bloque, i) => {
             const trimmed = bloque.trim();
             if (!trimmed) return null;
-            const esTitulo =
-              trimmed === trimmed.toUpperCase() &&
-              trimmed.length < 80 &&
-              trimmed.split(' ').length <= 14 &&
-              trimmed.split(' ').every(w => /^[A-ZÁÉÍÓÚÜÑ\d]+$/.test(w));
-            if (esTitulo) return <h3 key={i} className="fragmento-seccion">{trimmed}</h3>;
+
+            const esNumeralRomano = (t: string) => /^[IVXivx]+$/.test(t.trim()) && t.trim().length <= 5;
+            const esLineaTitulo = (l: string) => {
+              const t = l.trim();
+              return !esNumeralRomano(t) &&
+                t === t.toUpperCase() &&
+                t.length < 100 &&
+                t.split(' ').length <= 14 &&
+                t.split(' ').every(w => /^[A-ZÁÉÍÓÚÜÑ\d]+$/.test(w));
+            };
+
+            const lineasBloque = trimmed.split('\n').map(l => l.trim()).filter(Boolean);
+            const todasSonTitulo = lineasBloque.length >= 1 && lineasBloque.every(l => esLineaTitulo(l));
+            if (todasSonTitulo && !esNumeralRomano(trimmed)) {
+              return <h3 key={i} className="fragmento-seccion">{lineasBloque.join(' ')}</h3>;
+            }
+
             const esBloqueCursiva = trimmed.startsWith('*') && trimmed.endsWith('*') && !trimmed.startsWith('**');
             const contenido = esBloqueCursiva ? trimmed.slice(1, -1).trim() : trimmed;
             const lineas = contenido.split('\n');
             const esPoesia = lineas.length > 1 && lineas.filter(l => l.trim().length < 70).length > lineas.length * 0.6;
             if (esPoesia) {
-              const esTituloLinea = (l: string) => {
-                const t = l.trim();
-                return t === t.toUpperCase() && t.length < 80 && t.split(' ').length <= 14 && t.split(' ').every(w => /^[A-ZÁÉÍÓÚÜÑ\d]+$/.test(w));
-              };
-              const primeraEsTitulo = esTituloLinea(lineas[0]);
+              const primeraEsTitulo = esLineaTitulo(lineas[0]) && !esNumeralRomano(lineas[0]);
               const versos = primeraEsTitulo ? lineas.slice(1) : lineas;
               return (
                 <span key={i}>
                   {primeraEsTitulo && <h3 className="fragmento-seccion">{lineas[0].trim()}</h3>}
                   {versos.length > 0 && (
                     <p className="fragmento-parrafo fragmento-parrafo--verso">
-                      {versos.map((linea, j) => (
-                        <span key={j}>{renderInline(linea)}<br /></span>
-                      ))}
+                      {versos.map((linea, j) => {
+                        const esDedicatoria = linea.trimStart().startsWith('>');
+                        const textoLinea = esDedicatoria ? linea.trimStart().slice(1).trim() : linea;
+                        return (
+                          <span key={j} className={esDedicatoria ? 'fragmento-dedicatoria' : undefined}>
+                            {renderInline(textoLinea)}<br />
+                          </span>
+                        );
+                      })}
                     </p>
                   )}
                 </span>
@@ -76,9 +91,15 @@ function FragmentoPanel({ libro, onClose }: { libro: Libro; onClose: () => void 
             }
             return (
               <p key={i} className={`fragmento-parrafo${esBloqueCursiva ? ' fragmento-parrafo--carta' : ''}`}>
-                {lineas.map((linea, j) => (
-                  <span key={j} className="fragmento-linea">{renderInline(linea)}</span>
-                ))}
+                {lineas.map((linea, j) => {
+                  const esDedicatoria = linea.trimStart().startsWith('>');
+                  const textoLinea = esDedicatoria ? linea.trimStart().slice(1).trim() : linea;
+                  return (
+                    <span key={j} className={esDedicatoria ? 'fragmento-dedicatoria' : 'fragmento-linea'}>
+                      {renderInline(textoLinea)}
+                    </span>
+                  );
+                })}
               </p>
             );
           })}
@@ -203,7 +224,7 @@ export default function Libros() {
                   </div>
                 </div>
                 <blockquote className="reseña libro-sinopsis">
-                  {selected.sinopsis}
+                  {renderInline(selected.sinopsis)}
                   {selected.autorPalabras && <cite>— {selected.autorPalabras}</cite>}
                 </blockquote>
               </div>

@@ -65,7 +65,8 @@ Desde esta mañana soy el recién llegado. Todos me miran al pasar. Dentro de po
 
 Recibe un beso y perdóname por el mal aliento. Son los tragos de ron que tomé. Luego de la seguidilla de rancheras, en la radio pusieron una canción de Bola de Nieve. La voz ronca de Bola anunciaba: *No puedo ser feliz, no te puedo olvidar, siento que te perdí y eso me hace pensar. He renunciado a ti, ardiente de pasión, no sé puede tener, conciencia y corazón.* Parecía sufrir cada palabra pronunciada. No sé cómo termina la canción porque abuelo echó mano de la radio y buscó otra emisora mexicana. La voz de aquel hombre se quedó durante horas en mi cabeza. Su lamento también era mío. Creo que hasta sentí un poco de odio contra mi abuelo por arrebatarme aquel momento. Un trago de ron y esa canción era lo que necesitaba. *No puedo ser feliz, no te puedo olvidar, siento que te perdí…* Intento canturrear la canción, Isabel, pero la melodía fue fugaz, no la recuerdo. Solo me queda esa frase y tu ausencia.
 
-Danilo`,
+
+>Danilo`,
   reseñas: [],
   compra: { amazon: 'https://a.co/d/06TleR3m', fragmento: '#' },
 };

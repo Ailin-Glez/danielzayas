@@ -9,7 +9,7 @@ const libro: Libro = {
   editorial: 'Ediciones Áncoras',
   portada: '/portadas/viendo-caer.jpg',
   color: '#5A6B7A',
-  sinopsis: `Viendo caer los pájaros reivindica el significado antropológico de la finitud. Es una prueba de la libertad en el contexto de sus tensiones antinómicas, pues solo es verdaderamente libre el que es consciente del fin, constricción por excelencia. Por ello, la firmeza de estas páginas no delata pesimismo, sino una fe serena en el sentido de la muerte que tampoco peca de optimista. Impasible sería la palabra, pero sin desdeñar su aspecto positivo, pues las utilidades éticas de esta postura son provechosas.`,
+  sinopsis: `*Viendo caer los pájaros* reivindica el significado antropológico de la finitud. Es una prueba de la libertad en el contexto de sus tensiones antinómicas, pues solo es verdaderamente libre el que es consciente del fin, constricción por excelencia. Por ello, la firmeza de estas páginas no delata pesimismo, sino una fe serena en el sentido de la muerte que tampoco peca de optimista. *Impasible* sería la palabra, pero sin desdeñar su aspecto positivo, pues las utilidades éticas de esta postura son provechosas.`,
   fragmento: `POEMA EN EL QUE ABUELA PREGUNTA POR SUS PERROS
 
 *Que seas feliz, feliz, feliz…*
@@ -30,8 +30,8 @@ ella vuelve a preguntar por sus perros,
 a rogar que no los maltraten,
 a exigir el almuerzo que niega haber comido
 o a entonar las notas de esa canción.
-*Que seas feliz, feliz, feliz
-es todo lo que pido en esta despedida…*
+*Que seas feliz, feliz, feliz*
+*es todo lo que pido en esta despedida…*
 Y yo vuelvo a quedar sin edad ni rostro
 como esas líneas inconclusas
 en una pared de su cuarto.

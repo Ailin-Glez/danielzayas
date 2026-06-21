@@ -567,6 +567,15 @@
   display: block;
 }
 
+.fragmento-dedicatoria {
+  display: block;
+  text-align: right;
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
 .fragmento-parrafo--carta {
   font-style: italic;
 }
