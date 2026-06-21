@@ -143,7 +143,7 @@ export default function Home() {
             )}
           </div>
           <div className="featured-book__info">
-            <span className="section-label">Último libro</span>
+            <span className="section-label">Último libro publicado</span>
             <h2>{ultimoLibro.titulo}</h2>
             <div className="divider" />
             <p className="featured-book__meta">

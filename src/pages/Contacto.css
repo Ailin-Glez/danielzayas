@@ -1,53 +1,208 @@
-.page-contacto .page-hero--sm {
-  padding: 8rem 0 3rem;
-  background: linear-gradient(160deg, var(--cream-dark) 0%, var(--cream) 100%);
+/* ── HERO ──────────────────────────────────────────────────── */
+.contacto-hero {
+  background: var(--earth-deep);
+  padding: 8rem 0 5rem;
+  position: relative;
+  overflow: hidden;
 }
 
-.contacto-inner {
+.contacto-hero__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.contacto-hero__text .section-label {
+  color: var(--ochre);
+}
+
+.contacto-hero__text h1 {
+  color: var(--cream);
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1;
+  margin: 0.4rem 0 1.25rem;
+}
+
+.contacto-hero__text p {
+  color: rgba(250,244,232,0.7);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.contacto-hero__deco {
+  flex-shrink: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.contacto-deco-letter {
+  font-family: var(--font-display);
+  font-size: clamp(8rem, 18vw, 16rem);
+  font-weight: 900;
+  font-style: italic;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(200,135,58,0.25);
+  line-height: 1;
+  display: block;
+}
+
+/* ── GRID PRINCIPAL ─────────────────────────────────────────── */
+.contacto-body {
+  background: var(--cream);
+}
+
+.contacto-grid {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 320px 1fr;
   gap: 5rem;
   align-items: start;
 }
 
-.info-card {
+/* ── ASIDE (tarjetas) ───────────────────────────────────────── */
+.contacto-aside {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(200,135,58,0.15);
-  margin-bottom: 1.5rem;
+  gap: 1rem;
+  position: sticky;
+  top: 6rem;
 }
 
-.info-card a {
+.contacto-card {
+  background: white;
+  border: 1px solid rgba(200,135,58,0.14);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 2px 12px rgba(58,21,0,0.05);
+  transition: box-shadow var(--transition);
+}
+
+.contacto-card:hover {
+  box-shadow: 0 6px 24px rgba(58,21,0,0.09);
+}
+
+.contacto-card__icon {
+  font-size: 1.25rem;
+  color: var(--ochre);
+  margin-bottom: 0.1rem;
+}
+
+.contacto-card__label {
+  font-family: var(--font-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  opacity: 0.6;
+}
+
+.contacto-card__value {
+  font-family: var(--font-accent);
+  font-size: 0.97rem;
+  color: var(--earth-deep);
+  word-break: break-all;
+  transition: color var(--transition);
+}
+
+.contacto-card__value:hover {
+  color: var(--ochre-deep);
+}
+
+/* Redes */
+.contacto-redes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.contacto-red {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid transparent;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.contacto-red:hover {
+  transform: translateX(4px);
+}
+
+.contacto-red svg { flex-shrink: 0; }
+
+.contacto-red span:first-of-type {
+  font-family: var(--font-accent);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.contacto-red__handle {
+  font-family: var(--font-accent);
+  font-size: 0.78rem;
+  margin-left: auto;
+  opacity: 0.55;
+}
+
+/* Instagram */
+.contacto-red--instagram {
+  background: transparent;
+  border-color: #c1356d;
+  color: var(--earth-deep);
+}
+
+.contacto-red--instagram:hover {
+  background: transparent;
+  border-color: #a3005f;
+}
+
+/* Facebook */
+.contacto-red--facebook {
+  background: transparent;
+  border-color: #1877f2;
+  color: var(--earth-deep);
+}
+
+.contacto-red--facebook:hover {
+  background: transparent;
+  border-color: #0a52d4;
+}
+
+/* Nota */
+.contacto-card--nota {
+  background: rgba(200,135,58,0.06);
+  border-color: rgba(200,135,58,0.18);
+}
+
+.contacto-card--nota p {
   font-family: var(--font-accent);
   font-size: 1rem;
-  color: var(--earth);
+  line-height: 1.75;
+  color: var(--ink-soft);
+  margin: 0;
 }
 
-.info-card a:hover { color: var(--ochre-deep); }
-
-.info-card p {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  margin-bottom: 0;
+.contacto-card--nota em {
+  color: var(--ochre-deep);
+  font-style: italic;
 }
 
-.info-card--nota {
-  background: rgba(200,135,58,0.06);
-  padding: 1rem 1.25rem;
-  border-radius: var(--radius-md);
-  border: none;
-  margin-bottom: 0;
+/* ── FORMULARIO ─────────────────────────────────────────────── */
+.contacto-form-wrap {
+  padding-top: 0.5rem;
 }
 
-.info-card--nota em { color: var(--ochre-deep); }
-
-/* ── FORM ──────────────────────────────────────────────── */
 .contacto-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.4rem;
 }
 
 .form-row {
@@ -59,12 +214,13 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.5rem;
 }
 
 .form-group label {
   font-family: var(--font-accent);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -73,14 +229,14 @@
 .form-group input,
 .form-group select,
 .form-group textarea {
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1.1rem;
   border: 1.5px solid rgba(107,58,31,0.15);
   border-radius: var(--radius-sm);
-  background: var(--cream-dark);
+  background: white;
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 0.95rem;
-  transition: border-color var(--transition);
+  font-size: 0.97rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
   resize: vertical;
 }
 
@@ -89,33 +245,71 @@
 .form-group textarea:focus {
   outline: none;
   border-color: var(--ochre);
-  background: white;
+  box-shadow: 0 0 0 3px rgba(200,135,58,0.12);
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: rgba(107,58,31,0.35);
+  color: rgba(107,58,31,0.3);
 }
 
-.btn-full {
-  width: 100%;
-  justify-content: center;
-  padding: 0.9rem;
+.contacto-submit {
+  align-self: flex-start;
+  padding: 0.85rem 2.5rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
 }
 
-/* Éxito */
+/* ── ÉXITO ──────────────────────────────────────────────────── */
 .form-exito {
   text-align: center;
-  padding: 4rem 2rem;
-  background: var(--cream-dark);
+  padding: 5rem 2rem;
+  background: white;
+  border: 1px solid rgba(200,135,58,0.15);
   border-radius: var(--radius-lg);
+  box-shadow: 0 4px 24px rgba(58,21,0,0.06);
 }
 
-.form-exito span { font-size: 3rem; display: block; margin-bottom: 1rem; }
-.form-exito h3 { margin-bottom: 0.5rem; }
-.form-exito p { color: var(--ink-soft); }
+.form-exito__icono {
+  font-size: 3rem;
+  margin-bottom: 1.25rem;
+}
 
-@media (max-width: 860px) {
-  .contacto-inner { grid-template-columns: 1fr; gap: 3rem; }
+.form-exito h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+}
+
+.form-exito p {
+  color: var(--ink-soft);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .contacto-hero__deco { display: none; }
+
+  .contacto-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .contacto-aside {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .contacto-card { flex: 1 1 260px; }
+
   .form-row { grid-template-columns: 1fr; }
+
+  .contacto-submit { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .contacto-hero { padding: 7rem 0 3.5rem; }
+  .contacto-aside { flex-direction: column; }
+  .contacto-card { flex: unset; }
 }

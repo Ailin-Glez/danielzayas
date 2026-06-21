@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import danielImg from '../assets/img/daniel.jpg';
 import './SobreMi.css';
 
 const premios = [
@@ -75,9 +76,7 @@ export default function SobreMi() {
       <section className="section">
         <div className="container sobre-inner">
           <div className="sobre-foto">
-            <div className="foto-placeholder">
-              <span>DZ</span>
-            </div>
+            <img src={danielImg} alt="Daniel Zayas" className="sobre-foto__img" />
           </div>
 
           <div className="sobre-texto">
@@ -89,7 +88,7 @@ export default function SobreMi() {
 
             <div className="sobre-acciones">
               <Link to="/libros" className="btn btn-primary">Ver mis libros</Link>
-              <Link to="/contacto" className="btn btn-outline">Escribirme</Link>
+              <Link to="/contacto" className="btn btn-contacto">Escribirme</Link>
             </div>
 
             <div className="premios-section">

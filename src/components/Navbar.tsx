@@ -19,9 +19,13 @@ export default function Navbar() {
     ? 'blog'
     : location.pathname === '/libros'
     ? 'libros'
+    : location.pathname === '/sobre-mi'
+    ? 'sobre-mi'
+    : location.pathname === '/contacto'
+    ? 'contacto'
     : 'home';
 
-  const forceScrolled = location.pathname.startsWith('/blog/');
+  const forceScrolled = location.pathname.startsWith('/blog/') || pageTheme === 'contacto';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -49,9 +53,7 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
-          <Link to="/newsletter" className="btn navbar__cta">
-            Newsletter
-          </Link>
+          {/* Newsletter oculto hasta próxima implementación */}
         </nav>
 
         <button

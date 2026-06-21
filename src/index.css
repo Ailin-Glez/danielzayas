@@ -141,25 +141,41 @@ img { max-width: 100%; display: block; }
 }
 
 .btn-primary {
-  background: var(--earth-deep);
+  background: linear-gradient(135deg, var(--green-sprout) 0%, #3d6e28 100%);
   color: var(--cream);
+  box-shadow: 0 4px 14px rgba(90,138,60,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
 }
 .btn-primary:hover {
-  background: var(--terra-dark);
+  background: linear-gradient(135deg, #3d6e28 0%, #2e5018 100%);
   color: var(--cream);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(58,21,0,0.25);
+  box-shadow: 0 7px 22px rgba(90,138,60,0.42), inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
 .btn-outline {
   background: transparent;
-  color: var(--earth-deep);
-  border: 1.5px solid var(--earth-deep);
+  color: var(--ochre-deep);
+  border: 1.5px solid var(--ochre);
 }
 .btn-outline:hover {
-  background: var(--earth-deep);
+  background: var(--ochre);
+  border-color: var(--ochre);
   color: var(--cream);
   transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(200,135,58,0.35);
+}
+
+.btn-contacto {
+  background: transparent;
+  color: #8b5e1a;
+  border: 1.5px solid #c8873a;
+}
+.btn-contacto:hover {
+  background: linear-gradient(135deg, #c8873a 0%, #a86820 100%);
+  border-color: #c8873a;
+  color: var(--cream);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(200,135,58,0.4);
 }
 
 .btn-ochre {
