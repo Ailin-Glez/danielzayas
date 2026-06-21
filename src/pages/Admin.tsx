@@ -217,9 +217,12 @@ export default function Admin() {
 
     const action = selectedId === null ? 'create' : 'update';
     const basePayload = selectedId !== null ? { ...form, id: selectedId } : form;
-    const postPayload = croppedImage
-      ? { ...basePayload, imagenData: croppedImage }
+    const withExisting = existingImage && !croppedImage
+      ? { ...basePayload, imagen: existingImage }
       : basePayload;
+    const postPayload = croppedImage
+      ? { ...withExisting, imagenData: croppedImage }
+      : withExisting;
 
     try {
       const res = await fetch('/.netlify/functions/save-post', {
