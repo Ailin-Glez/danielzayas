@@ -101,11 +101,6 @@ export default function Home() {
               Daniel<br />
               <em>Zayas</em>
             </h1>
-            <p className="hero__lead">
-              Escribo en los márgenes. Entre el ensayo y el poema,
-              entre la crónica y el cuerpo. Varios libros publicados,
-              incontables palabras todavía bajo tierra.
-            </p>
             <div className="hero__actions">
               <Link to="/libros" className="btn btn-primary">Ver mis libros</Link>
               <Link to="/blog" className="btn btn-outline">Partos bajo tierra →</Link>
