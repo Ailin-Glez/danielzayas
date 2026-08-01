@@ -16,7 +16,7 @@ export default function Newsletter() {
           Estoy preparando el espacio. Mientras tanto, si quieres que te avise
           cuando esté listo, escríbeme.
         </p>
-        <a href="/contacto" className="btn btn-primary">Avisarme cuando esté listo</a>
+        <a href="/sobre-mi#contacto" className="btn btn-primary">Avisarme cuando esté listo</a>
         <div className="newsletter-preview">
           <span className="section-label">Qué esperar</span>
           <ul>

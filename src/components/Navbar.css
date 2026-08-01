@@ -37,12 +37,6 @@
   box-shadow: 0 1px 0 rgba(140,60,40,0.14);
 }
 
-/* Contacto — ámbar dorado */
-.navbar--contacto.navbar--scrolled {
-  background: rgba(235, 215, 155, 0.97);
-  box-shadow: 0 1px 0 rgba(140,100,20,0.14);
-}
-
 .navbar__inner {
   max-width: 1180px;
   margin: 0 auto;

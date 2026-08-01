@@ -7,7 +7,6 @@ const links = [
   { to: '/libros',   label: 'Libros' },
   { to: '/blog',     label: 'Partos bajo tierra' },
   { to: '/sobre-mi', label: 'Sobre mí' },
-  { to: '/contacto', label: 'Contacto' },
 ];
 
 export default function Navbar() {
@@ -21,11 +20,9 @@ export default function Navbar() {
     ? 'libros'
     : location.pathname === '/sobre-mi'
     ? 'sobre-mi'
-    : location.pathname === '/contacto'
-    ? 'contacto'
     : 'home';
 
-  const forceScrolled = location.pathname.startsWith('/blog/') || pageTheme === 'contacto';
+  const forceScrolled = location.pathname.startsWith('/blog/');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);

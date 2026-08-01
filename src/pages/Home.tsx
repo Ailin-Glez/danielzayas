@@ -96,7 +96,6 @@ export default function Home() {
       <section className="hero">
 <div className="container hero__inner">
           <div className="hero__content">
-            <span className="section-label">escritor</span>
             <h1 className="hero__title">
               Daniel<br />
               <em>Zayas</em>
@@ -150,18 +149,18 @@ export default function Home() {
                 <div className="featured-book__fragmento-cuerpo">
                   {renderPrimerSeccion(ultimoLibro.fragmento, ultimoLibro.titulo)}
                 </div>
-                <Link to="/libros" className="featured-book__fragmento-link">Leer fragmento completo →</Link>
               </div>
             ) : (
               <p>{ultimoLibro.sinopsis}</p>
             )}
-            {ultimoLibro.reseñas[0] && (
-              <blockquote className="featured-book__quote">
-                "{ultimoLibro.reseñas[0].texto}"
-                <cite>— {ultimoLibro.reseñas[0].fuente}</cite>
-              </blockquote>
-            )}
             <div className="featured-book__actions">
+              {ultimoLibro.fragmento && (
+                <Link
+                  to="/libros"
+                  state={{ libroId: ultimoLibro.id, abrirFragmento: true }}
+                  className="btn btn-outline"
+                >Leer fragmento completo →</Link>
+              )}
               <Link to="/libros" className="btn btn-primary">Todos los libros</Link>
               {ultimoLibro.compra.amazon && (
                 <a href={ultimoLibro.compra.amazon} className="btn btn-compra" target="_blank" rel="noreferrer">

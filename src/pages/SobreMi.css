@@ -1,6 +1,21 @@
+.page-sobre-mi {
+  background: var(--cream);
+}
+
 .page-sobre-mi .page-hero--sm {
-  padding: 8rem 0 3rem;
-  background: linear-gradient(160deg, var(--cream-dark) 0%, var(--cream) 100%);
+  padding: 6.5rem 0 2.5rem;
+}
+
+.page-sobre-mi .page-hero--sm .section-label {
+  color: var(--ochre-deep);
+}
+
+.page-sobre-mi .page-hero--sm h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+
+.page-sobre-mi .sobre-bio {
+  padding-top: 1rem;
 }
 
 .sobre-inner {

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { libros } from '../data';
 import type { Libro } from '../types';
 import { renderInline } from '../utils/renderInline';
@@ -129,6 +130,7 @@ export default function Libros() {
     } catch { return null; }
   });
   const [panelFragmento, setPanelFragmento] = useState<Libro | null>(null);
+  const location = useLocation();
 
   const selected: Libro | null = selectedId !== null
     ? (libros.find(l => l.id === selectedId) ?? null)
@@ -152,6 +154,17 @@ export default function Libros() {
   useEffect(() => {
     if (isFirstRender.current) { isFirstRender.current = false; }
   }, [selectedId]);
+
+  useEffect(() => {
+    const state = location.state as { libroId?: number; abrirFragmento?: boolean } | null;
+    if (!state?.libroId) return;
+    const libro = libros.find(l => l.id === state.libroId);
+    if (!libro) return;
+    handleSelect(libro);
+    if (state.abrirFragmento) handleFragmento(libro);
+    window.history.replaceState({}, '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state]);
 
   useEffect(() => {
     document.body.style.overflow = panelFragmento ? 'hidden' : '';
