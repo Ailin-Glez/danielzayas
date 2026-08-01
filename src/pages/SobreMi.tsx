@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import danielImg from '../assets/img/daniel.jpg';
 import './SobreMi.css';
@@ -65,17 +64,6 @@ const antologias = [
 const revistas = ['Amnios', 'Caimán Barbudo', 'Ariel', 'Dossier'];
 
 export default function SobreMi() {
-  const [form, setForm] = useState({ nombre: '', correo: '', asunto: '', mensaje: '' });
-  const [enviado, setEnviado] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-    setForm(f => ({ ...f, [e.target.name]: e.target.value }));
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setEnviado(true);
-  };
-
   return (
     <main className="page-sobre-mi">
       <div className="page-hero page-hero--sm">
@@ -90,75 +78,8 @@ export default function SobreMi() {
         <div className="container sobre-inner">
           <div className="sobre-foto">
             <img src={danielImg} alt="Daniel Zayas" className="sobre-foto__img" />
-          </div>
 
-          <div className="sobre-texto">
-            <p className="sobre-intro">
-              Daniel Zayas Aguilera (Isla de la Juventud, 1987). Licenciado en
-              Estudios Socioculturales. Egresado del Centro de Formación
-              Literaria Onelio Jorge Cardoso.
-            </p>
-
-            <div className="sobre-acciones">
-              <Link to="/libros" className="btn btn-primary">Ver mis libros</Link>
-              <a href="#contacto" className="btn btn-contacto">Escribirme</a>
-            </div>
-
-            <div className="premios-section">
-              <span className="section-label">Premios</span>
-              <div className="premios-timeline">
-                {premios.map(({ año, items }) => (
-                  <div key={año} className="timeline-grupo">
-                    <div className="timeline-año">{año}</div>
-                    <div className="timeline-linea">
-                      <div className="timeline-dot" />
-                      <div className="timeline-bar" />
-                    </div>
-                    <div className="timeline-contenido">
-                      <ul className="timeline-items">
-                        {items.map((item, i) => (
-                          <li
-                            key={i}
-                            dangerouslySetInnerHTML={{ __html: item }}
-                          />
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="sobre-apariciones">
-              <span className="section-label">Antologías</span>
-              <p className="apariciones-texto">
-                Ha sido incluido en las antologías: <em>{antologias.join(', ')}</em>.
-              </p>
-            </div>
-
-            <div className="sobre-apariciones" style={{ marginTop: '2rem' }}>
-              <span className="section-label">Revistas</span>
-              <p className="apariciones-texto">
-                Textos suyos han aparecido en las revistas: <em>{revistas.join(', ')}</em>.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CONTACTO ── */}
-      <section id="contacto" className="section contacto-body">
-        <div className="container contacto-layout">
-
-          <div className="contacto-intro">
-            <span className="section-label">Escribirme</span>
-            <h2>Hablemos</h2>
-            <p className="contacto-intro__texto">
-              Para entrevistas, presentaciones, talleres, colaboraciones
-              o simplemente decir hola.
-            </p>
-
-            <ul className="contacto-links">
+            <ul className="contacto-links" id="contacto">
               <li>
                 <a href="mailto:partosbajotierra@gmail.com" className="contacto-links__item">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -197,61 +118,52 @@ export default function SobreMi() {
                 </a>
               </li>
             </ul>
+          </div>
 
-            <p className="contacto-intro__nota">
-              Respondo todos los mensajes, aunque si a veces demoro — <em>es porque estoy escribiendo</em>.
+          <div className="sobre-texto">
+            <p className="sobre-intro">
+              Daniel Zayas Aguilera <em>(Isla de la Juventud, 1987)</em>. Licenciado en
+              Estudios Socioculturales. Egresado del Centro de Formación
+              Literaria Onelio Jorge Cardoso.
             </p>
-          </div>
 
-          <div className="contacto-form-wrap">
-            {enviado ? (
-              <div className="form-exito">
-                <div className="form-exito__icono">🌱</div>
-                <h3>Mensaje recibido</h3>
-                <p>Gracias por escribir. Te respondo pronto.</p>
+            <div className="sobre-acciones">
+              <Link to="/libros" className="btn btn-primary">Ver mis libros</Link>
+            </div>
+
+            <div className="premios-section">
+              <span className="section-label">Premios</span>
+              <div className="premios-timeline">
+                {premios.map(({ año, items }) => (
+                  <div key={año} className="timeline-grupo">
+                    <div className="timeline-año">{año}</div>
+                    <div className="timeline-linea">
+                      <div className="timeline-dot" />
+                      <div className="timeline-bar" />
+                    </div>
+                    <div className="timeline-contenido">
+                      <ul className="timeline-items">
+                        {items.map((item, i) => (
+                          <li
+                            key={i}
+                            dangerouslySetInnerHTML={{ __html: item }}
+                          />
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ) : (
-              <form className="contacto-form" onSubmit={handleSubmit}>
-                <div className="form-row">
-                  <div className={`field ${form.nombre ? 'field--filled' : ''}`}>
-                    <input id="nombre" name="nombre" type="text" value={form.nombre} onChange={handleChange} required placeholder=" " />
-                    <label htmlFor="nombre">Nombre</label>
-                  </div>
-                  <div className={`field ${form.correo ? 'field--filled' : ''}`}>
-                    <input id="correo" name="correo" type="email" value={form.correo} onChange={handleChange} required placeholder=" " />
-                    <label htmlFor="correo">Correo</label>
-                  </div>
-                </div>
+            </div>
 
-                <div className="field field--select field--filled">
-                  <select id="asunto" name="asunto" value={form.asunto} onChange={handleChange} required>
-                    <option value="" disabled hidden>Selecciona un tema…</option>
-                    <option value="entrevista">Entrevista / prensa</option>
-                    <option value="presentacion">Presentación de libro</option>
-                    <option value="taller">Taller o conferencia</option>
-                    <option value="colaboracion">Colaboración</option>
-                    <option value="derechos">Derechos editoriales</option>
-                    <option value="otro">Otro</option>
-                  </select>
-                  <label htmlFor="asunto">Asunto</label>
-                </div>
-
-                <div className={`field ${form.mensaje ? 'field--filled' : ''}`}>
-                  <textarea id="mensaje" name="mensaje" rows={4} value={form.mensaje} onChange={handleChange} required placeholder=" " />
-                  <label htmlFor="mensaje">Mensaje</label>
-                </div>
-
-                <button type="submit" className="contacto-submit-btn">
-                  <span>Enviar mensaje</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                    <polyline points="12,5 19,12 12,19"/>
-                  </svg>
-                </button>
-              </form>
-            )}
           </div>
+        </div>
 
+        <div className="container">
+          <p className="sobre-nota">
+            Ha sido incluido en las antologías <em>{antologias.join(', ')}</em>,
+            {' '}y sus textos han aparecido en las revistas <em>{revistas.join(', ')}</em>.
+          </p>
         </div>
       </section>
     </main>

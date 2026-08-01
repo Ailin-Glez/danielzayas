@@ -3,7 +3,7 @@
 }
 
 .page-sobre-mi .page-hero--sm {
-  padding: 6.5rem 0 2.5rem;
+  padding: 9rem 0 2.5rem;
 }
 
 .page-sobre-mi .page-hero--sm .section-label {
@@ -15,7 +15,7 @@
 }
 
 .page-sobre-mi .sobre-bio {
-  padding-top: 1rem;
+  padding-top: 2rem;
 }
 
 .sobre-inner {
@@ -37,7 +37,6 @@
 
 .sobre-intro {
   font-size: 1.15rem;
-  font-style: italic;
   color: var(--earth);
   line-height: 1.7;
   margin-bottom: 2rem;
@@ -129,18 +128,22 @@
   line-height: 1.5;
 }
 
-/* ── Apariciones ── */
+/* ── Nota (antologías / revistas) ── */
 
-.sobre-apariciones {
-  padding-top: 2.5rem;
+.sobre-nota {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
   border-top: 1px solid rgba(200,135,58,0.2);
+  font-family: var(--font-accent);
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  max-width: none;
 }
 
-.apariciones-texto {
-  margin-top: 0.75rem;
-  font-size: 0.95rem;
-  color: var(--ink-soft);
-  line-height: 1.6;
+.sobre-nota em {
+  color: var(--ochre-deep);
+  font-style: italic;
 }
 
 @media (max-width: 860px) {

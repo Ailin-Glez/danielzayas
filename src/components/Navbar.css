@@ -13,28 +13,13 @@
   padding: 0.85rem 0;
 }
 
-/* Home — beige cálido */
-.navbar--home.navbar--scrolled {
-  background: rgba(248, 238, 218, 0.97);
-  box-shadow: 0 1px 0 rgba(107,58,31,0.1);
-}
-
-/* Libros — marrón tierra suave */
-.navbar--libros.navbar--scrolled {
-  background: rgba(232, 210, 182, 0.97);
-  box-shadow: 0 1px 0 rgba(107,58,31,0.15);
-}
-
-/* Blog — verde claro */
-.navbar--blog.navbar--scrolled {
+/* Fondo verde consistente en toda la web al hacer scroll */
+.navbar--home.navbar--scrolled,
+.navbar--libros.navbar--scrolled,
+.navbar--blog.navbar--scrolled,
+.navbar--sobre-mi.navbar--scrolled {
   background: rgba(210, 232, 195, 0.97);
   box-shadow: 0 1px 0 rgba(58,102,32,0.12);
-}
-
-/* Sobre mí — terracota rosada */
-.navbar--sobre-mi.navbar--scrolled {
-  background: rgba(228, 195, 178, 0.97);
-  box-shadow: 0 1px 0 rgba(140,60,40,0.14);
 }
 
 .navbar__inner {

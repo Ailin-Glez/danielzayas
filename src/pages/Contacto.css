@@ -1,38 +1,9 @@
-/* ── SECCIÓN "HABLEMOS" ───────────────────────────────────────
-   Vive dentro de la página Sobre mí, comparte su fondo cream.   */
-.contacto-body {
-  border-top: 1px solid rgba(200,135,58,0.2);
-}
-
-.contacto-layout {
-  display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 5rem;
-  align-items: start;
-}
-
-/* ── Columna izquierda ─────────────────────────────────────── */
-.contacto-intro h2 {
-  margin: 0.4rem 0 1.25rem;
-}
-
-.contacto-intro h2 em {
-  font-style: italic;
-  color: var(--ochre-deep);
-}
-
-.contacto-intro__texto {
-  font-size: 1.05rem;
-  line-height: 1.75;
-  color: var(--ink-soft);
-  max-width: 26rem;
-  margin-bottom: 2.5rem;
-}
-
+/* ── CONTACTO (email + redes) ─────────────────────────────────
+   Va debajo de la foto de autor, en la columna izquierda.       */
 .contacto-links {
   list-style: none;
   padding: 0;
-  margin: 0 0 2.5rem;
+  margin: 3rem 0 0;
   display: flex;
   flex-direction: column;
 }
@@ -48,11 +19,12 @@
 .contacto-links__item {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
-  padding: 0.9rem 0;
+  gap: 0.75rem;
+  padding: 0.8rem 0;
   font-family: var(--font-accent);
-  font-size: 1rem;
+  font-size: 0.92rem;
   color: var(--earth-deep);
+  word-break: break-word;
   transition: color var(--transition), gap var(--transition);
 }
 
@@ -64,192 +36,9 @@
 
 .contacto-links__item:hover {
   color: var(--ochre-deep);
-  gap: 1.15rem;
+  gap: 1rem;
 }
 
 .contacto-links__item:hover svg {
   color: var(--terra-dark);
-}
-
-.contacto-intro__nota {
-  font-family: var(--font-accent);
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--ink-soft);
-  opacity: 0.75;
-  margin: 0;
-}
-
-.contacto-intro__nota em {
-  color: var(--ochre-deep);
-  font-style: italic;
-}
-
-/* ── Formulario (underline, sin caja) ─────────────────────────── */
-.contacto-form {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.field {
-  position: relative;
-}
-
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  padding: 0.5rem 0 0.75rem;
-  border: none;
-  border-bottom: 1.5px solid rgba(107,58,31,0.22);
-  border-radius: 0;
-  background: transparent;
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 1.05rem;
-  transition: border-color var(--transition);
-  resize: none;
-}
-
-.field textarea { padding-top: 0.5rem; }
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  outline: none;
-}
-
-.field input::placeholder,
-.field textarea::placeholder {
-  color: transparent;
-}
-
-.field label {
-  position: absolute;
-  left: 0;
-  top: 0.5rem;
-  font-family: var(--font-accent);
-  font-size: 1.05rem;
-  color: var(--ink-soft);
-  opacity: 0.55;
-  pointer-events: none;
-  transform-origin: left top;
-  transition: transform var(--transition), opacity var(--transition), color var(--transition);
-}
-
-.field::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--ochre);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--transition);
-}
-
-.field:focus-within::after {
-  transform: scaleX(1);
-}
-
-.field:focus-within label,
-.field--filled label,
-.field--select label {
-  transform: translateY(-1.4rem) scale(0.78);
-  opacity: 1;
-  color: var(--ochre-deep);
-}
-
-.field--select select {
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23A05C1A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6,9 12,15 18,9'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.15rem center;
-  padding-right: 1.5rem;
-}
-
-.contacto-submit-btn {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin-top: 0.5rem;
-  padding: 0.9rem 1.85rem;
-  border: none;
-  border-radius: 999px;
-  background: var(--earth-deep);
-  color: var(--cream);
-  font-family: var(--font-accent);
-  font-size: 0.98rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: background var(--transition), transform var(--transition), box-shadow var(--transition), gap var(--transition);
-  box-shadow: 0 6px 20px rgba(58,21,0,0.18);
-}
-
-.contacto-submit-btn svg {
-  transition: transform var(--transition);
-}
-
-.contacto-submit-btn:hover {
-  background: var(--ochre-deep);
-  gap: 0.9rem;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(160,92,26,0.32);
-}
-
-.contacto-submit-btn:hover svg {
-  transform: translateX(2px);
-}
-
-/* ── Éxito ─────────────────────────────────────────────────── */
-.form-exito {
-  text-align: center;
-  padding: 4.5rem 2rem;
-  background: rgba(200,135,58,0.06);
-  border: 1px solid rgba(200,135,58,0.18);
-  border-radius: var(--radius-lg);
-}
-
-.form-exito__icono {
-  font-size: 3rem;
-  margin-bottom: 1.25rem;
-}
-
-.form-exito h3 {
-  margin-bottom: 0.5rem;
-  font-size: 1.6rem;
-}
-
-.form-exito p {
-  color: var(--ink-soft);
-  font-size: 1rem;
-  margin: 0;
-}
-
-/* ── Responsive ────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .contacto-layout {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-}
-
-@media (max-width: 560px) {
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
 }
