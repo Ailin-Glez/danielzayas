@@ -1,5 +1,9 @@
+const crypto = require('crypto');
+
+const ALLOWED_ORIGIN = process.env.URL || process.env.DEPLOY_PRIME_URL || '*';
+
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Headers': 'Content-Type',
   'Content-Type': 'application/json',
 };
@@ -7,10 +11,40 @@ const CORS_HEADERS = {
 const REPO = 'Ailin-Glez/danielzayas';
 const FILE_PATH = 'src/data/posts/posts.json';
 const API_URL = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
+const SESSION_MS = 1000 * 60 * 60 * 4;
+
+function timingSafeEqualStr(a, b) {
+  const bufA = Buffer.from(String(a ?? ''));
+  const bufB = Buffer.from(String(b ?? ''));
+  if (bufA.length !== bufB.length) return false;
+  return crypto.timingSafeEqual(bufA, bufB);
+}
+
+function makeToken(secret) {
+  const expiry = String(Date.now() + SESSION_MS);
+  const hmac = crypto.createHmac('sha256', secret).update(expiry).digest('hex');
+  return `${expiry}.${hmac}`;
+}
+
+function verifyToken(token, secret) {
+  if (!token || typeof token !== 'string') return false;
+  const [expiry, hmac] = token.split('.');
+  if (!expiry || !hmac || !/^\d+$/.test(expiry)) return false;
+  if (Date.now() > Number(expiry)) return false;
+  const expected = crypto.createHmac('sha256', secret).update(expiry).digest('hex');
+  return timingSafeEqualStr(hmac, expected);
+}
+
+function sanitizeSlug(slug) {
+  return String(slug || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 100);
+}
 
 async function uploadImage(githubHeaders, slug, base64Data) {
+  const safeSlug = sanitizeSlug(slug);
+  if (!safeSlug) throw new Error('Slug inválido');
+
   const ext = base64Data.startsWith('data:image/png') ? 'png' : 'jpg';
-  const imagePath = `public/blog/${slug}.${ext}`;
+  const imagePath = `public/blog/${safeSlug}.${ext}`;
   const imageUrl = `https://api.github.com/repos/${REPO}/contents/${imagePath}`;
   const rawBase64 = base64Data.replace(/^data:image\/\w+;base64,/, '');
 
@@ -18,7 +52,7 @@ async function uploadImage(githubHeaders, slug, base64Data) {
   const sha = existing.ok ? (await existing.json()).sha : undefined;
 
   const body = {
-    message: `Imagen para: ${slug}`,
+    message: `Imagen para: ${safeSlug}`,
     content: rawBase64,
     author: { name: 'Panel Admin', email: 'admin@danielzayas.com' },
   };
@@ -31,7 +65,7 @@ async function uploadImage(githubHeaders, slug, base64Data) {
   });
 
   if (!res.ok) throw new Error('No se pudo subir la imagen');
-  return `/blog/${slug}.${ext}`;
+  return `/blog/${safeSlug}.${ext}`;
 }
 
 exports.handler = async (event) => {
@@ -43,6 +77,11 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Method Not Allowed' }) };
   }
 
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+  if (!ADMIN_PASSWORD) {
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'ADMIN_PASSWORD no configurado' }) };
+  }
+
   let body;
   try {
     body = JSON.parse(event.body || '{}');
@@ -50,14 +89,17 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'JSON inválido' }) };
   }
 
-  const { password, action, post } = body;
-
-  if (!password || password !== process.env.ADMIN_PASSWORD) {
-    return { statusCode: 401, headers: CORS_HEADERS, body: JSON.stringify({ error: 'No autorizado' }) };
-  }
+  const { action, post, token, password } = body;
 
   if (action === 'verify') {
-    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
+    if (!timingSafeEqualStr(password, ADMIN_PASSWORD)) {
+      return { statusCode: 401, headers: CORS_HEADERS, body: JSON.stringify({ error: 'No autorizado' }) };
+    }
+    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, token: makeToken(ADMIN_PASSWORD) }) };
+  }
+
+  if (!verifyToken(token, ADMIN_PASSWORD)) {
+    return { statusCode: 401, headers: CORS_HEADERS, body: JSON.stringify({ error: 'No autorizado' }) };
   }
 
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;

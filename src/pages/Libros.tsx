@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { libros } from '../data';
 import type { Libro } from '../types';
+import { dividirBloques, parseBloque, renderBloque } from '../utils/fragmento';
 import { renderInline } from '../utils/renderInline';
 import './Libros.css';
 import './fragmento-preview.css';
@@ -21,9 +22,7 @@ function FragmentoPanel({ libro, onClose }: { libro: Libro; onClose: () => void 
     return () => document.removeEventListener('keydown', onKey);
   }, [handleClose]);
 
-  const bloques = (libro.fragmento ?? '')
-    .replace(/\n[ \t]+\n/g, '\n\n')
-    .split(/\n{2,}/);
+  const bloques = dividirBloques(libro.fragmento ?? '');
 
   return (
     <>
@@ -48,62 +47,7 @@ function FragmentoPanel({ libro, onClose }: { libro: Libro; onClose: () => void 
           {bloques.map((bloque, i) => {
             const trimmed = bloque.trim();
             if (!trimmed) return null;
-
-            const esNumeralRomano = (t: string) => /^[IVXivx]+$/.test(t.trim()) && t.trim().length <= 5;
-            const esLineaTitulo = (l: string) => {
-              const t = l.trim();
-              return !esNumeralRomano(t) &&
-                t === t.toUpperCase() &&
-                t.length < 100 &&
-                t.split(' ').length <= 14 &&
-                t.split(' ').every(w => /^[A-ZÁÉÍÓÚÜÑ\d]+$/.test(w));
-            };
-
-            const lineasBloque = trimmed.split('\n').map(l => l.trim()).filter(Boolean);
-            const todasSonTitulo = lineasBloque.length >= 1 && lineasBloque.every(l => esLineaTitulo(l));
-            if (todasSonTitulo && !esNumeralRomano(trimmed)) {
-              return <h3 key={i} className="fragmento-seccion">{lineasBloque.join(' ')}</h3>;
-            }
-
-            const esBloqueCursiva = trimmed.startsWith('*') && trimmed.endsWith('*') && !trimmed.startsWith('**');
-            const contenido = esBloqueCursiva ? trimmed.slice(1, -1).trim() : trimmed;
-            const lineas = contenido.split('\n');
-            const esPoesia = lineas.length > 1 && lineas.filter(l => l.trim().length < 70).length > lineas.length * 0.6;
-            if (esPoesia) {
-              const primeraEsTitulo = esLineaTitulo(lineas[0]) && !esNumeralRomano(lineas[0]);
-              const versos = primeraEsTitulo ? lineas.slice(1) : lineas;
-              return (
-                <span key={i}>
-                  {primeraEsTitulo && <h3 className="fragmento-seccion">{lineas[0].trim()}</h3>}
-                  {versos.length > 0 && (
-                    <p className="fragmento-parrafo fragmento-parrafo--verso">
-                      {versos.map((linea, j) => {
-                        const esDedicatoria = linea.trimStart().startsWith('>');
-                        const textoLinea = esDedicatoria ? linea.trimStart().slice(1).trim() : linea;
-                        return (
-                          <span key={j} className={esDedicatoria ? 'fragmento-dedicatoria' : undefined}>
-                            {renderInline(textoLinea)}<br />
-                          </span>
-                        );
-                      })}
-                    </p>
-                  )}
-                </span>
-              );
-            }
-            return (
-              <p key={i} className={`fragmento-parrafo${esBloqueCursiva ? ' fragmento-parrafo--carta' : ''}`}>
-                {lineas.map((linea, j) => {
-                  const esDedicatoria = linea.trimStart().startsWith('>');
-                  const textoLinea = esDedicatoria ? linea.trimStart().slice(1).trim() : linea;
-                  return (
-                    <span key={j} className={esDedicatoria ? 'fragmento-dedicatoria' : 'fragmento-linea'}>
-                      {renderInline(textoLinea)}
-                    </span>
-                  );
-                })}
-              </p>
-            );
+            return renderBloque(parseBloque(trimmed), i);
           })}
 
           {libro.compra.amazon && (
@@ -191,7 +135,7 @@ export default function Libros() {
               >
                 <div className="carousel-thumb__cover">
                   {libro.portada
-                    ? <img src={libro.portada} alt={libro.titulo} />
+                    ? <img src={libro.portada} alt={libro.titulo} loading="lazy" />
                     : <span>{libro.titulo}</span>
                   }
                 </div>

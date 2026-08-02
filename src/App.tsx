@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -8,8 +8,9 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import SobreMi from './pages/SobreMi';
 import Newsletter from './pages/Newsletter';
-import Admin from './pages/Admin';
 import './index.css';
+
+const Admin = lazy(() => import('./pages/Admin'));
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -39,7 +40,7 @@ function AppContent() {
         <Route path="/sobre-mi"   element={<SobreMi />} />
         <Route path="/contacto"   element={<Navigate to="/sobre-mi#contacto" replace />} />
         <Route path="/newsletter" element={<Newsletter />} />
-        <Route path="/admin"      element={<Admin />} />
+        <Route path="/admin"      element={<Suspense fallback={null}><Admin /></Suspense>} />
       </Routes>
       {!isAdmin && <Footer />}
     </>

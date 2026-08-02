@@ -483,6 +483,62 @@
   margin-bottom: 1.25rem;
 }
 
+.admin-draft-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: #f3f8fd;
+  border: 1px solid #c7dcf0;
+  border-left: 3px solid #3a7bc2;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 1rem;
+  font-size: 0.84rem;
+  color: #2a5580;
+  margin-bottom: 1.25rem;
+}
+
+.admin-draft-banner__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.admin-draft-banner__restore,
+.admin-draft-banner__discard {
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+
+.admin-draft-banner__restore {
+  background: #3a7bc2;
+  color: white;
+}
+
+.admin-draft-banner__discard {
+  background: transparent;
+  color: #2a5580;
+  border: 1px solid #c7dcf0;
+}
+
+.admin-draft-banner__restore:hover,
+.admin-draft-banner__discard:hover {
+  opacity: 0.8;
+}
+
+.admin-autosave-hint {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  opacity: 0.55;
+  margin: 0;
+}
+
 .admin-form {
   display: flex;
   flex-direction: column;

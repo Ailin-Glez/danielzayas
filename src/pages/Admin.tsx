@@ -1,18 +1,16 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
 import ImageCropper from '../components/ImageCropper';
 import { posts as initialPosts } from '../data';
 import type { Post } from '../types';
+import { normalizarTexto } from '../utils/texto';
 import './Admin.css';
 
 
 function generateSlug(titulo: string): string {
-  return titulo
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+  return normalizarTexto(titulo)
     .replace(/[^a-z0-9\s-]/g, '')
     .trim()
     .replace(/\s+/g, '-')
@@ -45,6 +43,18 @@ function emptyForm(): FormData {
   };
 }
 
+const draftKey = (id: number | null) => `admin_draft_${id ?? 'new'}`;
+
+function readDraft(id: number | null): { form: FormData; savedAt: number } | null {
+  try {
+    const raw = localStorage.getItem(draftKey(id));
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
 export default function Admin() {
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(
@@ -71,6 +81,9 @@ export default function Admin() {
   const [showPreview, setShowPreview] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
+  const [pendingDraft, setPendingDraft] = useState<FormData | null>(null);
+  const [lastAutosave, setLastAutosave] = useState<number | null>(null);
+
   const [rawImageSrc, setRawImageSrc] = useState<string | null>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [existingImage, setExistingImage] = useState<string | null>(null);
@@ -88,7 +101,16 @@ export default function Admin() {
   });
 
 
-  const storedPassword = () => sessionStorage.getItem('admin_password') || '';
+  useEffect(() => {
+    if (!isEditing) return;
+    const timeout = setTimeout(() => {
+      localStorage.setItem(draftKey(selectedId), JSON.stringify({ form, savedAt: Date.now() }));
+      setLastAutosave(Date.now());
+    }, 800);
+    return () => clearTimeout(timeout);
+  }, [form, isEditing, selectedId]);
+
+  const storedToken = () => sessionStorage.getItem('admin_token') || '';
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,8 +123,9 @@ export default function Admin() {
         body: JSON.stringify({ action: 'verify', password }),
       });
       if (res.ok) {
+        const data = await res.json();
         sessionStorage.setItem('admin_auth', 'true');
-        sessionStorage.setItem('admin_password', password);
+        sessionStorage.setItem('admin_token', data.token);
         setAuthenticated(true);
       } else {
         setLoginError('Contraseña incorrecta.');
@@ -110,19 +133,19 @@ export default function Admin() {
     } catch {
       setLoginError('Error de conexión. Inténtalo de nuevo.');
     }
+    setPassword('');
     setLoginLoading(false);
   };
 
   const handleLogout = () => {
     sessionStorage.removeItem('admin_auth');
-    sessionStorage.removeItem('admin_password');
+    sessionStorage.removeItem('admin_token');
     setAuthenticated(false);
     setPassword('');
   };
 
   const handleSelectPost = (post: Post) => {
-    setSelectedId(post.id);
-    setForm({
+    const postForm: FormData = {
       titulo: post.titulo,
       slug: post.slug,
       fecha: post.fecha,
@@ -131,7 +154,9 @@ export default function Admin() {
       contenido: post.contenido,
       linkCompra: post.linkCompra ?? '',
       archivado: post.archivado ?? false,
-    });
+    };
+    setSelectedId(post.id);
+    setForm(postForm);
     editor?.commands.setContent(post.contenido || '<p></p>', { emitUpdate: false });
     setCroppedImage(null);
     setRawImageSrc(null);
@@ -141,6 +166,10 @@ export default function Admin() {
     setShowDeleteConfirm(false);
     setIsEditing(true);
     setShowPreview(false);
+
+    const draft = readDraft(post.id);
+    setPendingDraft(draft && JSON.stringify(draft.form) !== JSON.stringify(postForm) ? draft.form : null);
+    setLastAutosave(draft?.savedAt ?? null);
   };
 
   const resetEditor = (showForm = false) => {
@@ -155,6 +184,28 @@ export default function Admin() {
     setShowDeleteConfirm(false);
     setIsEditing(showForm);
     setShowPreview(false);
+
+    if (showForm) {
+      const draft = readDraft(null);
+      setPendingDraft(draft ? draft.form : null);
+      setLastAutosave(draft?.savedAt ?? null);
+    } else {
+      setPendingDraft(null);
+      setLastAutosave(null);
+    }
+  };
+
+  const handleRestoreDraft = () => {
+    if (!pendingDraft) return;
+    setForm(pendingDraft);
+    editor?.commands.setContent(pendingDraft.contenido || '<p></p>', { emitUpdate: false });
+    setSlugEdited(true);
+    setPendingDraft(null);
+  };
+
+  const handleDiscardDraft = () => {
+    localStorage.removeItem(draftKey(selectedId));
+    setPendingDraft(null);
   };
 
   const handleNewPost = () => resetEditor(true);
@@ -181,10 +232,11 @@ export default function Admin() {
       const res = await fetch('/.netlify/functions/save-post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'bulk-delete', password: storedPassword(), post: { ids: Array.from(checkedIds) } }),
+        body: JSON.stringify({ action: 'bulk-delete', token: storedToken(), post: { ids: Array.from(checkedIds) } }),
       });
       if (res.ok) {
         const deleted = new Set(checkedIds);
+        deleted.forEach(id => localStorage.removeItem(draftKey(id)));
         setPosts(prev => prev.filter(p => !deleted.has(p.id)));
         if (selectedId !== null && deleted.has(selectedId)) resetEditor();
         setCheckedIds(new Set());
@@ -231,13 +283,14 @@ export default function Admin() {
       const res = await fetch('/.netlify/functions/save-post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, password: storedPassword(), post: postPayload }),
+        body: JSON.stringify({ action, token: storedToken(), post: postPayload }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
         setStatus('success');
+        localStorage.removeItem(draftKey(selectedId));
         if (action === 'create') {
           const newPost: Post = { ...form, id: data.id ?? Date.now(), ...(data.imagen ? { imagen: data.imagen } : {}) };
           setPosts(prev => [newPost, ...prev]);
@@ -269,10 +322,11 @@ export default function Admin() {
       const res = await fetch('/.netlify/functions/save-post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete', password: storedPassword(), post: { id: selectedId } }),
+        body: JSON.stringify({ action: 'delete', token: storedToken(), post: { id: selectedId } }),
       });
 
       if (res.ok) {
+        localStorage.removeItem(draftKey(selectedId));
         setPosts(prev => prev.filter(p => p.id !== selectedId));
         resetEditor();
         setStatus('success');
@@ -298,7 +352,7 @@ export default function Admin() {
       const res = await fetch('/.netlify/functions/save-post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'update', password: storedPassword(), post: { ...updatedForm, id: selectedId } }),
+        body: JSON.stringify({ action: 'update', token: storedToken(), post: { ...updatedForm, id: selectedId } }),
       });
       if (res.ok) {
         setForm(updatedForm);
@@ -338,11 +392,9 @@ export default function Admin() {
     );
   }
 
-  const normalize = (s: string) =>
-    s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   const visiblePosts = mostrarArchivados ? posts : posts.filter(p => !p.archivado);
   const filteredPosts = search.trim()
-    ? visiblePosts.filter(p => normalize(p.titulo).includes(normalize(search)) || normalize(p.categoria).includes(normalize(search)))
+    ? visiblePosts.filter(p => normalizarTexto(p.titulo).includes(normalizarTexto(search)) || normalizarTexto(p.categoria).includes(normalizarTexto(search)))
     : visiblePosts;
 
   const archivedCount = posts.filter(p => p.archivado).length;
@@ -495,6 +547,20 @@ export default function Admin() {
               {selectedId !== null && form.archivado && (
                 <div className="admin-archivado-banner">
                   Este artículo está archivado y no se muestra en el blog público.
+                </div>
+              )}
+
+              {pendingDraft && (
+                <div className="admin-draft-banner">
+                  <span>Hay cambios sin publicar de una edición anterior.</span>
+                  <div className="admin-draft-banner__actions">
+                    <button type="button" className="admin-draft-banner__restore" onClick={handleRestoreDraft}>
+                      Restaurar
+                    </button>
+                    <button type="button" className="admin-draft-banner__discard" onClick={handleDiscardDraft}>
+                      Descartar
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -729,6 +795,12 @@ export default function Admin() {
                   )}
                   {status === 'error' && (
                     <p className="admin-status admin-status--error">Error: {errorMsg}</p>
+                  )}
+                  {status === 'idle' && lastAutosave && (
+                    <p className="admin-autosave-hint">
+                      Borrador guardado automáticamente a las{' '}
+                      {new Date(lastAutosave).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}
+                    </p>
                   )}
                 </div>
               </form>

@@ -1,23 +1,13 @@
 import { Link } from 'react-router-dom';
 import { libros, posts } from '../data';
 import { calcularLectura } from '../utils/lectura';
-import { renderInline } from '../utils/renderInline';
+import { normalizarTexto } from '../utils/texto';
+import { dividirBloques, parseBloque, renderBloque } from '../utils/fragmento';
 import './Home.css';
 import './fragmento-preview.css';
 
-const esNumeralRomano = (t: string) => /^[IVXivx]+$/.test(t.trim()) && t.trim().length <= 5;
-const esLineaTitulo = (l: string) => {
-  const t = l.trim();
-  return !esNumeralRomano(t) &&
-    t === t.toUpperCase() && t.length < 100 &&
-    t.split(' ').length <= 14 &&
-    t.split(' ').every(w => /^[A-ZÁÉÍÓÚÜÑ\d]+$/.test(w));
-};
-
-const normalizar = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-
 function renderPrimerSeccion(fragmento: string, tituloLibro?: string) {
-  const bloques = fragmento.replace(/\n[ \t]+\n/g, '\n\n').split(/\n{2,}/);
+  const bloques = dividirBloques(fragmento);
   const resultado: React.ReactNode[] = [];
   let contenidoVisto = 0;
 
@@ -25,59 +15,16 @@ function renderPrimerSeccion(fragmento: string, tituloLibro?: string) {
     const trimmed = bloques[i].trim();
     if (!trimmed) continue;
 
-    const lineasBloque = trimmed.split('\n').map(l => l.trim()).filter(Boolean);
-    const todasSonTitulo = lineasBloque.length >= 1 && lineasBloque.every(l => esLineaTitulo(l));
+    const parsed = parseBloque(trimmed);
 
-    if (todasSonTitulo && !esNumeralRomano(trimmed)) {
+    if (parsed.tipo === 'titulo') {
       if (contenidoVisto > 0) break;
-      const textoTitulo = lineasBloque.join(' ');
-      if (tituloLibro && normalizar(textoTitulo) === normalizar(tituloLibro)) continue;
-      resultado.push(<h3 key={i} className="fragmento-seccion">{textoTitulo}</h3>);
+      if (tituloLibro && normalizarTexto(parsed.texto) === normalizarTexto(tituloLibro)) continue;
+      resultado.push(renderBloque(parsed, i));
       continue;
     }
 
-    const esBloqueCursiva = trimmed.startsWith('*') && trimmed.endsWith('*') && !trimmed.startsWith('**');
-    const contenido = esBloqueCursiva ? trimmed.slice(1, -1).trim() : trimmed;
-    const lineas = contenido.split('\n');
-    const esPoesia = lineas.length > 1 && lineas.filter(l => l.trim().length < 70).length > lineas.length * 0.6;
-
-    if (esPoesia) {
-      const primeraEsTitulo = esLineaTitulo(lineas[0]) && !esNumeralRomano(lineas[0]);
-      const versos = primeraEsTitulo ? lineas.slice(1) : lineas;
-      resultado.push(
-        <span key={i}>
-          {primeraEsTitulo && <h3 className="fragmento-seccion">{lineas[0].trim()}</h3>}
-          {versos.length > 0 && (
-            <p className="fragmento-parrafo fragmento-parrafo--verso">
-              {versos.map((linea, j) => {
-                const esDedicatoria = linea.trimStart().startsWith('>');
-                const textoLinea = esDedicatoria ? linea.trimStart().slice(1).trim() : linea;
-                return (
-                  <span key={j} className={esDedicatoria ? 'fragmento-dedicatoria' : undefined}>
-                    {renderInline(textoLinea)}<br />
-                  </span>
-                );
-              })}
-            </p>
-          )}
-        </span>
-      );
-    } else {
-      resultado.push(
-        <p key={i} className={`fragmento-parrafo${esBloqueCursiva ? ' fragmento-parrafo--carta' : ''}`}>
-          {lineas.map((linea, j) => {
-            const esDedicatoria = linea.trimStart().startsWith('>');
-            const textoLinea = esDedicatoria ? linea.trimStart().slice(1).trim() : linea;
-            return (
-              <span key={j} className={esDedicatoria ? 'fragmento-dedicatoria' : 'fragmento-linea'}>
-                {renderInline(textoLinea)}
-              </span>
-            );
-          })}
-        </p>
-      );
-    }
-
+    resultado.push(renderBloque(parsed, i));
     contenidoVisto++;
     break;
   }
@@ -128,6 +75,7 @@ export default function Home() {
                 src={ultimoLibro.portada}
                 alt={`Portada de ${ultimoLibro.titulo}`}
                 className="featured-book__img"
+                loading="lazy"
               />
             ) : (
               <div className="book-placeholder" style={{ '--book-color': ultimoLibro.color }}>

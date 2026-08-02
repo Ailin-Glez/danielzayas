@@ -42,7 +42,7 @@ export default function Blog() {
 
           <aside className="blog-sidebar">
             <div className="blog-circle-center">
-              <img src="/ilustracion-partos.jpg" alt="Ilustración Partos bajo tierra" />
+              <img src="/ilustracion-partos.jpg" alt="Ilustración Partos bajo tierra" loading="lazy" />
             </div>
           </aside>
 
