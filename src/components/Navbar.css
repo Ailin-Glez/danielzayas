@@ -165,13 +165,17 @@
 .navbar__hamburger--open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
 @media (max-width: 860px) {
-  .navbar__hamburger { display: flex; }
+  .navbar__hamburger {
+    display: flex;
+    position: relative;
+    z-index: 1000;
+  }
 
   .navbar__nav {
     position: fixed;
     top: 0;
     right: -100%;
-    width: min(320px, 80vw);
+    width: min(260px, 75vw);
     height: 100dvh;
     background: var(--cream);
     flex-direction: column;

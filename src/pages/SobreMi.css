@@ -147,12 +147,30 @@
 }
 
 @media (max-width: 860px) {
+  .page-sobre-mi .sobre-bio {
+    padding-top: 0.5rem;
+  }
   .sobre-inner {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    grid-template-areas:
+      "foto"
+      "texto"
+      "redes";
+    gap: 1.5rem;
+  }
+  .sobre-foto {
+    display: contents;
   }
   .sobre-foto__img {
+    grid-area: foto;
     aspect-ratio: 1/1;
     max-width: 280px;
+    margin: 0 auto;
+  }
+  .sobre-texto {
+    grid-area: texto;
+  }
+  .contacto-links {
+    grid-area: redes;
   }
 }

@@ -124,24 +124,27 @@ export default function Libros() {
             <h1 className="libros-vista__title">Libros</h1>
           </header>
 
-          <div className={`libros-carousel${!selected ? ' libros-carousel--expanded' : ''}`}>
-            {libros.map(libro => (
-              <button
-                key={libro.id}
-                className={`carousel-thumb ${selected?.id === libro.id ? 'carousel-thumb--active' : ''}`}
-                onClick={() => handleSelect(libro)}
-                style={{ '--libro-color': libro.color } as React.CSSProperties}
-                aria-pressed={selected?.id === libro.id}
-              >
-                <div className="carousel-thumb__cover">
-                  {libro.portada
-                    ? <img src={libro.portada} alt={libro.titulo} loading="lazy" />
-                    : <span>{libro.titulo}</span>
-                  }
-                </div>
-                <span className="carousel-thumb__title">{libro.titulo}</span>
-              </button>
-            ))}
+          <div className="libros-carousel-wrap">
+            <div className={`libros-carousel${!selected ? ' libros-carousel--expanded' : ''}`}>
+              {libros.map(libro => (
+                <button
+                  key={libro.id}
+                  className={`carousel-thumb ${selected?.id === libro.id ? 'carousel-thumb--active' : ''}`}
+                  onClick={() => handleSelect(libro)}
+                  style={{ '--libro-color': libro.color } as React.CSSProperties}
+                  aria-pressed={selected?.id === libro.id}
+                >
+                  <div className="carousel-thumb__cover">
+                    {libro.portada
+                      ? <img src={libro.portada} alt={libro.titulo} loading="lazy" />
+                      : <span>{libro.titulo}</span>
+                    }
+                  </div>
+                  <span className="carousel-thumb__title">{libro.titulo}</span>
+                </button>
+              ))}
+            </div>
+            {!!selected && <div className="libros-carousel-fade" aria-hidden />}
           </div>
 
           {selected && (

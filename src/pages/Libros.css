@@ -238,6 +238,10 @@
 }
 
 /* ── CARRUSEL ───────────────────────────────────────────── */
+.libros-carousel-wrap {
+  position: relative;
+}
+
 .libros-carousel {
   flex-shrink: 0;
   display: flex;
@@ -251,6 +255,22 @@
 
 .libros-carousel::-webkit-scrollbar {
   display: none;
+}
+
+.libros-carousel-fade {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0.75rem;
+  width: 3rem;
+  pointer-events: none;
+  background: linear-gradient(to right, rgba(250,244,232,0) 0%, var(--cream) 90%);
+}
+
+@media (min-width: 901px) {
+  .libros-carousel-fade {
+    display: none;
+  }
 }
 
 .libros-carousel--expanded {

@@ -499,7 +499,7 @@
     grid-template-columns: 1fr;
   }
   .hero__illustration {
-    display: none;
+    margin-top: 2.5rem;
   }
   .featured-book__inner {
     grid-template-columns: 1fr;

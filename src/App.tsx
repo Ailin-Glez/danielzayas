@@ -19,7 +19,13 @@ function ScrollToTop() {
       const el = document.getElementById(hash.slice(1));
       if (el) { el.scrollIntoView(); return; }
     }
+    // Forzar scroll instantáneo: sin esto hereda `scroll-behavior: smooth`
+    // y se ve un scroll animado desde la posición previa hasta el inicio.
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
     window.scrollTo(0, 0);
+    root.style.scrollBehavior = previous;
   }, [pathname, hash]);
   return null;
 }
