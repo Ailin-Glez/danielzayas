@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import arbolImg from '../assets/img/arbol.png';
 import { libros, posts } from '../data';
 import { calcularLectura } from '../utils/lectura';
 import { normalizarTexto } from '../utils/texto';
@@ -42,6 +43,14 @@ export default function Home() {
       {/* ── HERO ────────────────────────────────────── */}
       <section className="hero">
 <div className="container hero__inner">
+          <div className="hero__illustration">
+            <img src={arbolImg} alt="" className="hero__sprout" aria-hidden />
+            <div className="hero__quote">
+              <blockquote>
+                "Una mujer sentada sobre una piedra puede ser una isla."
+              </blockquote>
+            </div>
+          </div>
           <div className="hero__content">
             <h1 className="hero__title">
               Daniel<br />
@@ -50,14 +59,6 @@ export default function Home() {
             <div className="hero__actions">
               <Link to="/libros" className="btn btn-primary">Ver mis libros</Link>
               <Link to="/blog" className="btn btn-outline">Partos bajo tierra →</Link>
-            </div>
-          </div>
-          <div className="hero__illustration">
-            <img src="/brote.png" alt="" className="hero__sprout" aria-hidden />
-            <div className="hero__quote">
-              <blockquote>
-                "Una mujer sentada sobre una piedra puede ser una isla."
-              </blockquote>
             </div>
           </div>
         </div>
