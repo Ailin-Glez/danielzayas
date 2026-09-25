@@ -521,6 +521,9 @@
     align-items: flex-start;
     text-align: left;
   }
+  .hero__title {
+    display: none;
+  }
   .hero__actions {
     justify-content: flex-start;
     flex-wrap: nowrap;
