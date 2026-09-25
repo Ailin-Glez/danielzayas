@@ -510,6 +510,7 @@
 @media (max-width: 900px) {
   .hero {
     justify-content: flex-start;
+    min-height: auto;
   }
   .hero__inner {
     grid-template-columns: 1fr;
