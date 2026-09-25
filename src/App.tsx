@@ -12,7 +12,18 @@ import './index.css';
 
 const Admin = lazy(() => import('./pages/Admin'));
 
+function useDisableBrowserScrollRestoration() {
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      const previous = window.history.scrollRestoration;
+      window.history.scrollRestoration = 'manual';
+      return () => { window.history.scrollRestoration = previous; };
+    }
+  }, []);
+}
+
 function ScrollToTop() {
+  useDisableBrowserScrollRestoration();
   const { pathname, hash } = useLocation();
   useEffect(() => {
     if (hash) {
