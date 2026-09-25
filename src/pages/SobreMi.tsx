@@ -157,9 +157,7 @@ export default function SobreMi() {
             </div>
 
           </div>
-        </div>
 
-        <div className="container">
           <p className="sobre-nota">
             Ha sido incluido en las antologías <em>{antologias.join(', ')}</em>,
             {' '}y sus textos han aparecido en las revistas <em>{revistas.join(', ')}</em>.

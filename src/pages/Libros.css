@@ -262,9 +262,23 @@
   top: 0;
   right: 0;
   bottom: 0.75rem;
-  width: 3rem;
+  width: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   pointer-events: none;
-  background: linear-gradient(to right, rgba(250,244,232,0) 0%, var(--cream) 90%);
+  background: linear-gradient(to right, rgba(250,244,232,0) 0%, var(--cream) 75%);
+}
+
+.libros-carousel-fade__arrow {
+  color: var(--ochre-deep);
+  margin-right: 0.15rem;
+  animation: carousel-hint-nudge 1.4s ease-in-out infinite;
+}
+
+@keyframes carousel-hint-nudge {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50% { transform: translateX(5px); opacity: 1; }
 }
 
 @media (min-width: 901px) {

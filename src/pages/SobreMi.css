@@ -131,6 +131,7 @@
 /* ── Nota (antologías / revistas) ── */
 
 .sobre-nota {
+  grid-column: 1 / -1;
   margin-top: 3.5rem;
   padding-top: 2rem;
   border-top: 1px solid rgba(200,135,58,0.2);
@@ -155,6 +156,7 @@
     grid-template-areas:
       "foto"
       "texto"
+      "antologias"
       "redes";
     gap: 1.5rem;
   }
@@ -169,6 +171,12 @@
   }
   .sobre-texto {
     grid-area: texto;
+  }
+  .sobre-nota {
+    grid-area: antologias;
+    grid-column: auto;
+    margin-top: 0;
+    padding-top: 1.5rem;
   }
   .contacto-links {
     grid-area: redes;
