@@ -524,11 +524,12 @@
   .hero__actions {
     justify-content: flex-start;
     flex-wrap: nowrap;
+    gap: 0.6rem;
   }
   .hero__actions .btn-primary,
   .hero__actions .btn-outline {
-    padding: 0.55rem 0.9rem;
-    font-size: 0.78rem;
+    padding: 0.75rem 1.1rem;
+    font-size: 0.88rem;
     white-space: nowrap;
   }
   .hero__illustration {
