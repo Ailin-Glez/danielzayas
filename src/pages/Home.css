@@ -520,6 +520,7 @@
   .hero__content {
     align-items: flex-start;
     text-align: left;
+    margin-top: 1.5rem;
   }
   .hero__title {
     display: none;
