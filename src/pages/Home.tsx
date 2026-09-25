@@ -47,7 +47,7 @@ export default function Home() {
             <img src={arbolImg} alt="" className="hero__sprout" aria-hidden />
             <div className="hero__quote">
               <blockquote>
-                "Una mujer sentada sobre una piedra puede ser una isla."
+                "Una mujer sentada sobre una piedra<br className="hero__quote-break" /> puede ser una isla."
               </blockquote>
             </div>
           </div>
